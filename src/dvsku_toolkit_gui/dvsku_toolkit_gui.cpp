@@ -14,6 +14,7 @@
 #ifdef __APPLE__
 #define GL_SILENCE_DEPRECATION
 #endif
+#include "windows.h"
 #include <GLFW/glfw3.h>
 
 // [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
@@ -28,18 +29,23 @@ static void glfw_error_callback(int error, const char* description)
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
 
-#include "windows.h";
-
-INT WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, INT nCmdShow) {
+INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, INT nCmdShow) {
+    int width = 1280;
+    int height = 720;
+    
     // Setup window
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         return 1;
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL2 example", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(width, height, "dvsku toolkit", NULL, NULL);
     if (window == NULL)
         return 1;
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1); // Enable vsync
+
+    int max_width = GetSystemMetrics(SM_CXSCREEN);
+    int max_hieght = GetSystemMetrics(SM_CYSCREEN);
+    glfwSetWindowMonitor(window, NULL, (max_width / 2) - (width / 2), (max_hieght / 2) - (height / 2), width, height, GLFW_DONT_CARE);
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
