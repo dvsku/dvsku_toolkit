@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="gui.cpp" />
     <ClCompile Include="lib\imgui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="lib\imgui\backends\imgui_impl_opengl2.cpp" />
     <ClCompile Include="lib\imgui\imgui.cpp" />
@@ -156,6 +157,9 @@
     <ClCompile Include="dvsku_toolkit_gui.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="definitions.h" />
+    <ClInclude Include="gui.h" />
+    <ClInclude Include="helpers\color.h" />
     <ClInclude Include="lib\imgui\backends\imgui_impl_glfw.h" />
     <ClInclude Include="lib\imgui\backends\imgui_impl_opengl2.h" />
     <ClInclude Include="lib\imgui\imconfig.h" />
