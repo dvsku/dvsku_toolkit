@@ -24,14 +24,14 @@ namespace dvsku::toolkit {
 			bool m_close_hover	= false;
 			bool m_close_active = false;
 
-			char m_pack_input[MAX_PATH]		= "";
-			char m_pack_output[MAX_PATH]	= "";
-			char m_unpack_input[MAX_PATH]	= "";
-			char m_unpack_output[MAX_PATH]	= "";
-			char m_encrypt_input[MAX_PATH]	= "";
-			char m_encrypt_output[MAX_PATH] = "";
-			char m_decrypt_input[MAX_PATH]	= "";
-			char m_decrypt_output[MAX_PATH] = "";
+			char m_pack_input[FILE_PATH_MAX]		= "";
+			char m_pack_output[FILE_PATH_MAX]		= "";
+			char m_unpack_input[FILE_PATH_MAX]		= "";
+			char m_unpack_output[FILE_PATH_MAX]		= "";
+			char m_encrypt_input[FILE_PATH_MAX]		= "";
+			char m_encrypt_output[FILE_PATH_MAX]	= "";
+			char m_decrypt_input[FILE_PATH_MAX]		= "";
+			char m_decrypt_output[FILE_PATH_MAX]	= "";
 
 			int m_pack_type = evp_type::any;
 			

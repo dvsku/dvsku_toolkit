@@ -1,6 +1,7 @@
 #include "gui.h"
 
 #include "helpers/color.h"
+#include "helpers/file_dialog.h"
 
 dvsku::toolkit::gui::gui(ImGuiIO& io, GLFWwindow* window) : m_io(io), m_window(window) {
 	m_root_win_size = ImVec2(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
@@ -95,7 +96,9 @@ void dvsku::toolkit::gui::build_tab_pack() {
 	EndDisabled();
 	
 	SameLine();
-	Button("Select", ImVec2(125, 21));
+	if (Button("Select##PackInput", ImVec2(125, 21))) {
+		file_dialog::select_folder(m_pack_input);
+	}
 
 	offset_draw(20, 15);
 	Text("Output");
@@ -109,7 +112,9 @@ void dvsku::toolkit::gui::build_tab_pack() {
 	EndDisabled();
 
 	SameLine();
-	Button("Select", ImVec2(125, 21));
+	if (Button("Select##PackOutput", ImVec2(125, 21))) {	
+		file_dialog::save_file(m_pack_output);
+	}
 
 	offset_draw(20, 15);
 	Checkbox("Encrypt", &m_pack_encrypt);
@@ -171,7 +176,9 @@ void dvsku::toolkit::gui::build_tab_unpack() {
 	EndDisabled();
 
 	SameLine();
-	Button("Select", ImVec2(125, 21));
+	if (Button("Select##UnpackInput", ImVec2(125, 21))) {
+		file_dialog::open_file(m_unpack_input);
+	}
 
 	offset_draw(20, 15);
 	Text("Output");
@@ -185,7 +192,9 @@ void dvsku::toolkit::gui::build_tab_unpack() {
 	EndDisabled();
 
 	SameLine();
-	Button("Select", ImVec2(125, 21));
+	if (Button("Select##UnpackOutput", ImVec2(125, 21))) {
+		file_dialog::select_folder(m_unpack_output);
+	}
 
 	offset_draw(20, 15);
 	Checkbox("Decrypt", &m_unpack_decrypt);
@@ -229,7 +238,9 @@ void dvsku::toolkit::gui::build_tab_encrypt() {
 	EndDisabled();
 
 	SameLine();
-	Button("Select", ImVec2(125, 21));
+	if (Button("Select##EncryptInput", ImVec2(125, 21))) {
+		file_dialog::select_folder(m_encrypt_input);
+	}
 
 	offset_draw(20, 15);
 	Text("Output");
@@ -243,7 +254,9 @@ void dvsku::toolkit::gui::build_tab_encrypt() {
 	EndDisabled();
 
 	SameLine();
-	Button("Select", ImVec2(125, 21));
+	if (Button("Select##EncryptOutput", ImVec2(125, 21))) {
+		file_dialog::select_folder(m_encrypt_output);
+	}
 
 	offset_draw(20, 15);
 	Text("Encryption key");
@@ -281,7 +294,9 @@ void dvsku::toolkit::gui::build_tab_decrypt() {
 	EndDisabled();
 
 	SameLine();
-	Button("Select", ImVec2(125, 21));
+	if (Button("Select##DecryptInput", ImVec2(125, 21))) {
+		file_dialog::select_folder(m_decrypt_input);
+	}
 
 	offset_draw(20, 15);
 	Text("Output");
@@ -295,7 +310,9 @@ void dvsku::toolkit::gui::build_tab_decrypt() {
 	EndDisabled();
 
 	SameLine();
-	Button("Select", ImVec2(125, 21));
+	if (Button("Select##DecryptOutput", ImVec2(125, 21))) {
+		file_dialog::select_folder(m_decrypt_output);
+	}
 
 	offset_draw(20, 15);
 	Text("Decryption key");
