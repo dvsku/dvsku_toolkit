@@ -91,8 +91,10 @@ void dvsku::toolkit::gui::build_tab_pack() {
 	
 	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
 	offset_draw(20, 20);
+	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
 	InputText("", m_pack_input, MAX_PATH, ImGuiInputTextFlags_ReadOnly);
-	
+	PopStyleVar();
+
 	EndDisabled();
 	
 	SameLine();
@@ -107,7 +109,9 @@ void dvsku::toolkit::gui::build_tab_pack() {
 
 	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
 	offset_draw(20, 20);
+	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
 	InputText("", m_pack_output, MAX_PATH, ImGuiInputTextFlags_ReadOnly);
+	PopStyleVar();
 	
 	EndDisabled();
 
@@ -171,7 +175,9 @@ void dvsku::toolkit::gui::build_tab_unpack() {
 
 	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
 	offset_draw(20, 20);
+	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
 	InputText("", m_unpack_input, MAX_PATH, ImGuiInputTextFlags_ReadOnly);
+	PopStyleVar();
 
 	EndDisabled();
 
@@ -187,7 +193,9 @@ void dvsku::toolkit::gui::build_tab_unpack() {
 
 	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
 	offset_draw(20, 20);
+	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
 	InputText("", m_unpack_output, MAX_PATH, ImGuiInputTextFlags_ReadOnly);
+	PopStyleVar();
 
 	EndDisabled();
 
@@ -233,7 +241,9 @@ void dvsku::toolkit::gui::build_tab_encrypt() {
 
 	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
 	offset_draw(20, 20);
+	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
 	InputText("", m_encrypt_input, MAX_PATH, ImGuiInputTextFlags_ReadOnly);
+	PopStyleVar();
 
 	EndDisabled();
 
@@ -249,7 +259,9 @@ void dvsku::toolkit::gui::build_tab_encrypt() {
 
 	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
 	offset_draw(20, 20);
+	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
 	InputText("", m_encrypt_output, MAX_PATH, ImGuiInputTextFlags_ReadOnly);
+	PopStyleVar();
 
 	EndDisabled();
 
@@ -289,7 +301,9 @@ void dvsku::toolkit::gui::build_tab_decrypt() {
 
 	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
 	offset_draw(20, 20);
+	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
 	InputText("", m_decrypt_input, MAX_PATH, ImGuiInputTextFlags_ReadOnly);
+	PopStyleVar();
 
 	EndDisabled();
 
@@ -305,7 +319,9 @@ void dvsku::toolkit::gui::build_tab_decrypt() {
 
 	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
 	offset_draw(20, 20);
+	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
 	InputText("", m_decrypt_output, MAX_PATH, ImGuiInputTextFlags_ReadOnly);
+	PopStyleVar();
 
 	EndDisabled();
 
