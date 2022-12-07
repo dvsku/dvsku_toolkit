@@ -5,8 +5,12 @@
 
 #include "imgui.h"
 #include <GLFW/glfw3.h>
-#include "definitions.h"
 #include <windows.h>
+
+#include "definitions.h"
+#include "lib/libevp/libevp.h"
+
+#pragma comment(lib, "lib/libevp/libevp.lib")
 
 using namespace ImGui;
 
@@ -18,6 +22,9 @@ namespace dvsku::toolkit {
 				client = 1,
 				server = 2
 			};
+
+			bool m_disabled = false;
+			bool m_cancel = false;
 
 			bool m_can_drag = false;
 
@@ -42,6 +49,11 @@ namespace dvsku::toolkit {
 			char m_unpack_key[129]	= "";
 			char m_encrypt_key[129] = "";
 			char m_decrypt_key[129] = "";
+
+			float m_pack_progress = 0.0f;
+			float m_unpack_progress = 0.0f;
+
+			char m_progress_text[12] = "";
 		
 			ImVec2 m_root_win_size;
 
@@ -64,6 +76,8 @@ namespace dvsku::toolkit {
 			void build_content_window();
 
 			void offset_draw(float x, float y);
+
+			void update_progress(float p) {}
 	};
 }
 

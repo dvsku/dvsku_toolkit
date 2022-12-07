@@ -155,10 +155,55 @@ void dvsku::toolkit::gui::build_tab_pack() {
 
 	offset_draw(20, 15);
 	SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
-	ProgressBar(0, ImVec2(0.0f, 0.0f));
+	
+	if (m_cancel)
+		strcpy(m_progress_text, "Cancelled");
+	else
+		sprintf(m_progress_text, "%.2f%", m_pack_progress);
+	
+	if (m_disabled)
+		EndDisabled();
+
+	PushStyleColor(ImGuiCol_PlotHistogram, ARGB2UINT("#FF774F2D"));
+	ProgressBar(m_pack_progress / 100, ImVec2(0.0f, 0.0f), m_progress_text);
+	PopStyleColor();
 
 	offset_draw(MAIN_WINDOW_WIDTH / 2 - 125/2 - 18, 15);
-	Button("Pack", ImVec2(125, 21));
+
+	if (!m_disabled) {
+		if (Button("Pack", ImVec2(125, 21))) {
+			m_cancel = false;
+			dvsku::evp::pack_async(m_pack_input, m_pack_output, false, "", 
+				dvsku::evp::file_filter::none, &m_cancel,
+				[this]() {
+					m_disabled = true;
+					m_pack_progress = 0.0f;
+				},
+				[this](float progress) {
+					m_pack_progress += progress;
+				},
+				[this](dvsku::evp::evp_status status) {
+					if (status == dvsku::evp::evp_status::ok)
+						m_pack_progress = 100.0f;
+					else if (status == dvsku::evp::evp_status::cancelled)
+						m_pack_progress = 0.0f;
+
+					m_disabled = false;
+				},
+				[this](dvsku::evp::evp_result result) {
+					m_disabled = false;
+				}
+			);
+		}
+	}
+	else {
+		if (Button("Cancel##Pack", ImVec2(125, 21))) {
+			m_cancel = true;
+;		}
+	}
+	
+	if (m_disabled)
+		BeginDisabled();
 
 	PopStyleColor();
 	PopStyleVar();
@@ -221,10 +266,57 @@ void dvsku::toolkit::gui::build_tab_unpack() {
 
 	offset_draw(20, 15);
 	SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
-	ProgressBar(0, ImVec2(0.0f, 0.0f));
+
+	char buf[12];
+
+	if (m_cancel)
+		strcpy(m_progress_text, "Cancelled");
+	else
+		sprintf(m_progress_text, "%.2f%", m_unpack_progress);
+
+	if (m_disabled)
+		EndDisabled();
+
+	PushStyleColor(ImGuiCol_PlotHistogram, ARGB2UINT("#FF774F2D"));
+	ProgressBar(m_unpack_progress / 100, ImVec2(0.0f, 0.0f), m_progress_text);
+	PopStyleColor();
 
 	offset_draw(MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15);
-	Button("Unpack", ImVec2(125, 21));
+
+	if (!m_disabled) {
+		if (Button("Unack", ImVec2(125, 21))) {
+			m_cancel = false;
+			dvsku::evp::unpack_async(m_unpack_input, m_unpack_output, false, "", 
+				dvsku::evp::file_filter::none, &m_cancel,
+				[this]() {
+					m_disabled = true;
+					m_unpack_progress = 0.0f;
+				},
+				[this](float progress) {
+					m_unpack_progress += progress;
+				},
+				[this](dvsku::evp::evp_status status) {
+					if (status == dvsku::evp::evp_status::ok)
+						m_unpack_progress = 100.0f;
+					else if (status == dvsku::evp::evp_status::cancelled)
+						m_unpack_progress = 0.0f;
+
+					m_disabled = false;
+				},
+				[this](dvsku::evp::evp_result result) {
+					m_disabled = false;
+				}
+			);
+		}
+	}
+	else {
+		if (Button("Cancel##Unpack", ImVec2(125, 21))) {
+			m_cancel = true;
+		}
+	}
+
+	if (m_disabled)
+		BeginDisabled();
 
 	PopStyleColor();
 	PopStyleVar();
@@ -403,7 +495,14 @@ void dvsku::toolkit::gui::build_content_window() {
 
 	Begin("ContentWindow", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 	PopStyleVar(1);
+
+	if (m_disabled)
+		BeginDisabled();
+
 	build_tabs();
+
+	if (m_disabled)
+		EndDisabled();
 
 	End();
 
