@@ -34,7 +34,7 @@ void dvsku::toolkit::gui::build_tabs() {
 		if (BeginTabItem("Pack EVP")) {
 			PopStyleVar();
 
-			build_tab_pack();
+			m_pack.build(&m_disabled);
 			EndTabItem();
 		}
 		else {
@@ -45,7 +45,7 @@ void dvsku::toolkit::gui::build_tabs() {
 		if (BeginTabItem("Unpack EVP")) {
 			PopStyleVar();
 
-			build_tab_unpack();
+			m_unpack.build(&m_disabled);
 			EndTabItem();
 		}
 		else {
@@ -56,7 +56,7 @@ void dvsku::toolkit::gui::build_tabs() {
 		if (BeginTabItem("Encrypt")) {
 			PopStyleVar();
 
-			build_tab_encrypt();
+			m_encrypt.build(&m_disabled);
 			EndTabItem();
 		}
 		else {
@@ -67,7 +67,7 @@ void dvsku::toolkit::gui::build_tabs() {
 		if (BeginTabItem("Decrypt")) {
 			PopStyleVar();
 
-			build_tab_decrypt();
+			m_decrypt.build(&m_disabled);
 			EndTabItem();
 		}
 		else {
@@ -77,368 +77,6 @@ void dvsku::toolkit::gui::build_tabs() {
 		EndTabBar();
 	}
 
-	PopStyleVar();
-}
-
-void dvsku::toolkit::gui::build_tab_pack() {
-	PushStyleColor(ImGuiCol_FrameBg, ARGB2UINT("#FF383838"));
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 4));
-	
-	offset_draw(20, 20);
-	Text("Input");
-	
-	BeginDisabled(true);
-	
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
-	offset_draw(20, 20);
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-	InputText("", m_pack_input, MAX_PATH, ImGuiInputTextFlags_ReadOnly);
-	PopStyleVar();
-
-	EndDisabled();
-	
-	SameLine();
-	if (Button("Select##PackInput", ImVec2(125, 21))) {
-		file_dialog::select_folder(m_pack_input);
-	}
-
-	offset_draw(20, 15);
-	Text("Output");
-
-	BeginDisabled(true);
-
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
-	offset_draw(20, 20);
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-	InputText("", m_pack_output, MAX_PATH, ImGuiInputTextFlags_ReadOnly);
-	PopStyleVar();
-	
-	EndDisabled();
-
-	SameLine();
-	if (Button("Select##PackOutput", ImVec2(125, 21))) {	
-		file_dialog::save_file(m_pack_output);
-	}
-
-	offset_draw(20, 15);
-	Checkbox("Encrypt", &m_pack_encrypt);
-
-	if (m_pack_encrypt) {
-
-		offset_draw(20, 15);
-		Text("Encryption key");
-
-		offset_draw(20, 20);
-		SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
-		PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-		InputText(" ", m_pack_key, 129, ImGuiInputTextFlags_CharsNoBlank);
-		PopStyleVar();
-	}
-
-	offset_draw(20, 15);
-	Text("Pack type");
-	
-	offset_draw(20, 20);
-	RadioButton("any", &m_pack_type, evp_type::any); 
-	if (IsItemHovered())
-		SetTooltip("Pack all files from input");
-	SameLine();
-
-	RadioButton("client", &m_pack_type, evp_type::client); 
-	if (IsItemHovered())
-		SetTooltip("Pack only client files");
-	SameLine();
-
-	RadioButton("server", &m_pack_type, evp_type::server);
-	if (IsItemHovered())
-		SetTooltip("Pack only server files");
-
-	offset_draw(20, 15);
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
-	
-	if (m_cancel)
-		strcpy(m_progress_text, "Cancelled");
-	else
-		sprintf(m_progress_text, "%.2f%", m_pack_progress);
-	
-	if (m_disabled)
-		EndDisabled();
-
-	PushStyleColor(ImGuiCol_PlotHistogram, ARGB2UINT("#FF774F2D"));
-	ProgressBar(m_pack_progress / 100, ImVec2(0.0f, 0.0f), m_progress_text);
-	PopStyleColor();
-
-	offset_draw(MAIN_WINDOW_WIDTH / 2 - 125/2 - 18, 15);
-
-	if (!m_disabled) {
-		if (Button("Pack", ImVec2(125, 21))) {
-			m_cancel = false;
-			dvsku::evp::pack_async(m_pack_input, m_pack_output, false, "", 
-				dvsku::evp::file_filter::none, &m_cancel,
-				[this]() {
-					m_disabled = true;
-					m_pack_progress = 0.0f;
-				},
-				[this](float progress) {
-					m_pack_progress += progress;
-				},
-				[this](dvsku::evp::evp_status status) {
-					if (status == dvsku::evp::evp_status::ok)
-						m_pack_progress = 100.0f;
-					else if (status == dvsku::evp::evp_status::cancelled)
-						m_pack_progress = 0.0f;
-
-					m_disabled = false;
-				},
-				[this](dvsku::evp::evp_result result) {
-					m_disabled = false;
-				}
-			);
-		}
-	}
-	else {
-		if (Button("Cancel##Pack", ImVec2(125, 21))) {
-			m_cancel = true;
-;		}
-	}
-	
-	if (m_disabled)
-		BeginDisabled();
-
-	PopStyleColor();
-	PopStyleVar();
-}
-
-void dvsku::toolkit::gui::build_tab_unpack() {
-	PushStyleColor(ImGuiCol_FrameBg, ARGB2UINT("#FF383838"));
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 4));
-
-	offset_draw(20, 20);
-	Text("Input");
-
-	BeginDisabled(true);
-
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
-	offset_draw(20, 20);
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-	InputText("", m_unpack_input, MAX_PATH, ImGuiInputTextFlags_ReadOnly);
-	PopStyleVar();
-
-	EndDisabled();
-
-	SameLine();
-	if (Button("Select##UnpackInput", ImVec2(125, 21))) {
-		file_dialog::open_file(m_unpack_input);
-	}
-
-	offset_draw(20, 15);
-	Text("Output");
-
-	BeginDisabled(true);
-
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
-	offset_draw(20, 20);
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-	InputText("", m_unpack_output, MAX_PATH, ImGuiInputTextFlags_ReadOnly);
-	PopStyleVar();
-
-	EndDisabled();
-
-	SameLine();
-	if (Button("Select##UnpackOutput", ImVec2(125, 21))) {
-		file_dialog::select_folder(m_unpack_output);
-	}
-
-	offset_draw(20, 15);
-	Checkbox("Decrypt", &m_unpack_decrypt);
-
-	if (m_unpack_decrypt) {
-
-		offset_draw(20, 15);
-		Text("Decryption key");
-
-		offset_draw(20, 20);
-		SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
-		PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-		InputText(" ", m_unpack_key, 129, ImGuiInputTextFlags_CharsNoBlank);
-		PopStyleVar();
-	}
-
-	offset_draw(20, 15);
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
-
-	char buf[12];
-
-	if (m_cancel)
-		strcpy(m_progress_text, "Cancelled");
-	else
-		sprintf(m_progress_text, "%.2f%", m_unpack_progress);
-
-	if (m_disabled)
-		EndDisabled();
-
-	PushStyleColor(ImGuiCol_PlotHistogram, ARGB2UINT("#FF774F2D"));
-	ProgressBar(m_unpack_progress / 100, ImVec2(0.0f, 0.0f), m_progress_text);
-	PopStyleColor();
-
-	offset_draw(MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15);
-
-	if (!m_disabled) {
-		if (Button("Unack", ImVec2(125, 21))) {
-			m_cancel = false;
-			dvsku::evp::unpack_async(m_unpack_input, m_unpack_output, false, "", 
-				dvsku::evp::file_filter::none, &m_cancel,
-				[this]() {
-					m_disabled = true;
-					m_unpack_progress = 0.0f;
-				},
-				[this](float progress) {
-					m_unpack_progress += progress;
-				},
-				[this](dvsku::evp::evp_status status) {
-					if (status == dvsku::evp::evp_status::ok)
-						m_unpack_progress = 100.0f;
-					else if (status == dvsku::evp::evp_status::cancelled)
-						m_unpack_progress = 0.0f;
-
-					m_disabled = false;
-				},
-				[this](dvsku::evp::evp_result result) {
-					m_disabled = false;
-				}
-			);
-		}
-	}
-	else {
-		if (Button("Cancel##Unpack", ImVec2(125, 21))) {
-			m_cancel = true;
-		}
-	}
-
-	if (m_disabled)
-		BeginDisabled();
-
-	PopStyleColor();
-	PopStyleVar();
-}
-
-void dvsku::toolkit::gui::build_tab_encrypt() {
-	PushStyleColor(ImGuiCol_FrameBg, ARGB2UINT("#FF383838"));
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 4));
-
-	offset_draw(20, 20);
-	Text("Input");
-
-	BeginDisabled(true);
-
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
-	offset_draw(20, 20);
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-	InputText("", m_encrypt_input, MAX_PATH, ImGuiInputTextFlags_ReadOnly);
-	PopStyleVar();
-
-	EndDisabled();
-
-	SameLine();
-	if (Button("Select##EncryptInput", ImVec2(125, 21))) {
-		file_dialog::select_folder(m_encrypt_input);
-	}
-
-	offset_draw(20, 15);
-	Text("Output");
-
-	BeginDisabled(true);
-
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
-	offset_draw(20, 20);
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-	InputText("", m_encrypt_output, MAX_PATH, ImGuiInputTextFlags_ReadOnly);
-	PopStyleVar();
-
-	EndDisabled();
-
-	SameLine();
-	if (Button("Select##EncryptOutput", ImVec2(125, 21))) {
-		file_dialog::select_folder(m_encrypt_output);
-	}
-
-	offset_draw(20, 15);
-	Text("Encryption key");
-
-	offset_draw(20, 20);
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-	InputText(" ", m_encrypt_key, 129, ImGuiInputTextFlags_CharsNoBlank);
-	PopStyleVar();
-
-	offset_draw(20, 15);
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
-	ProgressBar(0, ImVec2(0.0f, 0.0f));
-
-	offset_draw(MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15);
-	Button("Encrypt", ImVec2(125, 21));
-
-	PopStyleColor();
-	PopStyleVar();
-}
-
-void dvsku::toolkit::gui::build_tab_decrypt() {
-	PushStyleColor(ImGuiCol_FrameBg, ARGB2UINT("#FF383838"));
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 4));
-
-	offset_draw(20, 20);
-	Text("Input");
-
-	BeginDisabled(true);
-
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
-	offset_draw(20, 20);
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-	InputText("", m_decrypt_input, MAX_PATH, ImGuiInputTextFlags_ReadOnly);
-	PopStyleVar();
-
-	EndDisabled();
-
-	SameLine();
-	if (Button("Select##DecryptInput", ImVec2(125, 21))) {
-		file_dialog::select_folder(m_decrypt_input);
-	}
-
-	offset_draw(20, 15);
-	Text("Output");
-
-	BeginDisabled(true);
-
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
-	offset_draw(20, 20);
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-	InputText("", m_decrypt_output, MAX_PATH, ImGuiInputTextFlags_ReadOnly);
-	PopStyleVar();
-
-	EndDisabled();
-
-	SameLine();
-	if (Button("Select##DecryptOutput", ImVec2(125, 21))) {
-		file_dialog::select_folder(m_decrypt_output);
-	}
-
-	offset_draw(20, 15);
-	Text("Decryption key");
-
-	offset_draw(20, 20);
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-	InputText(" ", m_decrypt_key, 129, ImGuiInputTextFlags_CharsNoBlank);
-	PopStyleVar();
-
-	offset_draw(20, 15);
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
-	ProgressBar(0, ImVec2(0.0f, 0.0f));
-
-	offset_draw(MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15);
-	Button("Decrypt", ImVec2(125, 21));
-
-	PopStyleColor();
 	PopStyleVar();
 }
 
@@ -507,10 +145,4 @@ void dvsku::toolkit::gui::build_content_window() {
 	End();
 
 	PopStyleColor();
-}
-
-void dvsku::toolkit::gui::offset_draw(float x, float y) {
-	auto cursor = GetCursorScreenPos();
-	SetCursorPosX(cursor.x + x);
-	SetCursorPosY(cursor.y - y);
 }

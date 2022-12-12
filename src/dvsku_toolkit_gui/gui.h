@@ -10,50 +10,30 @@
 #include "definitions.h"
 #include "lib/libevp/libevp.h"
 
+#include "views/tab_pack.h"
+#include "views/tab_unpack.h"
+#include "views/tab_encrypt.h"
+#include "views/tab_decrypt.h"
+
 #pragma comment(lib, "lib/libevp/libevp.lib")
+#pragma comment(lib, "lib/libdvsku_crypt/libdvsku_crypt.lib")
 
 using namespace ImGui;
 
 namespace dvsku::toolkit {
 	class gui {
 		protected:
-			enum evp_type : int {
-				any = 0,
-				client = 1,
-				server = 2
-			};
-
 			bool m_disabled = false;
-			bool m_cancel = false;
 
 			bool m_can_drag = false;
 
 			bool m_close_hover	= false;
 			bool m_close_active = false;
 
-			char m_pack_input[FILE_PATH_MAX]		= "";
-			char m_pack_output[FILE_PATH_MAX]		= "";
-			char m_unpack_input[FILE_PATH_MAX]		= "";
-			char m_unpack_output[FILE_PATH_MAX]		= "";
-			char m_encrypt_input[FILE_PATH_MAX]		= "";
-			char m_encrypt_output[FILE_PATH_MAX]	= "";
-			char m_decrypt_input[FILE_PATH_MAX]		= "";
-			char m_decrypt_output[FILE_PATH_MAX]	= "";
-
-			int m_pack_type = evp_type::any;
-			
-			bool m_pack_encrypt		= false;
-			bool m_unpack_decrypt	= false;
-
-			char m_pack_key[129]	= "";
-			char m_unpack_key[129]	= "";
-			char m_encrypt_key[129] = "";
-			char m_decrypt_key[129] = "";
-
-			float m_pack_progress = 0.0f;
-			float m_unpack_progress = 0.0f;
-
-			char m_progress_text[12] = "";
+			dvsku::toolkit::views::tab_pack m_pack;
+			dvsku::toolkit::views::tab_unpack m_unpack;
+			dvsku::toolkit::views::tab_encrypt m_encrypt;
+			dvsku::toolkit::views::tab_decrypt m_decrypt;
 		
 			ImVec2 m_root_win_size;
 
@@ -67,17 +47,9 @@ namespace dvsku::toolkit {
 
 		protected:
 			void build_tabs();
-			void build_tab_pack();
-			void build_tab_unpack();
-			void build_tab_encrypt();
-			void build_tab_decrypt();
 
 			void build_title_bar();
 			void build_content_window();
-
-			void offset_draw(float x, float y);
-
-			void update_progress(float p) {}
 	};
 }
 
