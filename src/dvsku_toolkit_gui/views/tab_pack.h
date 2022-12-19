@@ -13,7 +13,7 @@
 namespace dvsku::toolkit::views {
 	class tab_pack : public tab_base {
 		protected:
-			int m_file_filter = dvsku::evp::file_filter::none;
+			int m_file_filter = FILE_FILTER_NONE;
 
 			bool m_encrypt = false;
 
@@ -78,17 +78,17 @@ namespace dvsku::toolkit::views {
 				Text("Pack type");
 
 				offset_draw(20, 20);
-				RadioButton("any", &m_file_filter, (int)(dvsku::evp::file_filter::none));
+				RadioButton("any", &m_file_filter, (int)(FILE_FILTER_NONE));
 				if (IsItemHovered())
 					SetTooltip("Pack all files from input");
 				SameLine();
 
-				RadioButton("client", &m_file_filter, (int)(dvsku::evp::file_filter::client_only));
+				RadioButton("client", &m_file_filter, (int)(FILE_FILTER_CLIENT));
 				if (IsItemHovered())
 					SetTooltip("Pack only client files");
 				SameLine();
 
-				RadioButton("server", &m_file_filter, (int)(dvsku::evp::file_filter::server_only));
+				RadioButton("server", &m_file_filter, (int)(FILE_FILTER_SERVER));
 				if (IsItemHovered())
 					SetTooltip("Pack only server files");
 
@@ -113,7 +113,7 @@ namespace dvsku::toolkit::views {
 					if (Button("Pack", ImVec2(125, 21))) {
 						m_cancel = false;
 						dvsku::evp::pack_async(m_input, m_output, m_encrypt, m_key,
-							dvsku::evp::file_filter::none, &m_cancel,
+							(dvsku::filesys::utilities::file_filter)m_file_filter, &m_cancel,
 							[this, disabled]() {
 								*disabled = true;
 								m_progress = 0.0f;
