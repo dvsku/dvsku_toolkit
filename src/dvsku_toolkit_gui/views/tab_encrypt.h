@@ -77,7 +77,18 @@ namespace dvsku::toolkit::views {
 
 				offset_draw(20, 15);
 				SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
-				ProgressBar(0, ImVec2(0.0f, 0.0f));
+				
+				if (m_cancel)
+					strcpy(m_progress_text, "Cancelled");
+				else
+					sprintf(m_progress_text, "%.2f%", m_progress);
+				
+				if (*disabled)
+					EndDisabled();
+
+				PushStyleColor(ImGuiCol_PlotHistogram, ARGB2UINT("#FF774F2D"));
+				ProgressBar(m_progress / 100, ImVec2(0.0f, 0.0f), m_progress_text);
+				PopStyleColor();
 
 				offset_draw(MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15);
 				
@@ -124,6 +135,9 @@ namespace dvsku::toolkit::views {
 
 				if (cannot_start)
 					EndDisabled();
+
+				if (*disabled)
+					BeginDisabled();
 
 				PopStyleColor();
 				PopStyleVar();
