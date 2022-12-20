@@ -89,6 +89,11 @@ namespace dvsku::toolkit::views {
 
 				offset_draw(MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15);
 
+				bool cannot_start = m_input.empty() || m_output.empty() || (m_decrypt && m_key.empty());
+
+				if (cannot_start)
+					BeginDisabled();
+
 				if (!(*disabled)) {
 					if (Button("Unpack", ImVec2(125, 21))) {
 						m_cancel = false;
@@ -122,6 +127,9 @@ namespace dvsku::toolkit::views {
 					if (Button("Cancel##Unpack", ImVec2(125, 21)))
 						m_cancel = true;
 				}
+
+				if (cannot_start)
+					EndDisabled();
 
 				if (*disabled)
 					BeginDisabled();

@@ -13,6 +13,7 @@
 namespace dvsku::toolkit::views {
 	class tab_decrypt : public tab_base {
 		protected:
+			bool m_decrypt_to_folder = true;
 
 		public:
 			tab_decrypt() : tab_base() {}
@@ -40,21 +41,28 @@ namespace dvsku::toolkit::views {
 				}
 
 				offset_draw(20, 15);
-				Text("Output");
+				Checkbox("Encrypt to folder", &m_decrypt_to_folder);
+				if (IsItemHovered())
+					SetTooltip("If checked -> decrypts files and saves them to output folder");
 
-				BeginDisabled(true);
+				if (m_decrypt_to_folder) {
+					offset_draw(20, 15);
+					Text("Output");
 
-				SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
-				offset_draw(20, 20);
-				PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-				InputText("", &m_output, ImGuiInputTextFlags_ReadOnly);
-				PopStyleVar();
+					BeginDisabled(true);
 
-				EndDisabled();
+					SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
+					offset_draw(20, 20);
+					PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
+					InputText("", &m_output, ImGuiInputTextFlags_ReadOnly);
+					PopStyleVar();
 
-				SameLine();
-				if (Button("Select##DecryptOutput", ImVec2(125, 21))) {
-					file_dialog::select_folder(m_output);
+					EndDisabled();
+
+					SameLine();
+					if (Button("Select##DecryptOutput", ImVec2(125, 21))) {
+						file_dialog::select_folder(m_output);
+					}
 				}
 
 				offset_draw(20, 15);
@@ -72,6 +80,11 @@ namespace dvsku::toolkit::views {
 
 				offset_draw(MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15);
 				
+				bool cannot_start = m_input.empty() || (m_decrypt_to_folder && m_output.empty()) || m_key.empty();
+
+				if (cannot_start)
+					BeginDisabled();
+
 				if (!(*disabled)) {
 					if (Button("Decrypt", ImVec2(125, 21))) {
 						m_cancel = false;
@@ -108,6 +121,9 @@ namespace dvsku::toolkit::views {
 						m_cancel = true;
 				}
 				
+				if (cannot_start)
+					EndDisabled();
+
 				PopStyleColor();
 				PopStyleVar();
 			}
