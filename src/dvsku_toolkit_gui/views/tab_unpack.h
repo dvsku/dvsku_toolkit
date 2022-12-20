@@ -30,7 +30,7 @@ namespace dvsku::toolkit::views {
 				SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
 				offset_draw(20, 20);
 				PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-				InputText("", m_input, FILE_PATH_MAX, ImGuiInputTextFlags_ReadOnly);
+				InputText("", &m_input, ImGuiInputTextFlags_ReadOnly);
 				PopStyleVar();
 
 				EndDisabled();
@@ -48,7 +48,7 @@ namespace dvsku::toolkit::views {
 				SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
 				offset_draw(20, 20);
 				PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-				InputText("", m_output, FILE_PATH_MAX, ImGuiInputTextFlags_ReadOnly);
+				InputText("", &m_output, ImGuiInputTextFlags_ReadOnly);
 				PopStyleVar();
 
 				EndDisabled();
@@ -68,7 +68,7 @@ namespace dvsku::toolkit::views {
 					offset_draw(20, 20);
 					SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
 					PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-					InputText(" ", m_key, KEY_MAX, ImGuiInputTextFlags_CharsNoBlank);
+					InputText(" ", &m_key, ImGuiInputTextFlags_CharsNoBlank);
 					PopStyleVar();
 				}
 
@@ -101,8 +101,12 @@ namespace dvsku::toolkit::views {
 								m_progress += progress;
 							},
 							[this, disabled](dvsku::evp::evp_status status) {
-								if (status == dvsku::evp::evp_status::ok)
+								if (status == dvsku::evp::evp_status::ok) {
 									m_progress = 100.0f;
+									m_input = "";
+									m_output = "";
+									m_key = "";
+								}
 								else if (status == dvsku::evp::evp_status::cancelled)
 									m_progress = 0.0f;
 

@@ -3,8 +3,11 @@
 #ifndef DVSKU_TOOLKIT_TAB_BASE_H
 #define DVSKU_TOOLKIT_TAB_BASE_H
 
+#include <string>
+
 #include "definitions.h"
 #include "imgui.h"
+#include "misc/cpp/imgui_stdlib.h"
 
 using namespace ImGui;
 
@@ -13,10 +16,10 @@ namespace dvsku::toolkit::views {
 		protected:
 			bool m_cancel = false;
 
-			char m_input[FILE_PATH_MAX]		= "";
-			char m_output[FILE_PATH_MAX]	= "";
+			std::string m_input = "";
+			std::string m_output = "";
 
-			char m_key[KEY_MAX] = "";
+			std::string m_key = "";
 
 			float m_progress = 0.0f;
 			char m_progress_text[12] = "";

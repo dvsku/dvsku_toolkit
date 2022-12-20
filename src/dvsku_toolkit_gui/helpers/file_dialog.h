@@ -98,7 +98,7 @@ namespace dvsku::toolkit {
             };
 
         public:
-            static void open_file(char* selected_path) {
+            static void open_file(std::string& selected_path) {
                 IFileDialog* pfd = NULL;
                 HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pfd));
 
@@ -127,7 +127,8 @@ namespace dvsku::toolkit {
                                 hr = psiResult->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
 
                                 if (SUCCEEDED(hr)) {
-                                    wcstombs(selected_path, pszFilePath, FILE_PATH_MAX);
+                                    selected_path.resize(wcslen(pszFilePath));
+                                    wcstombs(selected_path.data(), pszFilePath, FILE_PATH_MAX);
                                 }
                                 psiResult->Release();
                             }
@@ -139,7 +140,7 @@ namespace dvsku::toolkit {
                 pfd->Release();
             }
 
-            static void save_file(char* selected_path) {
+            static void save_file(std::string& selected_path) {
                 IFileDialog* pfd = NULL;
                 HRESULT hr = CoCreateInstance(CLSID_FileSaveDialog, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pfd));
 
@@ -168,7 +169,8 @@ namespace dvsku::toolkit {
                                 hr = psiResult->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
 
                                 if (SUCCEEDED(hr)) {
-                                    wcstombs(selected_path, pszFilePath, FILE_PATH_MAX);
+                                    selected_path.resize(wcslen(pszFilePath));
+                                    wcstombs(selected_path.data(), pszFilePath, FILE_PATH_MAX);
                                 }
                                 psiResult->Release();
                             }
@@ -180,7 +182,7 @@ namespace dvsku::toolkit {
                 pfd->Release();
             }
 
-            static void select_folder(char* selected_path) {
+            static void select_folder(std::string& selected_path) {
                 IFileDialog* pfd = NULL;
                 HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pfd));
 
@@ -209,7 +211,8 @@ namespace dvsku::toolkit {
                                 hr = psiResult->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
 
                                 if (SUCCEEDED(hr)) {
-                                    wcstombs(selected_path, pszFilePath, FILE_PATH_MAX);
+                                    selected_path.resize(wcslen(pszFilePath));
+                                    wcstombs(selected_path.data(), pszFilePath, FILE_PATH_MAX);
                                 }
                                 psiResult->Release();
                             }

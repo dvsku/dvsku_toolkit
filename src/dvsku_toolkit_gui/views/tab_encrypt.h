@@ -6,6 +6,7 @@
 #include "tab_base.h"
 
 #include "lib/libevp/libevp.h"
+#include "lib/libdvsku_crypt/libdvsku_crypt.h"
 
 #include "helpers/color.h"
 #include "helpers/file_dialog.h"
@@ -29,7 +30,7 @@ namespace dvsku::toolkit::views {
 				SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
 				offset_draw(20, 20);
 				PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-				InputText("", m_input, FILE_PATH_MAX, ImGuiInputTextFlags_ReadOnly);
+				InputText("", &m_input, ImGuiInputTextFlags_ReadOnly);
 				PopStyleVar();
 
 				EndDisabled();
@@ -47,7 +48,7 @@ namespace dvsku::toolkit::views {
 				SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
 				offset_draw(20, 20);
 				PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-				InputText("", m_output, FILE_PATH_MAX, ImGuiInputTextFlags_ReadOnly);
+				InputText("", &m_output, ImGuiInputTextFlags_ReadOnly);
 				PopStyleVar();
 
 				EndDisabled();
@@ -63,7 +64,7 @@ namespace dvsku::toolkit::views {
 				offset_draw(20, 20);
 				SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
 				PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-				InputText(" ", m_key, KEY_MAX, ImGuiInputTextFlags_CharsNoBlank);
+				InputText(" ", &m_key, ImGuiInputTextFlags_CharsNoBlank);
 				PopStyleVar();
 
 				offset_draw(20, 15);
@@ -71,7 +72,42 @@ namespace dvsku::toolkit::views {
 				ProgressBar(0, ImVec2(0.0f, 0.0f));
 
 				offset_draw(MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15);
-				Button("Encrypt", ImVec2(125, 21));
+				
+				if (!(*disabled)) {
+					if (Button("Encrypt", ImVec2(125, 21))) {
+						m_cancel = false;
+						dvsku::crypt::libdvsku_crypt crypt(m_key.c_str());
+						
+						crypt.encrypt_folder_async(m_input, m_output, FILE_FILTER_NONE, &m_cancel,
+							[this, disabled]() {
+								*disabled = true;
+								m_progress = 0.0f;
+							},
+							[this](float progress) {
+								m_progress += progress;
+							},
+							[this, disabled](crypt_result result) {
+								if (result == CRYPT_OK) {
+									m_progress = 100.0f;
+									m_input = "";
+									m_output = "";
+									m_key = "";
+								}
+								else if (result == CRYPT_CANCELLED)
+									m_progress = 0.0f;
+
+								*disabled = false;
+							},
+							[this, disabled](crypt_result result) {
+								*disabled = false;
+							}
+						);
+					}
+				}
+				else {
+					if (Button("Cancel##Encrypt", ImVec2(125, 21)))
+						m_cancel = true;
+				}			
 
 				PopStyleColor();
 				PopStyleVar();

@@ -162,13 +162,13 @@ namespace dvsku::crypt {
 			// saves every decompressed and decrypted file to the output folder with the same folder structure.
 			// Encryption and compression will be auto detected.
 			// If output is empty, result will be saved to input.
-			crypt_result decrypt_and_compress_folder(FOLDER_PATH_REF_C input, FOLDER_PATH_REF_C output = "");
+			crypt_result decrypt_and_decompress_folder(FOLDER_PATH_REF_C input, FOLDER_PATH_REF_C output = "");
 
 			// Preforms decryption then decompression asynchronously on every file inside folder and subfolders and
 			// saves every decompressed and decrypted file to the output folder with the same folder structure.
 			// Encryption and compression will be auto detected.
 			// If output is empty, result will be saved to input.
-			void decrypt_and_compress_folder_async(FOLDER_PATH_REF_C input, FOLDER_PATH_REF_C output = "",
+			void decrypt_and_decompress_folder_async(FOLDER_PATH_REF_C input, FOLDER_PATH_REF_C output = "",
 				bool* cancel = nullptr, notify_start started = nullptr, notify_update update = nullptr,
 				notify_finish finished = nullptr, notify_error error = nullptr);
 
