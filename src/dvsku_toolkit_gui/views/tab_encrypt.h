@@ -16,6 +16,8 @@ namespace dvsku::toolkit::views {
 		protected:
 			bool m_encrypt_to_folder = true;
 
+			dvsku::crypt::libdvsku_crypt m_crypt;
+
 		public:
 			tab_encrypt() : tab_base() {}
 
@@ -100,9 +102,9 @@ namespace dvsku::toolkit::views {
 				if (!(*disabled)) {
 					if (Button("Encrypt", ImVec2(125, 21))) {
 						m_cancel = false;
-						dvsku::crypt::libdvsku_crypt crypt(m_key.c_str());
 						
-						crypt.encrypt_folder_async(m_input, m_output, FILE_FILTER_NONE, &m_cancel,
+						m_crypt.set_key(m_key.c_str());
+						m_crypt.encrypt_folder_async(m_input, m_output, FILE_FILTER_NONE, &m_cancel,
 							[this, disabled]() {
 								*disabled = true;
 								m_progress = 0.0f;

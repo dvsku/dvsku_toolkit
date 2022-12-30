@@ -15,6 +15,8 @@ namespace dvsku::toolkit::views {
 		protected:
 			bool m_decrypt_to_folder = true;
 
+			dvsku::crypt::libdvsku_crypt m_crypt;
+
 		public:
 			tab_decrypt() : tab_base() {}
 
@@ -41,7 +43,7 @@ namespace dvsku::toolkit::views {
 				}
 
 				offset_draw(20, 15);
-				Checkbox("Encrypt to folder", &m_decrypt_to_folder);
+				Checkbox("Decrypt to folder", &m_decrypt_to_folder);
 				if (IsItemHovered())
 					SetTooltip("If checked -> decrypts files and saves them to output folder");
 
@@ -99,9 +101,9 @@ namespace dvsku::toolkit::views {
 				if (!(*disabled)) {
 					if (Button("Decrypt", ImVec2(125, 21))) {
 						m_cancel = false;
-						dvsku::crypt::libdvsku_crypt crypt(m_key.c_str());
-
-						crypt.decrypt_and_decompress_folder_async(m_input, m_output, &m_cancel,
+						
+						m_crypt.set_key(m_key.c_str());
+						m_crypt.decrypt_and_decompress_folder_async(m_input, m_output, &m_cancel,
 							[this, disabled]() {
 								*disabled = true;
 								m_progress = 0.0f;
