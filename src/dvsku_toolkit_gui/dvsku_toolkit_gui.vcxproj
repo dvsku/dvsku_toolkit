@@ -167,11 +167,18 @@
     <ClInclude Include="lib\imgui\imgui.h" />
     <ClInclude Include="lib\imgui\imgui_internal.h" />
     <ClInclude Include="lib\imgui\misc\cpp\imgui_stdlib.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="views\tab_base.h" />
     <ClInclude Include="views\tab_decrypt.h" />
     <ClInclude Include="views\tab_encrypt.h" />
     <ClInclude Include="views\tab_pack.h" />
     <ClInclude Include="views\tab_unpack.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="dvsku_toolkit_gui.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="appicon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -37,6 +37,8 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
     if (window == NULL)
         return 1;
     
+    SetClassLongPtr(glfwGetWin32Window(window), GCLP_HICON, (LONG_PTR)LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(101)));
+
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1); // Enable vsync
 
