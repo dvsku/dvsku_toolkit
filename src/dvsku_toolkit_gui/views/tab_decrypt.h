@@ -103,7 +103,7 @@ namespace dvsku::toolkit::views {
 						m_cancel = false;
 						
 						m_crypt.set_key(m_key.c_str());
-						m_crypt.decrypt_and_decompress_folder_async(m_input, m_output, &m_cancel,
+						m_crypt.decrypt_folder_async(m_input, m_output, &m_cancel,
 							[this, disabled]() {
 								*disabled = true;
 								m_progress = 0.0f;

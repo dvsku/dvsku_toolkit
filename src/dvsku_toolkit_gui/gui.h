@@ -16,7 +16,7 @@
 #include "views/tab_decrypt.h"
 
 #pragma comment(lib, "lib/libevp/libevp.lib")
-#pragma comment(lib, "lib/libdvsku_crypt/libdvsku_crypt.lib")
+#pragma comment(lib, "lib/libdvsku_crypt/libdvsku_crypt_md.lib")
 
 using namespace ImGui;
 
