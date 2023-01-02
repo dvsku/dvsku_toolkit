@@ -18,7 +18,7 @@ namespace dvsku::toolkit::views {
 			dvsku::crypt::libdvsku_crypt m_crypt;
 
 		public:
-			tab_decrypt() : tab_base() {}
+			tab_decrypt() : tab_base(), m_crypt("") {}
 
 			void build(bool* disabled) override {
 				PushStyleColor(ImGuiCol_FrameBg, ARGB2UINT("#FF383838"));
@@ -82,7 +82,7 @@ namespace dvsku::toolkit::views {
 				if (m_cancel)
 					strcpy(m_progress_text, "Cancelled");
 				else
-					sprintf(m_progress_text, "%.2f%", m_progress);
+					sprintf(m_progress_text, "%.2f%c", m_progress, '%');
 
 				if (*disabled)
 					EndDisabled();

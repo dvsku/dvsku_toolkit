@@ -4,8 +4,8 @@
 #define DVSKU_TOOLKIT_CORE_H
 
 #include "imgui.h"
-#include <GLFW/glfw3.h>
 #include <windows.h>
+#include <GLFW/glfw3.h>
 
 #include "definitions.h"
 #include "lib/libevp/libevp.h"

@@ -14,7 +14,7 @@ void dvsku::toolkit::gui::handle_window_move() {
 	tagPOINT point;
 	GetCursorPos(&point);
 
-	glfwSetWindowPos(m_window, point.x - m_io.MouseClickedPos->x, point.y - m_io.MouseClickedPos->y);
+	glfwSetWindowPos(m_window, point.x - (int)m_io.MouseClickedPos->x, point.y - (int)m_io.MouseClickedPos->y);
 }
 
 void dvsku::toolkit::gui::build_gui() {

@@ -98,7 +98,7 @@ namespace dvsku::toolkit::views {
 				if (m_cancel)
 					strcpy(m_progress_text, "Cancelled");
 				else
-					sprintf(m_progress_text, "%.2f%", m_progress);
+					sprintf(m_progress_text, "%.2f%c", m_progress, '%');
 
 				if (*disabled)
 					EndDisabled();
