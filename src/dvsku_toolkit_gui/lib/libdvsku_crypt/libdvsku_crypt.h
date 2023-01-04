@@ -47,19 +47,17 @@ typedef uint32_t crypt_result;
 namespace dvsku::crypt {
 	class libdvsku_crypt {
 		protected:
-			
-
-			std::string m_key;
-
-			libdvsku_crypt();
-
-		public:
 			struct box {
 				uint32_t m_index_A = 0;
 				uint32_t m_index_B = 0;
 				uint8_t m_data[256] = {};
 			};
 
+			std::string m_key;
+
+			libdvsku_crypt();
+
+		public:
 			// void f()
 			typedef std::function<void()> notify_start;
 
@@ -81,12 +79,6 @@ namespace dvsku::crypt {
 
 			// Check if file is encrypted by checking magic
 			bool is_file_encrypted(FILE_PATH_REF_C file);
-
-			// Write magic to file
-			void write_magic_file(FILE_PATH_REF_C file);
-
-			// Remove magic from file
-			void remove_magic_file(FILE_PATH_REF_C file);
 
 			// Preforms encryption on the input file and saves the encrypted data to
 			// the output file.
@@ -160,8 +152,9 @@ namespace dvsku::crypt {
 			// Preforms decryption on the buffer. Buffer data is replaced with decrypted data
 			// if decryption was successful.
 			// Use when you know for sure that data is encrypted and DOESN'T contain magic!
-			// Useful when reading file block by block for example.
-			crypt_result decrpyt_buffer_unsafe(BUF8 buffer, uint64_t size);
+			// Use when a large buffer is split into multiple smaller. Skip value is the offset
+			// from the start of the first buffer.
+			crypt_result decrpyt_split_buffer(BUF8 buffer, uint64_t size, uint64_t skip);
 
 		protected:
 			dvsku::crypt::libdvsku_crypt::box generate_box();
@@ -172,7 +165,7 @@ namespace dvsku::crypt {
 
 			// Preforms encryption/decryption on the buffer. Buffer data is replaced with encrypted data
 			// if encryption was successful.
-			crypt_result crypt(BUF8 buffer, uint64_t size);
+			crypt_result crypt(BUF8 buffer, uint64_t size, uint64_t skip);
 
 			// Check if buffer has magic
 			bool has_magic(BUFV8_REF_C buffer);
@@ -180,16 +173,16 @@ namespace dvsku::crypt {
 			// Check if buffer has magic
 			bool has_magic(BUF8 buffer, uint64_t size);
 
-			// Writes magic to buffer. Buffer size is modified to fit the magic.
+			// Writes magic to buffer beginning. Buffer size is modified to fit the magic.
 			void write_magic(BUFV8_REF buffer);
 
-			// Writes magic to buffer. Buffer must have space available for it or it will overwrite existing data.
+			// Writes magic to buffer beginning. Buffer must have space available for it or it will overwrite existing data.
 			void write_magic(BUF8 buffer, uint64_t size);
 
-			// Removes magic from buffer. Buffer size is modified when magic is removed.
+			// Removes magic from buffer beginning. Buffer size is modified when magic is removed.
 			void remove_magic(BUFV8_REF buffer);
 
-			// Removes magic from buffer. Magic data is set to zeroes.
+			// Removes magic from buffer beginning. Data is shifted left by 4 bytes. End of buffer contains zeroes.
 			// User must handle the new size (smaller by 4 bytes).
 			void remove_magic(BUF8 buffer, uint64_t size);
 	};
