@@ -3,26 +3,26 @@
 #ifndef DVSKU_TOOLKIT_CORE_H
 #define DVSKU_TOOLKIT_CORE_H
 
-#include "imgui.h"
 #include <windows.h>
-#include <GLFW/glfw3.h>
 
-#include "definitions.h"
-#include "lib/libevp/libevp.h"
+#define GLFW_EXPOSE_NATIVE_WIN32
+
+#include "imgui.h"
+#include "glfw/glfw3.h"
 
 #include "views/tab_pack.h"
 #include "views/tab_unpack.h"
 #include "views/tab_encrypt.h"
 #include "views/tab_decrypt.h"
 
-#pragma comment(lib, "lib/libevp/libevp.lib")
-#pragma comment(lib, "lib/libdvsku_crypt/libdvsku_crypt_md.lib")
-
 using namespace ImGui;
 
 namespace dvsku::toolkit {
 	class gui {
 		protected:
+			GLFWwindow* m_window = nullptr;
+			bool m_initialized = false;
+
 			bool m_disabled = false;
 
 			bool m_can_drag = false;
@@ -35,21 +35,64 @@ namespace dvsku::toolkit {
 			dvsku::toolkit::views::tab_encrypt m_encrypt;
 			dvsku::toolkit::views::tab_decrypt m_decrypt;
 		
-			ImVec2 m_root_win_size;
+		private:
+			gui();
+			~gui();
 
-			ImGuiIO& m_io;
-			GLFWwindow* m_window;
+			gui(gui const&) = delete;
+			void operator=(gui const&) = delete;
+
 		public:
-			gui(ImGuiIO& io, GLFWwindow* window);
+			static gui& instance() {
+				static gui instance;
+				return instance;
+			}
 
-			void build_gui();
-			void handle_window_move();
+			void start(uint32_t width, uint32_t height);
 
 		protected:
-			void build_tabs();
+
+			///////////////////////////////////////////////////////////////////
+			// GETTERS/SETTERS
+			///////////////////////////////////////////////////////////////////
+
+			ImGuiIO& get_io();
+
+			///////////////////////////////////////////////////////////////////
+			// SETUP/CLEANUP
+			///////////////////////////////////////////////////////////////////
+
+			void setup_glfw();
+			void setup_imgui();
+
+			void cleanup_glfw();
+			void cleanup_imgui();
+
+			///////////////////////////////////////////////////////////////////
+			// MAIN LOOP
+			///////////////////////////////////////////////////////////////////
+
+			void run();
+
+			void create_new_frame();
+			void render_new_frame();
+
+			///////////////////////////////////////////////////////////////////
+			// GUI
+			///////////////////////////////////////////////////////////////////
+
+			void build_gui();
 
 			void build_title_bar();
 			void build_content_window();
+
+			void build_tabs();
+
+			///////////////////////////////////////////////////////////////////
+			// HANDLERS
+			///////////////////////////////////////////////////////////////////
+
+			void handle_window_move();
 	};
 }
 

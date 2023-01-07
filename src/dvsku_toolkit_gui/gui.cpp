@@ -1,21 +1,149 @@
 #include "gui.h"
 
+#include <shobjidl.h>
+
+#include "definitions.h"
+
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl2.h"
+
+#include "glfw/glfw3native.h"
+
 #include "helpers/color.h"
 #include "helpers/file_dialog.h"
 
-dvsku::toolkit::gui::gui(ImGuiIO& io, GLFWwindow* window) : m_io(io), m_window(window) {
-	m_root_win_size = ImVec2(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+#include "lib/libevp/libevp.h"
+
+#pragma comment(lib, "lib/libevp/libevp.lib")
+#pragma comment(lib, "lib/libdvsku_crypt/libdvsku_crypt_md.lib")
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
+	#pragma comment(lib, "legacy_stdio_definitions")
+#endif
+
+///////////////////////////////////////////////////////////////////////////////
+// CONSTRUCTOR/DESTRUCTOR/GETTERS/SETTERS
+///////////////////////////////////////////////////////////////////////////////
+
+dvsku::toolkit::gui::gui() {}
+
+dvsku::toolkit::gui::~gui() {
+	cleanup_imgui();
+	cleanup_glfw();
 }
 
-void dvsku::toolkit::gui::handle_window_move() {
-	if (!m_can_drag) return;
-	if (!m_io.MouseDown[0]) return;
-	
-	tagPOINT point;
-	GetCursorPos(&point);
-
-	glfwSetWindowPos(m_window, point.x - (int)m_io.MouseClickedPos->x, point.y - (int)m_io.MouseClickedPos->y);
+ImGuiIO& dvsku::toolkit::gui::get_io() {
+	return ImGui::GetIO();
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// SETUP/CLEANUP
+///////////////////////////////////////////////////////////////////////////////
+
+void dvsku::toolkit::gui::start(uint32_t width, uint32_t height) {
+	if (m_initialized) return;
+
+	setup_glfw();
+	setup_imgui();
+
+	m_initialized = true;
+
+	run();
+}
+
+void dvsku::toolkit::gui::setup_glfw() {
+	// setup glfw
+	glfwSetErrorCallback(NULL);
+
+	if (!glfwInit()) return;
+
+	// setup window
+	glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);		// remove title bar
+	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);		// window cannot be resized
+
+	// create window
+	m_window = glfwCreateWindow(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT, "dvsku toolkit", NULL, NULL);
+
+	if (m_window == NULL) return;
+
+	// set taskbar icon
+	SetClassLongPtr(glfwGetWin32Window(m_window), GCLP_HICON, (LONG_PTR)LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(101)));
+
+	glfwMakeContextCurrent(m_window);
+	glfwSwapInterval(1);				// enable vsync
+
+	// set window size and position
+	glfwSetWindowMonitor(m_window, NULL, (GetSystemMetrics(SM_CXSCREEN) / 2) - (MAIN_WINDOW_WIDTH / 2),
+		(GetSystemMetrics(SM_CYSCREEN) / 2) - (MAIN_WINDOW_HEIGHT / 2), MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT, GLFW_DONT_CARE);
+}
+
+void dvsku::toolkit::gui::setup_imgui() {
+	// setup imgui
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.IniFilename = NULL;
+
+	// set theme to dark
+	ImGui::StyleColorsDark();
+
+	// set rendering to glfw
+	ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+	ImGui_ImplOpenGL2_Init();
+}
+
+void dvsku::toolkit::gui::cleanup_glfw() {
+	glfwDestroyWindow(m_window);
+	glfwTerminate();
+}
+
+void dvsku::toolkit::gui::cleanup_imgui() {
+	ImGui_ImplOpenGL2_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// MAIN LOOP
+///////////////////////////////////////////////////////////////////////////////
+
+void dvsku::toolkit::gui::run() {
+	while (!glfwWindowShouldClose(m_window)) {
+		create_new_frame();
+		build_gui();
+		render_new_frame();
+	}
+}
+
+void dvsku::toolkit::gui::create_new_frame() {
+	glfwPollEvents();
+
+	handle_window_move();
+
+	ImGui_ImplOpenGL2_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+}
+
+void dvsku::toolkit::gui::render_new_frame() {
+	ImGui::Render();
+
+	int display_w, display_h;
+	glfwGetFramebufferSize(m_window, &display_w, &display_h);
+	glViewport(0, 0, display_w, display_h);
+
+	glClearColor(0.45f * 1.00f, 0.55f * 1.00f, 0.60f * 1.00f, 1.00f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+
+	glfwMakeContextCurrent(m_window);
+	glfwSwapBuffers(m_window);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// GUI
+///////////////////////////////////////////////////////////////////////////////
 
 void dvsku::toolkit::gui::build_gui() {
 	build_title_bar();
@@ -24,7 +152,7 @@ void dvsku::toolkit::gui::build_gui() {
 
 void dvsku::toolkit::gui::build_tabs() {
 	PushStyleVar(ImGuiStyleVar_TabRounding, 0.0f);
-	
+
 	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 5));
 	ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
 	if (BeginTabBar("Tabs", tab_bar_flags)) {
@@ -85,8 +213,8 @@ void dvsku::toolkit::gui::build_title_bar() {
 	SetNextWindowSize(ImVec2(MAIN_WINDOW_WIDTH, 25));
 
 	PushStyleColor(ImGuiCol_WindowBg, ARGB2UINT("#FF1A1A1A"));
-	PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0,0));
-	
+	PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+
 	Begin("TitleBar", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBringToFrontOnFocus);
 	m_can_drag = IsWindowHovered();
 
@@ -96,14 +224,14 @@ void dvsku::toolkit::gui::build_title_bar() {
 	SetCursorPosY((25 - text_size.y) * 0.5f);
 
 	Text("dvsku toolkit");
-	
+
 	PushStyleColor(ImGuiCol_Button, ARGB2UINT("#00FFFFFF"));
 	PushStyleColor(ImGuiCol_ButtonHovered, ARGB2UINT("#00FFFFFF"));
 	PushStyleColor(ImGuiCol_ButtonActive, ARGB2UINT("#00FFFFFF"));
 
 	if (!m_close_hover && !m_close_active)
 		PushStyleColor(ImGuiCol_Text, ARGB2UINT("#88FFFFFF"));
-	else 
+	else
 		PushStyleColor(ImGuiCol_Text, ARGB2UINT("#FFFFFFFF"));
 
 	SetCursorPosX(MAIN_WINDOW_WIDTH - 25);
@@ -145,4 +273,21 @@ void dvsku::toolkit::gui::build_content_window() {
 	End();
 
 	PopStyleColor();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// HANDLERS
+///////////////////////////////////////////////////////////////////////////////
+
+void dvsku::toolkit::gui::handle_window_move() {
+	if (!m_can_drag) return;
+
+	ImGuiIO& io = get_io();
+
+	if (!io.MouseDown[0]) return;
+	
+	tagPOINT point;
+	GetCursorPos(&point);
+
+	glfwSetWindowPos(m_window, point.x - (int)io.MouseClickedPos->x, point.y - (int)io.MouseClickedPos->y);
 }
