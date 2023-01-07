@@ -8,8 +8,10 @@
 #include "lib/libevp/libevp.h"
 #include "lib/libdvsku_crypt/libdvsku_crypt.h"
 
-#include "helpers/color.h"
-#include "helpers/file_dialog.h"
+#include "utilities/utilities_color.h"
+#include "utilities/utilities_file_dialog.h"
+
+using namespace dvsku::toolkit::utilities;
 
 namespace dvsku::toolkit::views {
 	class tab_encrypt : public tab_base {

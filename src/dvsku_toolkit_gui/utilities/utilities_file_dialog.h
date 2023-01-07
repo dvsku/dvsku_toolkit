@@ -1,26 +1,20 @@
 #pragma once
 
-#ifndef DVSKU_TOOLKIT_HELPERS_FILESYSTEM_H
-#define DVSKU_TOOLKIT_HELPERS_FILESYSTEM_H
+#ifndef DVSKU_TOOLKIT_UTILITIES_FILESYSTEM_H
+#define DVSKU_TOOLKIT_UTILITIES_FILESYSTEM_H
 
 #define STRICT_TYPED_ITEMIDS
 #include <shlobj.h>
-#include <objbase.h>
-#include <shobjidl.h>
 #include <shlwapi.h>
-#include <knownfolders.h>
-#include <propvarutil.h>
-#include <propkey.h>
-#include <propidl.h>
-#include <strsafe.h>
-#include <shtypes.h>
-#include <new>
+#include <string>
+
+#include "definitions.h"
 
 #pragma comment(lib,"comctl32.lib") 
 #pragma comment(lib,"propsys.lib")
 #pragma comment(lib,"shlwapi.lib") 
 
-namespace dvsku::toolkit {
+namespace dvsku::toolkit::utilities {
     class file_dialog {
         private:
             static constexpr COMDLG_FILTERSPEC c_rgTypes[] = {

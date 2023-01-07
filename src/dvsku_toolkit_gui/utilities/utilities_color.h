@@ -1,13 +1,13 @@
 #pragma once
 
-#ifndef DVSKU_TOOLKIT_HELPERS_COLOR_H
-#define DVSKU_TOOLKIT_HELPERS_COLOR_H
+#ifndef DVSKU_TOOLKIT_UTILITIES_COLOR_H
+#define DVSKU_TOOLKIT_UTILITIES_COLOR_H
 
 #include <string>
 
 #define ARGB2UINT(argb) color_argb_to_uint(argb)
 
-namespace dvsku::toolkit {
+namespace dvsku::toolkit::utilities {
 	static unsigned int color_argb_to_uint(const std::string& argb) {
 		if (argb.size() != 9) return 0;
 		

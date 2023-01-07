@@ -10,8 +10,8 @@
 
 #include "glfw/glfw3native.h"
 
-#include "helpers/color.h"
-#include "helpers/file_dialog.h"
+#include "utilities/utilities_color.h"
+#include "utilities/utilities_file_dialog.h"
 
 #include "lib/libevp/libevp.h"
 

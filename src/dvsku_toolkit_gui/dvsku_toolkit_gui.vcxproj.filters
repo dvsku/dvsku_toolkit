@@ -71,10 +71,10 @@
     <ClInclude Include="definitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="helpers\color.h">
+    <ClInclude Include="utilities\utilities_color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="helpers\file_dialog.h">
+    <ClInclude Include="utilities\utilities_file_dialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="views\tab_pack.h">

@@ -74,8 +74,8 @@
   <ItemGroup>
     <ClInclude Include="definitions.h" />
     <ClInclude Include="gui.h" />
-    <ClInclude Include="helpers\color.h" />
-    <ClInclude Include="helpers\file_dialog.h" />
+    <ClInclude Include="utilities\utilities_color.h" />
+    <ClInclude Include="utilities\utilities_file_dialog.h" />
     <ClInclude Include="lib\imgui\backends\imgui_impl_glfw.h" />
     <ClInclude Include="lib\imgui\backends\imgui_impl_opengl2.h" />
     <ClInclude Include="lib\imgui\imconfig.h" />
