@@ -92,17 +92,17 @@
     <ClInclude Include="views\tab_base.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="resources\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="dvsku_toolkit_gui.rc">
+    <ResourceCompile Include="resources\dvsku_toolkit_gui.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="appicon.ico">
+    <Image Include="resources\appicon.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
