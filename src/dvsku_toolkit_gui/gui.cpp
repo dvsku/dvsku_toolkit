@@ -1,6 +1,7 @@
 #include "gui.h"
 
 #include <shobjidl.h>
+#include <versionhelpers.h>
 
 #include "definitions.h"
 
@@ -30,6 +31,7 @@ dvsku::toolkit::gui::gui() {}
 dvsku::toolkit::gui::~gui() {
 	cleanup_imgui();
 	cleanup_glfw();
+	cleanup_taskbar();
 }
 
 ImGuiIO& dvsku::toolkit::gui::get_io() {
@@ -45,6 +47,7 @@ void dvsku::toolkit::gui::start(uint32_t width, uint32_t height) {
 
 	setup_glfw();
 	setup_imgui();
+	setup_taskbar();
 
 	m_initialized = true;
 
@@ -92,6 +95,25 @@ void dvsku::toolkit::gui::setup_imgui() {
 	ImGui_ImplOpenGL2_Init();
 }
 
+void dvsku::toolkit::gui::setup_taskbar() {
+	if (!IsWindows7OrGreater()) return;
+
+	HRESULT result = CoInitialize(NULL);
+
+	if ((result != S_OK) && (result != S_FALSE)) return;
+
+	ITaskbarList3* temp = NULL;
+	result = CoCreateInstance(CLSID_TaskbarList, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&temp));
+
+	if (!SUCCEEDED(result)) return;
+
+	result = temp->HrInit();
+
+	if (!SUCCEEDED(result)) return;
+
+	m_taskbar = temp;
+}
+
 void dvsku::toolkit::gui::cleanup_glfw() {
 	glfwDestroyWindow(m_window);
 	glfwTerminate();
@@ -101,6 +123,13 @@ void dvsku::toolkit::gui::cleanup_imgui() {
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
+}
+
+void dvsku::toolkit::gui::cleanup_taskbar() {
+	if (m_taskbar == nullptr) return;
+	
+	m_taskbar->Release();
+	m_taskbar = nullptr;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -290,4 +319,28 @@ void dvsku::toolkit::gui::handle_window_move() {
 	GetCursorPos(&point);
 
 	glfwSetWindowPos(m_window, point.x - (int)io.MouseClickedPos->x, point.y - (int)io.MouseClickedPos->y);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// TASKBAR
+///////////////////////////////////////////////////////////////////////////////
+
+void dvsku::toolkit::gui::set_taskbar_status(TBPFLAG flags) {
+	if (m_window == nullptr) return;
+
+	HWND handle = glfwGetWin32Window(m_window);
+
+	if (handle == NULL) return;
+
+	m_taskbar->SetProgressState(handle, flags);
+}
+
+void dvsku::toolkit::gui::set_taskbar_progress(float value) {
+	if (m_window == nullptr) return;
+
+	HWND handle = glfwGetWin32Window(m_window);
+
+	if (handle == NULL) return;
+
+	m_taskbar->SetProgressValue(handle, (ULONGLONG)value, 100);
 }

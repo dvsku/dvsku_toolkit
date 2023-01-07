@@ -23,6 +23,8 @@ namespace dvsku::toolkit {
 			GLFWwindow* m_window = nullptr;
 			bool m_initialized = false;
 
+			ITaskbarList3* m_taskbar = nullptr;
+
 			bool m_disabled = false;
 
 			bool m_can_drag = false;
@@ -64,9 +66,11 @@ namespace dvsku::toolkit {
 
 			void setup_glfw();
 			void setup_imgui();
+			void setup_taskbar();
 
 			void cleanup_glfw();
 			void cleanup_imgui();
+			void cleanup_taskbar();
 
 			///////////////////////////////////////////////////////////////////
 			// MAIN LOOP
@@ -93,6 +97,13 @@ namespace dvsku::toolkit {
 			///////////////////////////////////////////////////////////////////
 
 			void handle_window_move();
+			
+			///////////////////////////////////////////////////////////////////
+			// TASKBAR
+			///////////////////////////////////////////////////////////////////
+
+			void set_taskbar_status(TBPFLAG flags);
+			void set_taskbar_progress(float value);
 	};
 }
 
