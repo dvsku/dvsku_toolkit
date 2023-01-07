@@ -19,6 +19,8 @@ void dvsku::toolkit::views::tab_base::offset_draw(float x, float y) {
 
 void dvsku::toolkit::views::tab_base::handle_on_start() {
 	GUI.set_disabled(true);
+	GUI.set_taskbar_status(TBPF_NORMAL);
+	GUI.set_taskbar_progress(0.0f);
 	m_progress = 0.0f;
 }
 
@@ -33,6 +35,8 @@ void dvsku::toolkit::views::tab_base::handle_on_finish_evp(dvsku::evp::evp_statu
 		m_progress = 0.0f;
 
 	GUI.set_disabled(false);
+	GUI.set_taskbar_status(TBPF_NOPROGRESS);
+	GUI.set_taskbar_progress(0.0f);
 }
 
 void dvsku::toolkit::views::tab_base::handle_on_finish_crypt(crypt_result result) {
@@ -45,17 +49,22 @@ void dvsku::toolkit::views::tab_base::handle_on_finish_crypt(crypt_result result
 	else if (result == CRYPT_CANCELLED)
 		m_progress = 0.0f;
 
-	GUI.set_disabled(false);
+	GUI.set_disabled(false); 
+	GUI.set_taskbar_status(TBPF_NOPROGRESS);
+	GUI.set_taskbar_progress(0.0f);
 }
 
 void dvsku::toolkit::views::tab_base::handle_on_update(float progress) {
 	m_progress += progress;
+	GUI.set_taskbar_progress(m_progress);
 }
 
 void dvsku::toolkit::views::tab_base::handle_on_error_evp(dvsku::evp::evp_result status) {
 	GUI.set_disabled(false);
+	GUI.set_taskbar_status(TBPF_ERROR);
 }
 
 void dvsku::toolkit::views::tab_base::handle_on_error_crypt(crypt_result result) {
 	GUI.set_disabled(false);
+	GUI.set_taskbar_status(TBPF_ERROR);
 }
