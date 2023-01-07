@@ -97,29 +97,11 @@ void dvsku::toolkit::views::tab_decrypt::build() {
 
 			m_crypt.set_key(m_key.c_str());
 			m_crypt.decrypt_folder_async(m_input, m_output, &m_cancel,
-				[this]() {
-					GUI.set_disabled(true);
-					m_progress = 0.0f;
-				},
-				[this](float progress) {
-					m_progress += progress;
-				},
-					[this](crypt_result result) {
-					if (result == CRYPT_OK) {
-						m_progress = 100.0f;
-						m_input = "";
-						m_output = "";
-						m_key = "";
-					}
-					else if (result == CRYPT_CANCELLED)
-						m_progress = 0.0f;
-
-					GUI.set_disabled(false);
-				},
-					[this](crypt_result result) {
-					GUI.set_disabled(false);
-				}
-				);
+				std::bind(&tab_base::handle_on_start, this),
+				std::bind(&tab_base::handle_on_update, this, std::placeholders::_1),
+				std::bind(&tab_base::handle_on_finish_crypt, this, std::placeholders::_1),
+				std::bind(&tab_base::handle_on_error_crypt, this, std::placeholders::_1)
+			);
 		}
 	}
 	else {

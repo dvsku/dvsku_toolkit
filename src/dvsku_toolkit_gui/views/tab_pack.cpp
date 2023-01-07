@@ -112,29 +112,11 @@ void dvsku::toolkit::views::tab_pack::build() {
 			m_cancel = false;
 			dvsku::evp::pack_async(m_input, m_output, m_encrypt, m_key,
 				(dvsku::filesys::utilities::file_filter)m_file_filter, &m_cancel,
-				[this]() {
-					GUI.set_disabled(true);
-					m_progress = 0.0f;
-				},
-				[this](float progress) {
-					m_progress += progress;
-				},
-					[this](dvsku::evp::evp_status status) {
-					if (status == dvsku::evp::evp_status::ok) {
-						m_progress = 100.0f;
-						m_input = "";
-						m_output = "";
-						m_key = "";
-					}
-					else if (status == dvsku::evp::evp_status::cancelled)
-						m_progress = 0.0f;
-
-					GUI.set_disabled(false);
-				},
-					[this](dvsku::evp::evp_result result) {
-					GUI.set_disabled(false);
-				}
-				);
+				std::bind(&tab_base::handle_on_start, this),
+				std::bind(&tab_base::handle_on_update, this, std::placeholders::_1),
+				std::bind(&tab_base::handle_on_finish_evp, this, std::placeholders::_1),
+				std::bind(&tab_base::handle_on_error_evp, this, std::placeholders::_1)
+			);
 		}
 	}
 	else {

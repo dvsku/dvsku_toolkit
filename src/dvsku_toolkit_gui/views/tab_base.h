@@ -5,6 +5,9 @@
 
 #include <string>
 
+#include "lib/libevp/libevp.h"
+#include "lib/libdvsku_crypt/libdvsku_crypt.h"
+
 namespace dvsku::toolkit::views {
 	class tab_base {
 		protected:
@@ -21,8 +24,23 @@ namespace dvsku::toolkit::views {
 		public:
 			virtual void build() = 0;
 
+			///////////////////////////////////////////////////////////////////
+			// HANDLERS
+			///////////////////////////////////////////////////////////////////
+
+			void handle_on_start();
+
+			void handle_on_finish_evp(dvsku::evp::evp_status status);
+			void handle_on_finish_crypt(crypt_result result);
+
+			void handle_on_update(float progress);
+
+			void handle_on_error_evp(dvsku::evp::evp_result status);
+			void handle_on_error_crypt(crypt_result result);
+
 		protected:
 			void offset_draw(float x, float y);
+
 	};
 }
 
