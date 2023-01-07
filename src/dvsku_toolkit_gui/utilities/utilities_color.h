@@ -5,7 +5,7 @@
 
 #include <string>
 
-#define ARGB2UINT(argb) color_argb_to_uint(argb)
+#define ARGB2UINT(argb) dvsku::toolkit::utilities::color_argb_to_uint(argb)
 
 namespace dvsku::toolkit::utilities {
 	static unsigned int color_argb_to_uint(const std::string& argb) {

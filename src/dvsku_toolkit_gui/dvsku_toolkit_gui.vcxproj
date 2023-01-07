@@ -70,6 +70,11 @@
     <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
     <ClCompile Include="lib\imgui\misc\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="dvsku_toolkit_gui.cpp" />
+    <ClCompile Include="views\tab_base.cpp" />
+    <ClCompile Include="views\tab_decrypt.cpp" />
+    <ClCompile Include="views\tab_encrypt.cpp" />
+    <ClCompile Include="views\tab_pack.cpp" />
+    <ClCompile Include="views\tab_unpack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="definitions.h" />

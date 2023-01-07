@@ -5,12 +5,6 @@
 
 #include <string>
 
-#include "definitions.h"
-#include "imgui.h"
-#include "misc/cpp/imgui_stdlib.h"
-
-using namespace ImGui;
-
 namespace dvsku::toolkit::views {
 	class tab_base {
 		protected:
@@ -25,14 +19,10 @@ namespace dvsku::toolkit::views {
 			char m_progress_text[12] = "";
 
 		public:
-			virtual void build(bool* disabled) = 0;
+			virtual void build() = 0;
 
 		protected:
-			void offset_draw(float x, float y) {
-				auto cursor = GetCursorScreenPos();
-				SetCursorPosX(cursor.x + x);
-				SetCursorPosY(cursor.y - y);
-			}
+			void offset_draw(float x, float y);
 	};
 }
 

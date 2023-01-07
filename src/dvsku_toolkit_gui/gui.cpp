@@ -1,6 +1,5 @@
 #include "gui.h"
 
-#include <shobjidl.h>
 #include <versionhelpers.h>
 
 #include "definitions.h"
@@ -22,6 +21,8 @@
 	#pragma comment(lib, "legacy_stdio_definitions")
 #endif
 
+using namespace ImGui;
+
 ///////////////////////////////////////////////////////////////////////////////
 // CONSTRUCTOR/DESTRUCTOR/GETTERS/SETTERS
 ///////////////////////////////////////////////////////////////////////////////
@@ -36,6 +37,14 @@ dvsku::toolkit::gui::~gui() {
 
 ImGuiIO& dvsku::toolkit::gui::get_io() {
 	return ImGui::GetIO();
+}
+
+void dvsku::toolkit::gui::set_disabled(bool value) {
+	m_disabled = value;
+}
+
+bool dvsku::toolkit::gui::is_disabled() {
+	return m_disabled;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -191,7 +200,7 @@ void dvsku::toolkit::gui::build_tabs() {
 		if (BeginTabItem("Pack EVP")) {
 			PopStyleVar();
 
-			m_pack.build(&m_disabled);
+			m_pack.build();
 			EndTabItem();
 		}
 		else {
@@ -202,7 +211,7 @@ void dvsku::toolkit::gui::build_tabs() {
 		if (BeginTabItem("Unpack EVP")) {
 			PopStyleVar();
 
-			m_unpack.build(&m_disabled);
+			m_unpack.build();
 			EndTabItem();
 		}
 		else {
@@ -213,7 +222,7 @@ void dvsku::toolkit::gui::build_tabs() {
 		if (BeginTabItem("Encrypt")) {
 			PopStyleVar();
 
-			m_encrypt.build(&m_disabled);
+			m_encrypt.build();
 			EndTabItem();
 		}
 		else {
@@ -224,7 +233,7 @@ void dvsku::toolkit::gui::build_tabs() {
 		if (BeginTabItem("Decrypt")) {
 			PopStyleVar();
 
-			m_decrypt.build(&m_disabled);
+			m_decrypt.build();
 			EndTabItem();
 		}
 		else {

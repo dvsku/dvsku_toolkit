@@ -5,6 +5,11 @@
 
 #include <windows.h>
 
+#define STRICT_TYPED_ITEMIDS
+#include <shlobj.h>
+
+#include "definitions.h"
+
 #define GLFW_EXPOSE_NATIVE_WIN32
 
 #include "imgui.h"
@@ -15,7 +20,7 @@
 #include "views/tab_encrypt.h"
 #include "views/tab_decrypt.h"
 
-using namespace ImGui;
+#define GUI dvsku::toolkit::gui::instance()
 
 namespace dvsku::toolkit {
 	class gui {
@@ -51,6 +56,21 @@ namespace dvsku::toolkit {
 			}
 
 			void start(uint32_t width, uint32_t height);
+
+			///////////////////////////////////////////////////////////////////
+			// GETTERS/SETTERS
+			///////////////////////////////////////////////////////////////////
+
+			void set_disabled(bool value);
+
+			bool is_disabled();
+
+			///////////////////////////////////////////////////////////////////
+			// TASKBAR
+			///////////////////////////////////////////////////////////////////
+
+			void set_taskbar_status(TBPFLAG flags);
+			void set_taskbar_progress(float value);
 
 		protected:
 
@@ -97,13 +117,6 @@ namespace dvsku::toolkit {
 			///////////////////////////////////////////////////////////////////
 
 			void handle_window_move();
-			
-			///////////////////////////////////////////////////////////////////
-			// TASKBAR
-			///////////////////////////////////////////////////////////////////
-
-			void set_taskbar_status(TBPFLAG flags);
-			void set_taskbar_progress(float value);
 	};
 }
 
