@@ -16,6 +16,7 @@
 
 #pragma comment(lib, "lib/libevp/libevp.lib")
 #pragma comment(lib, "lib/libdvsku_crypt/libdvsku_crypt_md.lib")
+#pragma comment(lib, "Winmm.lib")
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 	#pragma comment(lib, "legacy_stdio_definitions")

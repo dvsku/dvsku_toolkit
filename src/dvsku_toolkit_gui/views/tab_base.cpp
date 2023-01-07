@@ -1,5 +1,8 @@
 #include "tab_base.h"
 
+#include <windows.h>
+#include <playsoundapi.h>
+
 #include "imgui.h"
 #include "misc/cpp/imgui_stdlib.h"
 
@@ -37,6 +40,7 @@ void dvsku::toolkit::views::tab_base::handle_on_finish_evp(dvsku::evp::evp_statu
 	GUI.set_disabled(false);
 	GUI.set_taskbar_status(TBPF_NOPROGRESS);
 	GUI.set_taskbar_progress(0.0f);
+	PlaySound((LPCTSTR)SND_ALIAS_SYSTEMASTERISK, NULL, SND_ALIAS_ID | SND_SYSTEM | SND_ASYNC);
 }
 
 void dvsku::toolkit::views::tab_base::handle_on_finish_crypt(crypt_result result) {
@@ -52,6 +56,7 @@ void dvsku::toolkit::views::tab_base::handle_on_finish_crypt(crypt_result result
 	GUI.set_disabled(false); 
 	GUI.set_taskbar_status(TBPF_NOPROGRESS);
 	GUI.set_taskbar_progress(0.0f);
+	PlaySound((LPCTSTR)SND_ALIAS_SYSTEMASTERISK, NULL, SND_ALIAS_ID | SND_SYSTEM | SND_ASYNC);
 }
 
 void dvsku::toolkit::views::tab_base::handle_on_update(float progress) {
@@ -62,9 +67,11 @@ void dvsku::toolkit::views::tab_base::handle_on_update(float progress) {
 void dvsku::toolkit::views::tab_base::handle_on_error_evp(dvsku::evp::evp_result status) {
 	GUI.set_disabled(false);
 	GUI.set_taskbar_status(TBPF_ERROR);
+	PlaySound((LPCTSTR)SND_ALIAS_SYSTEMHAND, NULL, SND_ALIAS_ID | SND_SYSTEM | SND_ASYNC);
 }
 
 void dvsku::toolkit::views::tab_base::handle_on_error_crypt(crypt_result result) {
 	GUI.set_disabled(false);
 	GUI.set_taskbar_status(TBPF_ERROR);
+	PlaySound((LPCTSTR)SND_ALIAS_SYSTEMHAND, NULL, SND_ALIAS_ID | SND_SYSTEM | SND_ASYNC);
 }
