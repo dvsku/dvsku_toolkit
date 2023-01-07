@@ -14,7 +14,7 @@
 namespace dvsku::toolkit::views {
 	class tab_encrypt : public tab_base {
 		protected:
-			bool m_encrypt_to_folder = true;
+			bool m_encrypt_to_folder = false;
 			int m_file_filter = FILE_FILTER_NONE;
 
 			dvsku::crypt::libdvsku_crypt m_crypt;

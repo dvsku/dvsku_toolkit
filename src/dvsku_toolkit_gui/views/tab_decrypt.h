@@ -13,7 +13,7 @@
 namespace dvsku::toolkit::views {
 	class tab_decrypt : public tab_base {
 		protected:
-			bool m_decrypt_to_folder = true;
+			bool m_decrypt_to_folder = false;
 
 			dvsku::crypt::libdvsku_crypt m_crypt;
 
