@@ -5,72 +5,40 @@
 
 #include "lib/libevp/libevp.h"
 
-#include "utilities/utilities_color.h"
-#include "utilities/utilities_file_dialog.h"
-
 #include "gui.h"
 
+#include "utilities/utilities_color.h"
+#include "utilities/utilities_file_dialog.h"
+#include "utilities/utilities_imgui.h"
+
 using namespace dvsku::toolkit::utilities;
-using namespace ImGui;
 
 dvsku::toolkit::views::tab_unpack::tab_unpack() {}
 
 void dvsku::toolkit::views::tab_unpack::build() {
-	PushStyleColor(ImGuiCol_FrameBg, ARGB2UINT("#FF383838"));
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 4));
+	set_frame_background("#FF383838");
+	set_frame_padding(0, 4);
 
-	offset_draw(20, 20);
-	Text("Input");
+	draw_text("Input", 20, 20);
+	draw_text_input("Input#Unpack", &m_input, ImGuiInputTextFlags_ReadOnly, 20, 20, MAIN_WINDOW_WIDTH - 200, 4);
 
-	BeginDisabled(true);
-
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
-	offset_draw(20, 20);
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-	InputText("", &m_input, ImGuiInputTextFlags_ReadOnly);
-	PopStyleVar();
-
-	EndDisabled();
-
-	SameLine();
-	if (Button("Select##UnpackInput", ImVec2(125, 21))) {
+	if (draw_button("Select##UnpackInput", 0, 0, 125, 21)) {
 		file_dialog::open_file(m_input);
 	}
 
-	offset_draw(20, 15);
-	Text("Output");
+	draw_text("Output", 20, 15);
+	draw_text_input("Output#Unpack", &m_output, ImGuiInputTextFlags_ReadOnly, 20, 20, MAIN_WINDOW_WIDTH - 200, 4);
 
-	BeginDisabled(true);
-
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
-	offset_draw(20, 20);
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-	InputText("", &m_output, ImGuiInputTextFlags_ReadOnly);
-	PopStyleVar();
-
-	EndDisabled();
-
-	SameLine();
-	if (Button("Select##UnpackOutput", ImVec2(125, 21))) {
+	if (draw_button("Select##UnpackOutput", 0, 0, 125, 21)) {
 		file_dialog::select_folder(m_output);
 	}
 
-	offset_draw(20, 15);
-	Checkbox("Decrypt", &m_decrypt);
+	draw_checkbox("Decrypt", &m_decrypt, 20, 15);
 
 	if (m_decrypt) {
-		offset_draw(20, 15);
-		Text("Decryption key");
-
-		offset_draw(20, 20);
-		SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
-		PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-		InputText(" ", &m_key, ImGuiInputTextFlags_CharsNoBlank);
-		PopStyleVar();
+		draw_text("Decryption key", 20, 15);
+		draw_text_input("Key#Unpack", &m_key, ImGuiInputTextFlags_CharsNoBlank, 20, 20, MAIN_WINDOW_WIDTH - 65, 4);
 	}
-
-	offset_draw(20, 15);
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
 
 	if (m_cancel)
 		strcpy(m_progress_text, "Cancelled");
@@ -78,23 +46,17 @@ void dvsku::toolkit::views::tab_unpack::build() {
 		sprintf(m_progress_text, "%.2f%c", m_progress, '%');
 
 	if (GUI.is_disabled())
-		EndDisabled();
+		end_disabled();
 
-	PushStyleColor(ImGuiCol_PlotHistogram, ARGB2UINT("#FF774F2D"));
-	ProgressBar(m_progress / 100, ImVec2(0.0f, 0.0f), m_progress_text);
-	PopStyleColor();
-
-	offset_draw(MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15);
+	draw_progress_bar(m_progress / 100, m_progress_text, 20, 15, MAIN_WINDOW_WIDTH - 65, 0, "#FF774F2D");
 
 	bool cannot_start = m_input.empty() || m_output.empty() || (m_decrypt && m_key.empty());
 
 	if (cannot_start)
-		BeginDisabled();
-
-
+		begin_disabled();
 
 	if (!dvsku::toolkit::gui::instance().is_disabled()) {
-		if (Button("Unpack", ImVec2(125, 21))) {
+		if (draw_button("Unpack", MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15, 125, 21)) {
 			m_cancel = false;
 			dvsku::evp::unpack_async(m_input, m_output, m_decrypt, m_key, &m_cancel,
 				std::bind(&tab_base::handle_on_start, this),
@@ -105,16 +67,16 @@ void dvsku::toolkit::views::tab_unpack::build() {
 		}
 	}
 	else {
-		if (Button("Cancel##Unpack", ImVec2(125, 21)))
+		if (draw_button("Cancel##Unpack", MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15, 125, 21))
 			m_cancel = true;
 	}
 
 	if (cannot_start)
-		EndDisabled();
+		end_disabled();
 
 	if (GUI.is_disabled())
-		BeginDisabled();
+		begin_disabled();
 
-	PopStyleColor();
-	PopStyleVar();
+	unset_colors();
+	unset_vars();
 }

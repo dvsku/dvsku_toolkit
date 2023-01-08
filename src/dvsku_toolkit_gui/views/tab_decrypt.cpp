@@ -7,70 +7,37 @@
 
 #include "utilities/utilities_color.h"
 #include "utilities/utilities_file_dialog.h"
+#include "utilities/utilities_imgui.h"
 
 using namespace dvsku::toolkit::utilities;
-using namespace ImGui;
 
 dvsku::toolkit::views::tab_decrypt::tab_decrypt() : tab_base(), m_crypt("") {}
 
 void dvsku::toolkit::views::tab_decrypt::build() {
-	PushStyleColor(ImGuiCol_FrameBg, ARGB2UINT("#FF383838"));
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 4));
+	set_frame_background("#FF383838");
+	set_frame_padding(0, 4);
 
-	offset_draw(20, 20);
-	Text("Input");
+	draw_text("Input", 20, 20);
+	draw_text_input("Input#Decrypt", &m_input, ImGuiInputTextFlags_ReadOnly, 20, 20, MAIN_WINDOW_WIDTH - 200, 4);
 
-	BeginDisabled(true);
-
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
-	offset_draw(20, 20);
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-	InputText("", &m_input, ImGuiInputTextFlags_ReadOnly);
-	PopStyleVar();
-
-	EndDisabled();
-
-	SameLine();
-	if (Button("Select##DecryptInput", ImVec2(125, 21))) {
+	if (draw_button("Select##DecryptInput", 0, 0, 125, 21)) {
 		file_dialog::select_folder(m_input);
 	}
 
-	offset_draw(20, 15);
-	Checkbox("Decrypt to folder", &m_decrypt_to_folder);
-	if (IsItemHovered())
-		SetTooltip("If checked -> decrypts files and saves them to output folder");
+	draw_checkbox("Decrypt to folder", &m_decrypt_to_folder, 20, 15, 
+		"If checked -> decrypts files and saves them to output folder");
 
 	if (m_decrypt_to_folder) {
-		offset_draw(20, 15);
-		Text("Output");
+		draw_text("Output", 20, 15);
+		draw_text_input("Output#Decrypt", &m_output, ImGuiInputTextFlags_ReadOnly, 20, 20, MAIN_WINDOW_WIDTH - 200, 4);
 
-		BeginDisabled(true);
-
-		SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
-		offset_draw(20, 20);
-		PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-		InputText("", &m_output, ImGuiInputTextFlags_ReadOnly);
-		PopStyleVar();
-
-		EndDisabled();
-
-		SameLine();
-		if (Button("Select##DecryptOutput", ImVec2(125, 21))) {
+		if (draw_button("Select##DecryptOutput", 0, 0, 125, 21)) {
 			file_dialog::select_folder(m_output);
 		}
 	}
 
-	offset_draw(20, 15);
-	Text("Decryption key");
-
-	offset_draw(20, 20);
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-	InputText(" ", &m_key, ImGuiInputTextFlags_CharsNoBlank);
-	PopStyleVar();
-
-	offset_draw(20, 15);
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
+	draw_text("Decryption key", 20, 15);
+	draw_text_input("Key#Decrypt", &m_key, ImGuiInputTextFlags_CharsNoBlank, 20, 20, MAIN_WINDOW_WIDTH - 65, 4);
 
 	if (m_cancel)
 		strcpy(m_progress_text, "Cancelled");
@@ -78,21 +45,17 @@ void dvsku::toolkit::views::tab_decrypt::build() {
 		sprintf(m_progress_text, "%.2f%c", m_progress, '%');
 
 	if (GUI.is_disabled())
-		EndDisabled();
+		end_disabled();
 
-	PushStyleColor(ImGuiCol_PlotHistogram, ARGB2UINT("#FF774F2D"));
-	ProgressBar(m_progress / 100, ImVec2(0.0f, 0.0f), m_progress_text);
-	PopStyleColor();
-
-	offset_draw(MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15);
+	draw_progress_bar(m_progress / 100, m_progress_text, 20, 15, MAIN_WINDOW_WIDTH - 65, 0, "#FF774F2D");
 
 	bool cannot_start = m_input.empty() || (m_decrypt_to_folder && m_output.empty()) || m_key.empty();
 
 	if (cannot_start)
-		BeginDisabled();
+		begin_disabled();
 
 	if (!GUI.is_disabled()) {
-		if (Button("Decrypt", ImVec2(125, 21))) {
+		if (draw_button("Decrypt", MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15, 125, 21)) {
 			m_cancel = false;
 
 			m_crypt.set_key(m_key.c_str());
@@ -105,16 +68,16 @@ void dvsku::toolkit::views::tab_decrypt::build() {
 		}
 	}
 	else {
-		if (Button("Cancel##Decrypt", ImVec2(125, 21)))
+		if (draw_button("Cancel##Decrypt", MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15, 125, 21))
 			m_cancel = true;
 	}
 
 	if (cannot_start)
-		EndDisabled();
+		end_disabled();
 
 	if (GUI.is_disabled())
-		BeginDisabled();
+		begin_disabled();
 
-	PopStyleColor();
-	PopStyleVar();
+	unset_colors();
+	unset_vars();
 }

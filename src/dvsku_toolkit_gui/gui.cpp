@@ -11,6 +11,7 @@
 
 #include "utilities/utilities_color.h"
 #include "utilities/utilities_file_dialog.h"
+#include "utilities/utilities_imgui.h"
 
 #include "lib/libevp/libevp.h"
 
@@ -22,6 +23,7 @@
 	#pragma comment(lib, "legacy_stdio_definitions")
 #endif
 
+using namespace dvsku::toolkit::utilities;
 using namespace ImGui;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -190,128 +192,74 @@ void dvsku::toolkit::gui::build_gui() {
 }
 
 void dvsku::toolkit::gui::build_tabs() {
-	PushStyleVar(ImGuiStyleVar_TabRounding, 0.0f);
-
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 5));
-	ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
-	if (BeginTabBar("Tabs", tab_bar_flags)) {
-		PopStyleVar();
-
-		PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 5));
-		if (BeginTabItem("Pack EVP")) {
-			PopStyleVar();
-
+	if (start_tab_bar("Tabs", ImGuiTabBarFlags_None, 5, 5)) {
+		if (start_tab_item("Pack EVP", 0, 5, 5)) {
 			m_pack.build();
-			EndTabItem();
+			end_tab_item();
 		}
-		else {
-			PopStyleVar();
-		}
-
-		PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 5));
-		if (BeginTabItem("Unpack EVP")) {
-			PopStyleVar();
-
+		if (start_tab_item("Unpack EVP", 0, 5, 5)) {
 			m_unpack.build();
-			EndTabItem();
+			end_tab_item();
 		}
-		else {
-			PopStyleVar();
-		}
-
-		PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 5));
-		if (BeginTabItem("Encrypt")) {
-			PopStyleVar();
-
+		if (start_tab_item("Encrypt", 0, 5, 5)) {
 			m_encrypt.build();
-			EndTabItem();
+			end_tab_item();
 		}
-		else {
-			PopStyleVar();
-		}
-
-		PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 5));
-		if (BeginTabItem("Decrypt")) {
-			PopStyleVar();
-
+		if (start_tab_item("Decrypt", 0, 5, 5)) {
 			m_decrypt.build();
-			EndTabItem();
+			end_tab_item();
 		}
-		else {
-			PopStyleVar();
-		}
-
-		EndTabBar();
+		end_tab_bar();
 	}
-
-	PopStyleVar();
 }
 
 void dvsku::toolkit::gui::build_title_bar() {
-	SetNextWindowPos(ImVec2(0, 0));
-	SetNextWindowSize(ImVec2(MAIN_WINDOW_WIDTH, 25));
+	begin_window("TitleBar", ImGuiWindowFlags_NoTitleBar | 
+		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBringToFrontOnFocus, 
+		0, 0, MAIN_WINDOW_WIDTH, 25, "#FF1A1A1A", 0, 0);
 
-	PushStyleColor(ImGuiCol_WindowBg, ARGB2UINT("#FF1A1A1A"));
-	PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+	m_can_drag = is_window_hovered();
 
-	Begin("TitleBar", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBringToFrontOnFocus);
-	m_can_drag = IsWindowHovered();
+	draw_text("dvsku toolkit", 15, (25 - CalcTextSize("dvsku toolkit").y) * 0.5f, false);
 
-	auto text_size = CalcTextSize("dvsku toolkit");
-
-	SetCursorPosX(15);
-	SetCursorPosY((25 - text_size.y) * 0.5f);
-
-	Text("dvsku toolkit");
-
-	PushStyleColor(ImGuiCol_Button, ARGB2UINT("#00FFFFFF"));
-	PushStyleColor(ImGuiCol_ButtonHovered, ARGB2UINT("#00FFFFFF"));
-	PushStyleColor(ImGuiCol_ButtonActive, ARGB2UINT("#00FFFFFF"));
+	set_color(ImGuiCol_Button, "#00FFFFFF");
+	set_color(ImGuiCol_ButtonHovered, "#00FFFFFF");
+	set_color(ImGuiCol_ButtonActive, "#00FFFFFF");
 
 	if (!m_close_hover && !m_close_active)
-		PushStyleColor(ImGuiCol_Text, ARGB2UINT("#88FFFFFF"));
+		set_color(ImGuiCol_Text, "#88FFFFFF");
 	else
-		PushStyleColor(ImGuiCol_Text, ARGB2UINT("#FFFFFFFF"));
+		set_color(ImGuiCol_Text, "#FFFFFFFF");
 
-	SetCursorPosX(MAIN_WINDOW_WIDTH - 25);
-	SetCursorPosY(0);
-
-	if (Button("X", ImVec2(25, 25))) {
+	if (draw_button("X", MAIN_WINDOW_WIDTH - 30, 0, 25, 25, false)) {
 		glfwSetWindowShouldClose(m_window, 1);
+		
 	}
 
-	m_close_hover = IsItemHovered();
-	m_close_active = IsItemActive();
+	m_close_hover = is_element_hovered();
+	m_close_active = is_element_active();
 
-	PopStyleColor(4);
+	unset_colors(4);
 
-	End();
+	end_window();
 
-	PopStyleColor();
-	PopStyleVar(1);
+	unset_colors(1);
+	unset_vars(1);
 }
 
 void dvsku::toolkit::gui::build_content_window() {
-	SetNextWindowPos(ImVec2(0, 25));
-	SetNextWindowSize(ImVec2(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT - 25));
-
-	PushStyleColor(ImGuiCol_WindowBg, ARGB2UINT("#FF1F1F1F"));
-	PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(15, 10));
-
-	Begin("ContentWindow", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-	PopStyleVar(1);
+	begin_window("ContentWindow", ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize, 0, 25,
+		MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT - 25, "#FF1F1F1F", 15, 10);
 
 	if (m_disabled)
-		BeginDisabled();
+		begin_disabled();
 
 	build_tabs();
 
 	if (m_disabled)
-		EndDisabled();
+		end_disabled();
 
-	End();
-
-	PopStyleColor();
+	end_window();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -328,7 +276,7 @@ void dvsku::toolkit::gui::handle_window_move() {
 	tagPOINT point;
 	GetCursorPos(&point);
 
-	glfwSetWindowPos(m_window, point.x - (int)io.MouseClickedPos->x, point.y - (int)io.MouseClickedPos->y);
+	glfwSetWindowPos(m_window, point.x - (int)ceil(io.MouseClickedPos->x), point.y - (int)ceil(io.MouseClickedPos->y));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

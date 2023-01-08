@@ -88,6 +88,7 @@
     <ClInclude Include="lib\imgui\imgui_internal.h" />
     <ClInclude Include="lib\imgui\misc\cpp\imgui_stdlib.h" />
     <ClInclude Include="resources\resource.h" />
+    <ClInclude Include="utilities\utilities_imgui.h" />
     <ClInclude Include="views\tab_base.h" />
     <ClInclude Include="views\tab_decrypt.h" />
     <ClInclude Include="views\tab_encrypt.h" />

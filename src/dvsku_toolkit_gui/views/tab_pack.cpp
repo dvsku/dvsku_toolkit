@@ -7,86 +7,42 @@
 
 #include "utilities/utilities_color.h"
 #include "utilities/utilities_file_dialog.h"
+#include "utilities/utilities_imgui.h"
 
 using namespace dvsku::toolkit::utilities;
-using namespace ImGui;
 
 dvsku::toolkit::views::tab_pack::tab_pack() : tab_base() {}
 
 void dvsku::toolkit::views::tab_pack::build() {
-	PushStyleColor(ImGuiCol_FrameBg, ARGB2UINT("#FF383838"));
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 4));
+	set_frame_background("#FF383838");
+	set_frame_padding(0, 4);
 
-	offset_draw(20, 20);
-	Text("Input");
+	draw_text("Input", 20, 20);
+	draw_text_input("Input#Pack", &m_input, ImGuiInputTextFlags_ReadOnly, 20, 20, MAIN_WINDOW_WIDTH - 200, 4);
 
-	BeginDisabled(true);
-
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
-	offset_draw(20, 20);
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-	InputText("", &m_input, ImGuiInputTextFlags_ReadOnly);
-	PopStyleVar();
-
-	EndDisabled();
-
-	SameLine();
-	if (Button("Select##PackInput", ImVec2(125, 21))) {
+	if (draw_button("Select##PackInput", 0, 0, 125, 21)) {
 		file_dialog::select_folder(m_input);
 	}
 
-	offset_draw(20, 15);
-	Text("Output");
+	draw_text("Output", 20, 15);
+	draw_text_input("Output#Pack",&m_output, ImGuiInputTextFlags_ReadOnly, 20, 20, MAIN_WINDOW_WIDTH - 200, 4);
 
-	BeginDisabled(true);
-
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 70 - 130);
-	offset_draw(20, 20);
-	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-	InputText("", &m_output, ImGuiInputTextFlags_ReadOnly);
-	PopStyleVar();
-
-	EndDisabled();
-
-	SameLine();
-	if (Button("Select##PackOutput", ImVec2(125, 21))) {
+	if (draw_button("Select##PackOutput", 0, 0, 125, 21)) {
 		file_dialog::save_file(m_output);
 	}
 
-	offset_draw(20, 15);
-	Checkbox("Encrypt", &m_encrypt);
+	draw_checkbox("Encrypt", &m_encrypt, 20, 15);
 
 	if (m_encrypt) {
-		offset_draw(20, 15);
-		Text("Encryption key");
-
-		offset_draw(20, 20);
-		SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
-		PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 4));
-		InputText(" ", &m_key, ImGuiInputTextFlags_CharsNoBlank);
-		PopStyleVar();
+		draw_text("Encryption key", 20, 15);
+		draw_text_input("Key#Pack", &m_key, ImGuiInputTextFlags_CharsNoBlank, 20, 20, MAIN_WINDOW_WIDTH - 65, 4);
 	}
 
-	offset_draw(20, 15);
-	Text("Pack type");
+	draw_text("Pack type", 20, 15);
 
-	offset_draw(20, 20);
-	RadioButton("any", &m_file_filter, (int)(FILE_FILTER_NONE));
-	if (IsItemHovered())
-		SetTooltip("Pack all files from input");
-	SameLine();
-
-	RadioButton("client", &m_file_filter, (int)(FILE_FILTER_CLIENT));
-	if (IsItemHovered())
-		SetTooltip("Pack only client files");
-	SameLine();
-
-	RadioButton("server", &m_file_filter, (int)(FILE_FILTER_SERVER));
-	if (IsItemHovered())
-		SetTooltip("Pack only server files");
-
-	offset_draw(20, 15);
-	SetNextItemWidth(MAIN_WINDOW_WIDTH - 65);
+	draw_radio_button(20, 20, "any", &m_file_filter, (int)(FILE_FILTER_NONE), "Pack all files from input");
+	draw_radio_button(0, 0, "client", &m_file_filter, (int)(FILE_FILTER_CLIENT), "Pack only client files");
+	draw_radio_button(0, 0, "server", &m_file_filter, (int)(FILE_FILTER_SERVER), "Pack only server files");
 
 	if (m_cancel)
 		strcpy(m_progress_text, "Cancelled");
@@ -94,21 +50,17 @@ void dvsku::toolkit::views::tab_pack::build() {
 		sprintf(m_progress_text, "%.2f%c", m_progress, '%');
 
 	if (GUI.is_disabled())
-		EndDisabled();
+		end_disabled();
 
-	PushStyleColor(ImGuiCol_PlotHistogram, ARGB2UINT("#FF774F2D"));
-	ProgressBar(m_progress / 100, ImVec2(0.0f, 0.0f), m_progress_text);
-	PopStyleColor();
-
-	offset_draw(MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15);
+	draw_progress_bar(m_progress / 100, m_progress_text, 20, 15, MAIN_WINDOW_WIDTH - 65, 0, "#FF774F2D");
 
 	bool cannot_start = m_input.empty() || m_output.empty() || (m_encrypt && m_key.empty());
 
 	if (cannot_start)
-		BeginDisabled();
+		begin_disabled();
 
 	if (!GUI.is_disabled()) {
-		if (Button("Pack", ImVec2(125, 21))) {
+		if (draw_button("Pack", MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15, 125, 21)) {
 			m_cancel = false;
 			dvsku::evp::pack_async(m_input, m_output, m_encrypt, m_key,
 				(dvsku::filesys::utilities::file_filter)m_file_filter, &m_cancel,
@@ -120,16 +72,16 @@ void dvsku::toolkit::views::tab_pack::build() {
 		}
 	}
 	else {
-		if (Button("Cancel##Pack", ImVec2(125, 21)))
+		if(draw_button("Cancel##Pack", MAIN_WINDOW_WIDTH / 2 - 125 / 2 - 18, 15, 125, 21))
 			m_cancel = true;
 	}
 
 	if (cannot_start)
-		EndDisabled();
+		end_disabled();
 
 	if (GUI.is_disabled())
-		BeginDisabled();
+		begin_disabled();
 
-	PopStyleColor();
-	PopStyleVar();
+	unset_colors();
+	unset_vars();
 }
