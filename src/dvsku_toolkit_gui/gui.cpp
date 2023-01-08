@@ -226,6 +226,20 @@ void dvsku::toolkit::gui::build_title_bar() {
 	set_color(ImGuiCol_ButtonHovered, "#00FFFFFF");
 	set_color(ImGuiCol_ButtonActive, "#00FFFFFF");
 
+	if (!m_minimize_hover && !m_minimize_active)
+		set_color(ImGuiCol_Text, "#88FFFFFF");
+	else
+		set_color(ImGuiCol_Text, "#FFFFFFFF");
+
+	if (draw_button("-", MAIN_WINDOW_WIDTH - 55, 0, 25, 25, false)) {
+		glfwIconifyWindow(m_window);
+	}
+
+	m_minimize_hover = is_element_hovered();
+	m_minimize_active = is_element_active();
+
+	unset_colors(1);
+
 	if (!m_close_hover && !m_close_active)
 		set_color(ImGuiCol_Text, "#88FFFFFF");
 	else
@@ -233,7 +247,6 @@ void dvsku::toolkit::gui::build_title_bar() {
 
 	if (draw_button("X", MAIN_WINDOW_WIDTH - 30, 0, 25, 25, false)) {
 		glfwSetWindowShouldClose(m_window, 1);
-		
 	}
 
 	m_close_hover = is_element_hovered();

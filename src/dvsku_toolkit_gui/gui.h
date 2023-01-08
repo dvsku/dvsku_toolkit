@@ -34,6 +34,8 @@ namespace dvsku::toolkit {
 
 			bool m_can_drag = false;
 
+			bool m_minimize_hover = false;
+			bool m_minimize_active = false;
 			bool m_close_hover	= false;
 			bool m_close_active = false;
 
