@@ -79,7 +79,7 @@ namespace dvsku::toolkit::utilities {
 		ImGui::SetNextWindowSize(ImVec2(w, h));
 		
 		if(background != nullptr)
-			set_window_background("#FF1F1F1F");
+			set_window_background(background);
 		
 		set_window_padding(padding_x, padding_y);
 

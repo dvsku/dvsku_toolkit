@@ -216,7 +216,7 @@ void dvsku::toolkit::gui::build_tabs() {
 void dvsku::toolkit::gui::build_title_bar() {
 	begin_window("TitleBar", ImGuiWindowFlags_NoTitleBar | 
 		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBringToFrontOnFocus, 
-		0, 0, MAIN_WINDOW_WIDTH, 25, "#FF1A1A1A", 0, 0);
+		0, 0, MAIN_WINDOW_WIDTH, 25, "#FF1B1B1B", 0, 0);
 
 	m_can_drag = is_window_hovered();
 
@@ -255,9 +255,6 @@ void dvsku::toolkit::gui::build_title_bar() {
 	unset_colors(4);
 
 	end_window();
-
-	unset_colors(1);
-	unset_vars(1);
 }
 
 void dvsku::toolkit::gui::build_content_window() {
