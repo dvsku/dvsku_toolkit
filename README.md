@@ -15,4 +15,8 @@
     Toolkit for packing/unpacking .evp files and encrypting/decrypting files.</br>
     Primarily used for Talisman Online development.
   </p>
-</div>
+</div></br></br>
+
+## Notes:
+- Packing .evp format is the same as Talisman Online v207 but smaller as that format had redundant information that can be discarded
+- Unpacking currently only supports the Talisman Online v207 .evp format
