@@ -23,34 +23,25 @@
     <ClInclude Include="resources\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utilities\utilities_color.h">
+    <ClInclude Include="components\base\comp_evp_base.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utilities\utilities_file_dialog.h">
+    <ClInclude Include="components\base\comp_crypt_base.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utilities\utilities_imgui.h">
+    <ClInclude Include="components\components_bundle.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="views\tab_base.h">
+    <ClInclude Include="components\comp_root.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="views\tab_decrypt.h">
+    <ClInclude Include="systems\systems_bundle.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="views\tab_encrypt.h">
+    <ClInclude Include="components\comp_view_evp_pack.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="views\tab_pack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="views\tab_unpack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="definitions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gui.h">
+    <ClInclude Include="app.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -63,25 +54,28 @@
     <None Include="resources\dvsku_toolkit_gui.aps" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="views\tab_base.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="views\tab_decrypt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="views\tab_encrypt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="views\tab_pack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="views\tab_unpack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="dvsku_toolkit_gui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gui.cpp">
+    <ClCompile Include="components\base\comp_evp_base.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="components\base\comp_crypt_base.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="components\components_bundle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="components\comp_root.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="systems\systems_bundle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="components\comp_view_evp_pack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="app.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

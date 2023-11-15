@@ -95,12 +95,13 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>$(SolutionDir)..\lib\imgui;$(SolutionDir)..\lib\imgui\backends;$(SolutionDir)..\lib\imgui\misc\cpp;$(SolutionDir)..\lib\glfw\include;$(SolutionDir)..\lib\;$(SolutionDir)dvsku_toolkit</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\lib\libevp;$(SolutionDir)..\lib\libdvsku_crypt;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevp.lib;libdvsku_crypt_md.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libevp_smtd.lib;libdvsku_crypt_mtd.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -114,6 +115,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>$(SolutionDir)..\lib\imgui;$(SolutionDir)..\lib\imgui\backends;$(SolutionDir)..\lib\imgui\misc\cpp;$(SolutionDir)..\lib\glfw\include;$(SolutionDir)..\lib\;$(SolutionDir)dvsku_toolkit</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -121,7 +123,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\lib\libevp;$(SolutionDir)..\lib\libdvsku_crypt;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevp.lib;libdvsku_crypt_md.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libevp_smt.lib;libdvsku_crypt_mt.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -133,12 +135,13 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>$(SolutionDir)..\lib\imgui;$(SolutionDir)..\lib\imgui\backends;$(SolutionDir)..\lib\imgui\misc\cpp;$(SolutionDir)..\lib\glfw\include;$(SolutionDir)..\lib\;$(SolutionDir)dvsku_toolkit</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\lib\libevp;$(SolutionDir)..\lib\libdvsku_crypt;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevp.lib;libdvsku_crypt_md.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libevp_smtd.lib;libdvsku_crypt_mtd.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -152,6 +155,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>$(SolutionDir)..\lib\imgui;$(SolutionDir)..\lib\imgui\backends;$(SolutionDir)..\lib\imgui\misc\cpp;$(SolutionDir)..\lib\glfw\include;$(SolutionDir)..\lib\;$(SolutionDir)dvsku_toolkit</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -159,24 +163,21 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\lib\libevp;$(SolutionDir)..\lib\libdvsku_crypt;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevp.lib;libdvsku_crypt_md.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libevp_smt.lib;libdvsku_crypt_mt.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ResourceCompile Include="resources\dvsku_toolkit_gui.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="definitions.h" />
-    <ClInclude Include="gui.h" />
+    <ClInclude Include="app.hpp" />
+    <ClInclude Include="components\components_bundle.hpp" />
+    <ClInclude Include="components\base\comp_evp_base.hpp" />
+    <ClInclude Include="components\base\comp_crypt_base.hpp" />
+    <ClInclude Include="components\comp_root.hpp" />
+    <ClInclude Include="components\comp_view_evp_pack.hpp" />
     <ClInclude Include="resources\resource.h" />
-    <ClInclude Include="utilities\utilities_color.h" />
-    <ClInclude Include="utilities\utilities_file_dialog.h" />
-    <ClInclude Include="utilities\utilities_imgui.h" />
-    <ClInclude Include="views\tab_base.h" />
-    <ClInclude Include="views\tab_decrypt.h" />
-    <ClInclude Include="views\tab_encrypt.h" />
-    <ClInclude Include="views\tab_pack.h" />
-    <ClInclude Include="views\tab_unpack.h" />
+    <ClInclude Include="systems\systems_bundle.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\appicon.ico" />
@@ -185,13 +186,14 @@
     <None Include="resources\dvsku_toolkit_gui.aps" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="app.cpp" />
+    <ClCompile Include="components\components_bundle.cpp" />
+    <ClCompile Include="components\base\comp_evp_base.cpp" />
+    <ClCompile Include="components\base\comp_crypt_base.cpp" />
+    <ClCompile Include="components\comp_root.cpp" />
+    <ClCompile Include="components\comp_view_evp_pack.cpp" />
     <ClCompile Include="dvsku_toolkit_gui.cpp" />
-    <ClCompile Include="gui.cpp" />
-    <ClCompile Include="views\tab_base.cpp" />
-    <ClCompile Include="views\tab_decrypt.cpp" />
-    <ClCompile Include="views\tab_encrypt.cpp" />
-    <ClCompile Include="views\tab_pack.cpp" />
-    <ClCompile Include="views\tab_unpack.cpp" />
+    <ClCompile Include="systems\systems_bundle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\lib_glfw\lib_glfw.vcxproj">

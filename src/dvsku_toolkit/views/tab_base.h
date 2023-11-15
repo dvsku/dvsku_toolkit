@@ -5,8 +5,8 @@
 
 #include <string>
 
-#include "libevp/libevp.h"
-#include "libdvsku_crypt/libdvsku_crypt.h"
+#include "libevp/libevp.hpp"
+#include "libdvsku_crypt/libdvsku_crypt.hpp"
 
 namespace dvsku::toolkit::views {
 	class tab_base {

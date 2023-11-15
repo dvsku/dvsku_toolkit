@@ -1,6 +1,10 @@
-#include "gui.h"
+#include "app.hpp"
+
+using namespace dvsku_toolkit;
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, INT nCmdShow) {
-    dvsku::toolkit::gui::instance().start(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+    app app(600, 400);
+    app.run();
+
     return 0;
 }
