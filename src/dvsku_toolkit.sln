@@ -11,34 +11,20 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lib_imgui", "lib_imgui\lib_
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
-		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{914C1D91-0272-416A-B8F2-0786525635F8}.Debug|x64.ActiveCfg = Debug|x64
-		{914C1D91-0272-416A-B8F2-0786525635F8}.Debug|x64.Build.0 = Debug|x64
 		{914C1D91-0272-416A-B8F2-0786525635F8}.Debug|x86.ActiveCfg = Debug|Win32
 		{914C1D91-0272-416A-B8F2-0786525635F8}.Debug|x86.Build.0 = Debug|Win32
-		{914C1D91-0272-416A-B8F2-0786525635F8}.Release|x64.ActiveCfg = Release|x64
-		{914C1D91-0272-416A-B8F2-0786525635F8}.Release|x64.Build.0 = Release|x64
 		{914C1D91-0272-416A-B8F2-0786525635F8}.Release|x86.ActiveCfg = Release|Win32
 		{914C1D91-0272-416A-B8F2-0786525635F8}.Release|x86.Build.0 = Release|Win32
-		{513F2E05-14E7-4E32-99EF-0196FA29DEEB}.Debug|x64.ActiveCfg = Debug|x64
-		{513F2E05-14E7-4E32-99EF-0196FA29DEEB}.Debug|x64.Build.0 = Debug|x64
 		{513F2E05-14E7-4E32-99EF-0196FA29DEEB}.Debug|x86.ActiveCfg = Debug|Win32
 		{513F2E05-14E7-4E32-99EF-0196FA29DEEB}.Debug|x86.Build.0 = Debug|Win32
-		{513F2E05-14E7-4E32-99EF-0196FA29DEEB}.Release|x64.ActiveCfg = Release|x64
-		{513F2E05-14E7-4E32-99EF-0196FA29DEEB}.Release|x64.Build.0 = Release|x64
 		{513F2E05-14E7-4E32-99EF-0196FA29DEEB}.Release|x86.ActiveCfg = Release|Win32
 		{513F2E05-14E7-4E32-99EF-0196FA29DEEB}.Release|x86.Build.0 = Release|Win32
-		{92084D6C-3BAC-4554-BCF0-0C8DF8FB6556}.Debug|x64.ActiveCfg = Debug|x64
-		{92084D6C-3BAC-4554-BCF0-0C8DF8FB6556}.Debug|x64.Build.0 = Debug|x64
 		{92084D6C-3BAC-4554-BCF0-0C8DF8FB6556}.Debug|x86.ActiveCfg = Debug|Win32
 		{92084D6C-3BAC-4554-BCF0-0C8DF8FB6556}.Debug|x86.Build.0 = Debug|Win32
-		{92084D6C-3BAC-4554-BCF0-0C8DF8FB6556}.Release|x64.ActiveCfg = Release|x64
-		{92084D6C-3BAC-4554-BCF0-0C8DF8FB6556}.Release|x64.Build.0 = Release|x64
 		{92084D6C-3BAC-4554-BCF0-0C8DF8FB6556}.Release|x86.ActiveCfg = Release|Win32
 		{92084D6C-3BAC-4554-BCF0-0C8DF8FB6556}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
