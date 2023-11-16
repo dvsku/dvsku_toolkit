@@ -1,15 +1,14 @@
-#include "components/comp_view_evp_pack.hpp"
-#include "components/components_bundle.hpp"
+#include "components/comp_view_encrypt.hpp"
 
 #include "imgui.h"
 #include "misc/cpp/imgui_stdlib.h"
 
 using namespace dvsku_toolkit;
 
-comp_view_evp_pack::comp_view_evp_pack(components_bundle& components) 
-    : comp_evp_base(components) {}
+comp_view_encrypt::comp_view_encrypt(components_bundle& components) 
+    : comp_crypt_base(components) {}
 
-void comp_view_evp_pack::render() {
+void comp_view_encrypt::render() {
     //ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 15.0f, 15.0f });
     ImGui::PushStyleColor(ImGuiCol_FrameBg, 0xFF2E2E2E);
 
@@ -22,55 +21,55 @@ void comp_view_evp_pack::render() {
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-150.0f);
-    ImGui::InputText("##InputPack", &m_input, ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputText("##InputEncrypt", &m_input, ImGuiInputTextFlags_ReadOnly);
 
     ImGui::SameLine(0.0f, 5.0f);
-    if (ImGui::Button("Select##InputPack", { 125, 20 })) {
+    if (ImGui::Button("Select##InputEncrypt", { 125, 20 })) {
 
     }
+
+    ImGui::Dummy({ 0.0f, 3.0f });
+
+    ImGui::Checkbox("##EncryptToDir", &m_encrypt_to_dir);
+    ImGui::SameLine(0.0f, 8.0f);
+    ImGui::Text("Encrypt to folder");
+
+    ImGui::Dummy({ 0.0f, 3.0f });
+
+    if (!m_encrypt_to_dir)
+        ImGui::BeginDisabled();
 
     ImGui::Indent(3.0f);
     ImGui::Text("Output");
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-150.0f);
-    ImGui::InputText("##OutputPack", &m_output, ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputText("##OutputEncrypt", &m_output, ImGuiInputTextFlags_ReadOnly);
 
     ImGui::SameLine(0.0f, 5.0f);
-    if (ImGui::Button("Select##OutputPack", { 125, 20 })) {
+    if (ImGui::Button("Select##OutputEncrypt", { 125, 20 })) {
 
     }
 
-    ImGui::Dummy({ 0.0f, 3.0f });
-
-    ImGui::Checkbox("##PackEncrypt", &m_encrypt);
-    ImGui::SameLine(0.0f, 8.0f);
-    ImGui::Text("Encrypt");
-
-    ImGui::Dummy({ 0.0f, 3.0f });
-
-    if (!m_encrypt)
-        ImGui::BeginDisabled();
+    if (!m_encrypt_to_dir)
+        ImGui::EndDisabled();
 
     ImGui::Indent(3.0f);
     ImGui::Text("Key");
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-20.0f);
-    ImGui::InputText("##PackKey", &m_key);
+    ImGui::InputText("##EncryptKey", &m_key);
 
     ImGui::Indent(3.0f);
     ImGui::Text("IV");
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(120.0f);
-    ImGui::InputScalar("##PackIv", ImGuiDataType_U8, &m_iv);
+    ImGui::InputScalar("##EncryptIv", ImGuiDataType_U8, &m_iv);
 
     ImGui::SameLine(0.0f, 8.0f);
     ImGui::Text("(0 - 255)");
-
-    if (!m_encrypt)
-        ImGui::EndDisabled();
 
     //ImGui::PushStyleColor(ImGuiCol_PlotHistogram, 0xFF774F2D);
 
@@ -82,19 +81,19 @@ void comp_view_evp_pack::render() {
 
     ImGui::Dummy({ 0.0f, 3.0f });
 
-    ImGui::RadioButton("any##PackFilter", &m_filter, 0);
+    ImGui::RadioButton("any##EncryptFilter", &m_filter, 0);
     if (ImGui::IsItemHovered())
-        ImGui::SetTooltip("Pack all files from input");
+        ImGui::SetTooltip("Encrypt all files from input");
 
     ImGui::SameLine(0.0f, 8.0f);
-    ImGui::RadioButton("client##PackFilter", &m_filter, 1);
+    ImGui::RadioButton("client##EncryptFilter", &m_filter, 1);
     if (ImGui::IsItemHovered())
-        ImGui::SetTooltip("Pack only client files");
+        ImGui::SetTooltip("Encrypt only client files");
 
     ImGui::SameLine(0.0f, 8.0f);
-    ImGui::RadioButton("server##PackFilter", &m_filter, 2);
+    ImGui::RadioButton("server##EncryptFilter", &m_filter, 2);
     if (ImGui::IsItemHovered())
-        ImGui::SetTooltip("Pack only server files");
+        ImGui::SetTooltip("Encrypt only server files");
 
     ImGui::Dummy({ 0.0f, 10.0f });
 
@@ -116,7 +115,7 @@ void comp_view_evp_pack::render() {
     if (!can_start())
         ImGui::BeginDisabled();
 
-    if (ImGui::Button("Pack##Pack", { 125, 20 })) {
+    if (ImGui::Button("Encrypt##Encrypt", { 125, 20 })) {
 
     }
 
@@ -131,11 +130,11 @@ void comp_view_evp_pack::render() {
     ImGui::PopStyleColor();
 }
 
-bool comp_view_evp_pack::can_start() {
-    bool result = !m_input.empty() && !m_output.empty();
+bool comp_view_encrypt::can_start() {
+    bool result = !m_input.empty() && !m_key.empty();
 
-    if (m_encrypt)
-        result = result && !m_key.empty();
+    if (m_encrypt_to_dir)
+        result = result && !m_output.empty();
 
     return result;
 }

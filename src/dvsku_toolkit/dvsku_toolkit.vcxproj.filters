@@ -44,6 +44,18 @@
     <ClInclude Include="app.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="fonts\font_roboto.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="components\comp_view_evp_unpack.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="components\comp_view_encrypt.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="components\comp_view_decrypt.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\appicon.ico">
@@ -76,6 +88,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="app.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="components\comp_view_evp_unpack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="components\comp_view_encrypt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="components\comp_view_decrypt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

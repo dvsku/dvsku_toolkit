@@ -115,5 +115,5 @@ void app::run() {
 }
 
 void app::render() {
-
+    m_components.view.render();
 }

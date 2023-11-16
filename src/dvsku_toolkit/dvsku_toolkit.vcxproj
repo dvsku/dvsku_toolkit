@@ -176,6 +176,10 @@
     <ClInclude Include="components\base\comp_crypt_base.hpp" />
     <ClInclude Include="components\comp_root.hpp" />
     <ClInclude Include="components\comp_view_evp_pack.hpp" />
+    <ClInclude Include="components\comp_view_evp_unpack.hpp" />
+    <ClInclude Include="components\comp_view_encrypt.hpp" />
+    <ClInclude Include="components\comp_view_decrypt.hpp" />
+    <ClInclude Include="fonts\font_roboto.hpp" />
     <ClInclude Include="resources\resource.h" />
     <ClInclude Include="systems\systems_bundle.hpp" />
   </ItemGroup>
@@ -192,6 +196,9 @@
     <ClCompile Include="components\base\comp_crypt_base.cpp" />
     <ClCompile Include="components\comp_root.cpp" />
     <ClCompile Include="components\comp_view_evp_pack.cpp" />
+    <ClCompile Include="components\comp_view_evp_unpack.cpp" />
+    <ClCompile Include="components\comp_view_encrypt.cpp" />
+    <ClCompile Include="components\comp_view_decrypt.cpp" />
     <ClCompile Include="dvsku_toolkit_gui.cpp" />
     <ClCompile Include="systems\systems_bundle.cpp" />
   </ItemGroup>
