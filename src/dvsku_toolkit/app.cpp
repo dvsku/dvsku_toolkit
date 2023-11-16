@@ -4,6 +4,8 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl2.h"
 
+#include "fonts/font_roboto.hpp"
+
 using namespace dvsku_toolkit;
 
 app::app(uint32_t width, uint32_t height) : m_components(m_systems) {
@@ -36,6 +38,12 @@ app::app(uint32_t width, uint32_t height) : m_components(m_systems) {
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.IniFilename = NULL;
+
+    ImFontConfig config;
+    config.FontDataOwnedByAtlas = false;
+    config.GlyphExtraSpacing.x  = 1.0f;
+    io.Fonts->AddFontFromMemoryTTF(ROBOTO_REGULAR, (int)ROBOTO_REGULAR_LEN, 14.0f, &config);
+    io.Fonts->AddFontFromMemoryTTF(ROBOTO_REGULAR, (int)ROBOTO_REGULAR_LEN, 16.0f, &config);
 
     // set theme to dark
     ImGui::StyleColorsDark();
