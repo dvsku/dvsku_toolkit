@@ -4,6 +4,8 @@
 #include "imgui.h"
 #include "misc/cpp/imgui_stdlib.h"
 
+#include "utilities/utilities_file_dialog.hpp"
+
 using namespace dvsku_toolkit;
 
 comp_view_evp_pack::comp_view_evp_pack(components_bundle& components) 
@@ -26,7 +28,7 @@ void comp_view_evp_pack::render() {
 
     ImGui::SameLine(0.0f, 5.0f);
     if (ImGui::Button("Select##InputPack", { 125, 20 })) {
-
+        file_dialog::select_folder(m_input);
     }
 
     ImGui::Indent(3.0f);
@@ -38,7 +40,7 @@ void comp_view_evp_pack::render() {
 
     ImGui::SameLine(0.0f, 5.0f);
     if (ImGui::Button("Select##OutputPack", { 125, 20 })) {
-
+        file_dialog::save_file(m_output);
     }
 
     ImGui::Dummy({ 0.0f, 3.0f });

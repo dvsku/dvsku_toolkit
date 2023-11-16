@@ -3,6 +3,8 @@
 #include "imgui.h"
 #include "misc/cpp/imgui_stdlib.h"
 
+#include "utilities/utilities_file_dialog.hpp"
+
 using namespace dvsku_toolkit;
 
 comp_view_decrypt::comp_view_decrypt(components_bundle& components) 
@@ -25,7 +27,7 @@ void comp_view_decrypt::render() {
 
     ImGui::SameLine(0.0f, 5.0f);
     if (ImGui::Button("Select##InputDecrypt", { 125, 20 })) {
-
+        file_dialog::select_folder(m_input);
     }
 
     ImGui::Dummy({ 0.0f, 3.0f });
@@ -48,7 +50,7 @@ void comp_view_decrypt::render() {
 
     ImGui::SameLine(0.0f, 5.0f);
     if (ImGui::Button("Select##OutputDecrypt", { 125, 20 })) {
-
+        file_dialog::select_folder(m_output);
     }
 
     if (!m_decrypt_to_dir)

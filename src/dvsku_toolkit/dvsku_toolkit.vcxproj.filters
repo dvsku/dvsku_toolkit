@@ -56,6 +56,9 @@
     <ClInclude Include="components\comp_view_decrypt.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="utilities\utilities_file_dialog.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\appicon.ico">

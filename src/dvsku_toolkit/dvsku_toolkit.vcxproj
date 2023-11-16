@@ -182,6 +182,7 @@
     <ClInclude Include="fonts\font_roboto.hpp" />
     <ClInclude Include="resources\resource.h" />
     <ClInclude Include="systems\systems_bundle.hpp" />
+    <ClInclude Include="utilities\utilities_file_dialog.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\appicon.ico" />

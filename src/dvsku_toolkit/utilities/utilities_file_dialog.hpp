@@ -8,18 +8,18 @@
 #include <shlwapi.h>
 #include <string>
 
-#include "definitions.h"
-
 #pragma comment(lib,"comctl32.lib") 
 #pragma comment(lib,"propsys.lib")
 #pragma comment(lib,"shlwapi.lib") 
 
-namespace dvsku::toolkit::utilities {
+#define FILE_PATH_MAX 4096
+
+namespace dvsku_toolkit {
     class file_dialog {
         private:
             static constexpr COMDLG_FILTERSPEC c_rgTypes[] = {
-                {L"EVP File (*.evp)",       L"*.evp"},
-                {L"All Files (*.*)",        L"*.*"}
+                {L"EVP (*.evp)",        L"*.evp"},
+                {L"All files (*.*)",    L"*.*"}
             };
 
             class event_handler : public IFileDialogEvents, public IFileDialogControlEvents {
