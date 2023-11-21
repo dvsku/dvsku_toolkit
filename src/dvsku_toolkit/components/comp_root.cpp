@@ -2,6 +2,7 @@
 #include "components/components_bundle.hpp"
 
 #include "imgui.h"
+#include "fonts/font_fontawesome_solid.hpp"
 
 using namespace dvsku_toolkit;
 
@@ -15,10 +16,6 @@ void comp_root::render() {
     ImGui::SetNextWindowPos({ 0, 0 });
     ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize, ImGuiCond_Always);
     ImGui::Begin("Root##Window", 0, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-
-   //auto atlas = ImGui::GetIO().Fonts;
-
-    ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[1]);
 
     ImGui::BeginChild("TitleBar", { 0.0f, 25.0f });
 
@@ -65,8 +62,6 @@ void comp_root::render() {
     ImGui::PopStyleColor(5);
 
     ImGui::EndChild();
-
-    ImGui::PopFont();
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 10.0f, 0.0f });
 

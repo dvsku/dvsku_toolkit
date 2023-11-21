@@ -62,6 +62,9 @@
     <ClInclude Include="systems\sys_evp.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="fonts\font_fontawesome_solid.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\appicon.ico">

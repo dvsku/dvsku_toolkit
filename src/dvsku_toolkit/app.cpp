@@ -5,6 +5,7 @@
 #include "imgui_impl_opengl2.h"
 
 #include "fonts/font_roboto.hpp"
+#include "fonts/font_fontawesome_solid.hpp"
 
 using namespace dvsku_toolkit;
 
@@ -42,8 +43,17 @@ app::app(uint32_t width, uint32_t height) : m_components(m_systems) {
     ImFontConfig config;
     config.FontDataOwnedByAtlas = false;
     config.GlyphExtraSpacing.x  = 1.0f;
+
+    // Add default font
     io.Fonts->AddFontFromMemoryTTF(ROBOTO_REGULAR, (int)ROBOTO_REGULAR_LEN, 14.0f, &config);
-    io.Fonts->AddFontFromMemoryTTF(ROBOTO_REGULAR, (int)ROBOTO_REGULAR_LEN, 16.0f, &config);
+    
+    // Add font awesome
+    config.MergeMode = true;
+    static const ImWchar icon_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
+    io.Fonts->AddFontFromMemoryTTF(FONTAWESOME_SOLID, (int)FONTAWESOME_SOLID_LEN, 14.0f, &config, icon_ranges);
+    
+    // Build fonts
+    io.Fonts->Build();
 
     // set theme to dark
     ImGui::StyleColorsDark();

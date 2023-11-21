@@ -179,6 +179,7 @@
     <ClInclude Include="components\comp_view_evp_unpack.hpp" />
     <ClInclude Include="components\comp_view_encrypt.hpp" />
     <ClInclude Include="components\comp_view_decrypt.hpp" />
+    <ClInclude Include="fonts\font_fontawesome_solid.hpp" />
     <ClInclude Include="fonts\font_roboto.hpp" />
     <ClInclude Include="resources\resource.h" />
     <ClInclude Include="systems\systems_bundle.hpp" />
