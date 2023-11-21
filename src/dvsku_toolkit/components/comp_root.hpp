@@ -10,6 +10,9 @@ namespace dvsku_toolkit {
 
     class comp_root {
     public:
+        bool is_working = false;
+
+    public:
         comp_root(components_bundle& components);
 
         void render();

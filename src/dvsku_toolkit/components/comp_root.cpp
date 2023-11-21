@@ -72,6 +72,9 @@ void comp_root::render() {
 
     ImGui::BeginChild("View");
 
+    if (is_working)
+        ImGui::BeginDisabled();
+
     if (ImGui::BeginTabBar("ViewTabs")) {
         if (ImGui::BeginTabItem("Pack##ViewTab")) {
             m_view_pack.render();
@@ -98,6 +101,9 @@ void comp_root::render() {
 
    /* ImGui::GetFont()->Scale = old_scaling;
     ImGui::PopFont();*/
+
+    if (is_working)
+        ImGui::EndDisabled();
 
     ImGui::EndChild();
 
