@@ -99,6 +99,9 @@ void comp_view_evp_pack::render() {
 
     ImGui::Dummy({ 0.0f, 10.0f });
 
+    if (m_components.view.is_working)
+        ImGui::EndDisabled();
+
     if (m_cancel)
         strcpy(m_progress_text, "Cancelled");
     else
@@ -118,21 +121,34 @@ void comp_view_evp_pack::render() {
 
     ImGui::SetCursorPosX((avail.x + 20.0f) / 2 - (125 / 2.0f));
 
-    if (!can_start())
+    bool cannot_start = !can_start();
+
+    if (cannot_start)
         ImGui::BeginDisabled();
 
-    if (ImGui::Button("Pack##Pack", { 125, 20 })) {
-        m_components.systems.evp.set_start_callback([&]() { handle_on_start(); });
-        m_components.systems.evp.set_finish_callback([&](bool success) { handle_on_finish(success); });
-        m_components.systems.evp.set_update_callback([&](float value) { handle_on_update(value); });
-        m_components.systems.evp.set_error_callback([&](const std::string& msg) { handle_on_error(msg); });
+    if (!m_components.view.is_working) {
+        if (ImGui::Button("Pack##Pack", { 125, 20 })) {
+            m_components.systems.evp.set_start_callback([&]() { handle_on_start(); });
+            m_components.systems.evp.set_finish_callback([&](bool success) { handle_on_finish(success); });
+            m_components.systems.evp.set_update_callback([&](float value) { handle_on_update(value); });
+            m_components.systems.evp.set_error_callback([&](const std::string& msg) { handle_on_error(msg); });
 
-        m_components.systems.evp.pack(m_input, m_output, m_filter, m_encrypt, m_key, m_iv);
+            m_components.systems.evp.set_cancel_token(&m_cancel);
+
+            m_components.systems.evp.pack(m_input, m_output, m_filter, m_encrypt, m_key, m_iv);
+        }
+    }
+    else {
+        if (ImGui::Button("Cancel##Pack", { 125, 20 })) {
+            m_cancel = true;
+        }
     }
 
-    if (!can_start())
+    if (cannot_start)
         ImGui::EndDisabled();
 
+    if (m_components.view.is_working)
+        ImGui::BeginDisabled();
 
     ImGui::Unindent(20.0f);
 
@@ -141,7 +157,7 @@ void comp_view_evp_pack::render() {
 }
 
 bool comp_view_evp_pack::can_start() {
-    bool result = !m_input.empty() && !m_output.empty();
+    bool result = !m_input.empty() && !m_output.empty() && !m_cancel;
 
     if (m_encrypt)
         result = result && !m_key.empty();
