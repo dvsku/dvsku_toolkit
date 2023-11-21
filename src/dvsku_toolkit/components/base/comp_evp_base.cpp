@@ -14,16 +14,16 @@ void comp_evp_base::handle_on_start() {
     m_progress = 0.0f;
 }
 
-void comp_evp_base::handle_on_finish(evp_result result) {
-    if (result.status == evp_result::e_status::ok) {
+void comp_evp_base::handle_on_finish(bool success) {
+    if (success) {
         m_progress = 100.0f;
         m_input    = "";
         m_output   = "";
         m_key      = "";
     }
-    else if (result.status == evp_result::e_status::cancelled) {
+    else {
         m_progress = 0.0f;
-    }       
+    }
 
     //GUI.set_disabled(false);
     //GUI.set_taskbar_status(TBPF_NOPROGRESS);
@@ -36,7 +36,7 @@ void comp_evp_base::handle_on_update(float progress) {
     /*GUI.set_taskbar_progress(m_progress);*/
 }
 
-void comp_evp_base::handle_on_error(evp_result result) {
+void comp_evp_base::handle_on_error(const std::string& msg) {
     /*GUI.set_disabled(false);
     GUI.set_taskbar_status(TBPF_ERROR);
     PlaySound((LPCTSTR)SND_ALIAS_SYSTEMHAND, NULL, SND_ALIAS_ID | SND_SYSTEM | SND_ASYNC);*/

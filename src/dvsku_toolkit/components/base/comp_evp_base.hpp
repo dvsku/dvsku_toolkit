@@ -15,9 +15,9 @@ namespace dvsku_toolkit {
         virtual void render() = 0;
 
         void handle_on_start();
-        void handle_on_finish(libevp::evp_result result);
+        void handle_on_finish(bool success);
         void handle_on_update(float progress);
-        void handle_on_error(libevp::evp_result result);
+        void handle_on_error(const std::string& msg);
 
     protected:
         components_bundle& m_components;
