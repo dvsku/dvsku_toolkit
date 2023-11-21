@@ -11,7 +11,6 @@ comp_view_encrypt::comp_view_encrypt(components_bundle& components)
     : comp_crypt_base(components) {}
 
 void comp_view_encrypt::render() {
-    //ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 15.0f, 15.0f });
     ImGui::PushStyleColor(ImGuiCol_FrameBg, 0xFF2E2E2E);
 
     ImGui::Indent(20.0f);
@@ -73,8 +72,6 @@ void comp_view_encrypt::render() {
     ImGui::SameLine(0.0f, 8.0f);
     ImGui::Text("(0 - 255)");
 
-    //ImGui::PushStyleColor(ImGuiCol_PlotHistogram, 0xFF774F2D);
-
     ImGui::Dummy({ 0.0f, 5.0f });
 
     ImGui::Indent(3.0f);
@@ -99,13 +96,8 @@ void comp_view_encrypt::render() {
 
     ImGui::Dummy({ 0.0f, 10.0f });
 
-    if (m_cancel)
-        strcpy(m_progress_text, "Cancelled");
-    else
-        sprintf(m_progress_text, "%.2f%c", m_progress, '%');
-
     ImGui::SetNextItemWidth(-20.0f);
-    ImGui::ProgressBar(m_progress + 0.5f, ImVec2(0.0f, 0.0f), m_progress_text);
+    ImGui::ProgressBar(m_progress / 100, ImVec2(0.0f, 0.0f), m_progress_text);
 
     ImGui::Dummy({ 0.0f, 5.0f });
 
@@ -122,11 +114,8 @@ void comp_view_encrypt::render() {
     if (!can_start())
         ImGui::EndDisabled();
 
-    //ImGui::PopStyleColor();
-
     ImGui::Unindent(20.0f);
 
-    //ImGui::PopStyleVar();
     ImGui::PopStyleColor();
 }
 

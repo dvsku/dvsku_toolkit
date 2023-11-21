@@ -13,9 +13,6 @@ comp_view_evp_pack::comp_view_evp_pack(components_bundle& components)
     : comp_evp_base(components) {}
 
 void comp_view_evp_pack::render() {
-    //ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 15.0f, 15.0f });
-    ImGui::PushStyleColor(ImGuiCol_FrameBg, 0xFF2E2E2E);
-
     ImGui::Indent(20.0f);
 
     ImGui::Dummy({ 0.0f, 5.0f });
@@ -102,17 +99,13 @@ void comp_view_evp_pack::render() {
     if (m_components.view.is_working)
         ImGui::EndDisabled();
 
-    if (m_cancel)
-        strcpy(m_progress_text, "Cancelled");
+    /*if (m_cancel)
+        sprintf(m_progress_text, "Cancelled");
     else
-        sprintf(m_progress_text, "%.2f%c", m_progress, '%');
-
-    //ImGui::PushStyleColor(ImGuiCol_PlotHistogram, 0xFF8EB99E);
+        sprintf(m_progress_text, "%.2f%c", m_progress, '%');*/
 
     ImGui::SetNextItemWidth(-20.0f);
-    ImGui::ProgressBar(m_progress, ImVec2(0.0f, 0.0f), m_progress_text);
-
-    //ImGui::PopStyleColor();
+    ImGui::ProgressBar(m_progress / 100, ImVec2(0.0f, 0.0f), m_progress_text);
 
     ImGui::Dummy({ 0.0f, 5.0f });
 
@@ -149,9 +142,6 @@ void comp_view_evp_pack::render() {
         ImGui::BeginDisabled();
 
     ImGui::Unindent(20.0f);
-
-    //ImGui::PopStyleVar();
-    ImGui::PopStyleColor();
 }
 
 bool comp_view_evp_pack::can_start() {
