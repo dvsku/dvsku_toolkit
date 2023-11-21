@@ -1,5 +1,6 @@
 #include "components/comp_view_evp_pack.hpp"
 #include "components/components_bundle.hpp"
+#include "systems/systems_bundle.hpp"
 
 #include "imgui.h"
 #include "misc/cpp/imgui_stdlib.h"
@@ -119,7 +120,12 @@ void comp_view_evp_pack::render() {
         ImGui::BeginDisabled();
 
     if (ImGui::Button("Pack##Pack", { 125, 20 })) {
+        m_components.systems.evp.set_start_callback([&]() { handle_on_start(); });
+        m_components.systems.evp.set_finish_callback([&](bool success) { handle_on_finish(success); });
+        m_components.systems.evp.set_update_callback([&](float value) { handle_on_update(value); });
+        m_components.systems.evp.set_error_callback([&](const std::string& msg) { handle_on_error(msg); });
 
+        m_components.systems.evp.pack(m_input, m_output, m_filter, m_encrypt, m_key, m_iv);
     }
 
     if (!can_start())
