@@ -24,10 +24,5 @@ namespace dvsku_toolkit {
         comp_view_evp_unpack m_view_unpack;
         comp_view_encrypt    m_view_encrypt;
         comp_view_decrypt    m_view_decrypt;
-
-        bool m_hovered_minimize = false;
-        bool m_hovered_close    = false;
-        bool m_active_minimize  = false;
-        bool m_active_close     = false;
     };
 }

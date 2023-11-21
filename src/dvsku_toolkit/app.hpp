@@ -24,6 +24,11 @@ namespace dvsku_toolkit {
         systems_bundle m_systems;
         components_bundle m_components;
 
+        bool m_hovered_minimize = false;
+        bool m_hovered_close    = false;
+        bool m_active_minimize  = false;
+        bool m_active_close     = false;
+
     private:
         void render();
     };
