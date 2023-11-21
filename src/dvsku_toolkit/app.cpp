@@ -125,6 +125,7 @@ void app::run() {
 
 void app::render() {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, 0xFF1F1F1F);
+    ImGui::PushStyleColor(ImGuiCol_FrameBg,  0xFF2E2E2E);
 
     ImGui::PushStyleColor(ImGuiCol_Button,        0xFFA8434F);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, 0xFFC64F5D);
@@ -224,7 +225,7 @@ void app::render() {
     // END ROOT
     ///////////////////////////////////////////////////////////////////////////
 
-    ImGui::PopStyleColor(12);
+    ImGui::PopStyleColor(13);
     ImGui::PopStyleVar();
 }
 
