@@ -75,8 +75,6 @@ void comp_view_evp_pack::render() {
     if (!m_encrypt)
         ImGui::EndDisabled();
 
-    //ImGui::PushStyleColor(ImGuiCol_PlotHistogram, 0xFF774F2D);
-
     ImGui::Dummy({ 0.0f, 5.0f });
 
     ImGui::Indent(3.0f);
@@ -106,8 +104,12 @@ void comp_view_evp_pack::render() {
     else
         sprintf(m_progress_text, "%.2f%c", m_progress, '%');
 
+    //ImGui::PushStyleColor(ImGuiCol_PlotHistogram, 0xFF8EB99E);
+
     ImGui::SetNextItemWidth(-20.0f);
-    ImGui::ProgressBar(m_progress + 0.5f, ImVec2(0.0f, 0.0f), m_progress_text);
+    ImGui::ProgressBar(m_progress, ImVec2(0.0f, 0.0f), m_progress_text);
+
+    //ImGui::PopStyleColor();
 
     ImGui::Dummy({ 0.0f, 5.0f });
 
@@ -131,7 +133,6 @@ void comp_view_evp_pack::render() {
     if (!can_start())
         ImGui::EndDisabled();
 
-    //ImGui::PopStyleColor();
 
     ImGui::Unindent(20.0f);
 
