@@ -29,7 +29,7 @@ namespace dvsku_toolkit {
         uint8_t m_iv = 0U;
 
         float m_progress          = 0.0f;
-        char  m_progress_text[12] = "";
+        char  m_progress_text[12] = "0.00%";
 
     protected:
         virtual bool can_start() = 0;

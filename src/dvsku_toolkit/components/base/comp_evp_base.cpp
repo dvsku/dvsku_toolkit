@@ -13,6 +13,7 @@ void comp_evp_base::handle_on_start() {
     //GUI.set_taskbar_status(TBPF_NORMAL);
     //GUI.set_taskbar_progress(0.0f);
     m_progress = 0.0f;
+    sprintf(m_progress_text, "%.2f%c", m_progress, '%');
 }
 
 void comp_evp_base::handle_on_finish(bool success) {
@@ -21,9 +22,13 @@ void comp_evp_base::handle_on_finish(bool success) {
         m_input    = "";
         m_output   = "";
         m_key      = "";
+
+        sprintf(m_progress_text, "%.2f%c", m_progress, '%');
     }
     else {
         m_progress = 0.0f;
+
+        sprintf(m_progress_text, "Cancelled");
     }
 
     m_cancel                     = false;
@@ -37,6 +42,7 @@ void comp_evp_base::handle_on_finish(bool success) {
 
 void comp_evp_base::handle_on_update(float progress) {
     m_progress += progress;
+    sprintf(m_progress_text, "%.2f%c", m_progress, '%');
     /*GUI.set_taskbar_progress(m_progress);*/
 }
 
