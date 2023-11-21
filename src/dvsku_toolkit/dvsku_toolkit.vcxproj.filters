@@ -59,6 +59,9 @@
     <ClInclude Include="utilities\utilities_file_dialog.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="systems\sys_evp.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\appicon.ico">
@@ -100,6 +103,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="components\comp_view_decrypt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="systems\sys_evp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
