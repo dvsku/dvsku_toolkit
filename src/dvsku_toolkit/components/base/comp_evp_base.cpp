@@ -2,7 +2,6 @@
 #include "components/components_bundle.hpp"
 
 using namespace dvsku_toolkit;
-using namespace libevp;
 
 comp_evp_base::comp_evp_base(components_bundle& components)
     : m_components(components) {}
