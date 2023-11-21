@@ -8,12 +8,12 @@
 namespace dvsku_toolkit {
     class components_bundle;
 
-    class comp_root {
+    class comp_view {
     public:
         bool is_working = false;
 
     public:
-        comp_root(components_bundle& components);
+        comp_view(components_bundle& components);
 
         void render();
 

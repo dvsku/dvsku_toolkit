@@ -32,7 +32,7 @@
     <ClInclude Include="components\components_bundle.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="components\comp_root.hpp">
+    <ClInclude Include="components\comp_view.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="systems\systems_bundle.hpp">
@@ -87,7 +87,7 @@
     <ClCompile Include="components\components_bundle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="components\comp_root.cpp">
+    <ClCompile Include="components\comp_view.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="systems\systems_bundle.cpp">

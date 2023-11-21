@@ -174,7 +174,7 @@
     <ClInclude Include="components\components_bundle.hpp" />
     <ClInclude Include="components\base\comp_evp_base.hpp" />
     <ClInclude Include="components\base\comp_crypt_base.hpp" />
-    <ClInclude Include="components\comp_root.hpp" />
+    <ClInclude Include="components\comp_view.hpp" />
     <ClInclude Include="components\comp_view_evp_pack.hpp" />
     <ClInclude Include="components\comp_view_evp_unpack.hpp" />
     <ClInclude Include="components\comp_view_encrypt.hpp" />
@@ -197,7 +197,7 @@
     <ClCompile Include="components\components_bundle.cpp" />
     <ClCompile Include="components\base\comp_evp_base.cpp" />
     <ClCompile Include="components\base\comp_crypt_base.cpp" />
-    <ClCompile Include="components\comp_root.cpp" />
+    <ClCompile Include="components\comp_view.cpp" />
     <ClCompile Include="components\comp_view_evp_pack.cpp" />
     <ClCompile Include="components\comp_view_evp_unpack.cpp" />
     <ClCompile Include="components\comp_view_encrypt.cpp" />

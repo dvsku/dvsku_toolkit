@@ -1,4 +1,4 @@
-#include "components/comp_root.hpp"
+#include "components/comp_view.hpp"
 #include "components/components_bundle.hpp"
 
 #include "imgui.h"
@@ -6,11 +6,11 @@
 
 using namespace dvsku_toolkit;
 
-comp_root::comp_root(components_bundle& components)
+comp_view::comp_view(components_bundle& components)
     : m_components(components), m_view_pack(components), m_view_unpack(components),
       m_view_encrypt(components), m_view_decrypt(components) {}
 
-void comp_root::render() {
+void comp_view::render() {
     if (is_working)
         ImGui::BeginDisabled();
 
