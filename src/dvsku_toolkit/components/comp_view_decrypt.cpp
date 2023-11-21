@@ -87,10 +87,8 @@ void comp_view_decrypt::render() {
 
     ImGui::Dummy({ 0.0f, 5.0f });
 
-    ImVec2 avail = ImGui::GetContentRegionAvail();
-    float new_x = avail.x - ImGui::GetCursorPosX();
-
-    ImGui::SetCursorPosX((avail.x + 20.0f) / 2 - (125 / 2.0f));
+    ImVec2 avail = ImGui::GetContentRegionMax();
+    ImGui::SetCursorPosX((avail.x) / 2 - (125 / 2.0f));
 
     if (!can_start())
         ImGui::BeginDisabled();
