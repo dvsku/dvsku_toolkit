@@ -95,6 +95,10 @@ app::~app() {
 }
 
 void app::run() {
+    int fb_w, fb_h;
+    glfwGetFramebufferSize(m_window, &fb_w, &fb_h);
+    glViewport(0, 0, fb_w, fb_h);
+
     while (!glfwWindowShouldClose(m_window)) {
         glfwPollEvents();
 
@@ -108,11 +112,6 @@ void app::run() {
 
         ImGui::Render();
 
-        int display_w, display_h;
-        glfwGetFramebufferSize(m_window, &display_w, &display_h);
-        glViewport(0, 0, display_w, display_h);
-
-        glClearColor(0.45f * 1.00f, 0.55f * 1.00f, 0.60f * 1.00f, 1.00f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
