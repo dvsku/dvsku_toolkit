@@ -158,7 +158,7 @@ void app::render() {
     ImGui::SetCursorPosX(ImGui::GetCursorPosX() + avail.x - 45.0f);
     ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 3.0f);
     if (ImGui::Button(ICON_FA_MINUS"##MinimizeButton", { 20.0f, 15.0f })) {
-
+        glfwIconifyWindow(m_window);
     }
 
     m_hovered_minimize = ImGui::IsItemHovered();
@@ -173,7 +173,7 @@ void app::render() {
 
     ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 3.0f);
     if (ImGui::Button(ICON_FA_XMARK"##CloseButton", { 20.0f, 15.0f })) {
-
+        glfwSetWindowShouldClose(m_window, 1);
     }
 
     m_hovered_close = ImGui::IsItemHovered();
