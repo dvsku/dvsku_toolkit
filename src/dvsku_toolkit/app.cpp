@@ -127,6 +127,22 @@ void app::run() {
 void app::render() {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, 0xFF1F1F1F);
 
+    ImGui::PushStyleColor(ImGuiCol_Button,        0xFFA8434F);
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, 0xFFC64F5D);
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  0xFF84353E);
+
+    ImGui::PushStyleColor(ImGuiCol_Tab,                0xFFA8434F);
+    ImGui::PushStyleColor(ImGuiCol_TabHovered,         0xFFC64F5D);
+    ImGui::PushStyleColor(ImGuiCol_TabActive,          0xFF84353E);
+    ImGui::PushStyleColor(ImGuiCol_TabUnfocused,       0xFFC64F5D);
+    ImGui::PushStyleColor(ImGuiCol_TabUnfocusedActive, 0xFF84353E);
+
+    ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, 0x88A8434F);
+    ImGui::PushStyleColor(ImGuiCol_CheckMark,      0xFFC64F5D);
+    ImGui::PushStyleColor(ImGuiCol_PlotHistogram,  0x88A8434F);
+
+    ImGui::PushStyleVar(ImGuiStyleVar_TabRounding, 0.0f);
+
     ///////////////////////////////////////////////////////////////////////////
     // BEGIN ROOT WINDOW
 
@@ -189,7 +205,7 @@ void app::render() {
     ///////////////////////////////////////////////////////////////////////////
     // BEGIN VIEW
 
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 10.0f, 0.0f });
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 10.0f, 4.0f });
 
     ImGui::BeginChild("View", { 0.0f , 0.0f }, false, ImGuiWindowFlags_AlwaysUseWindowPadding);
 
@@ -207,5 +223,6 @@ void app::render() {
     // END ROOT
     ///////////////////////////////////////////////////////////////////////////
 
-    ImGui::PopStyleColor();
+    ImGui::PopStyleColor(12);
+    ImGui::PopStyleVar();
 }

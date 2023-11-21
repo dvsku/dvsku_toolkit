@@ -15,6 +15,8 @@ void comp_view::render() {
         ImGui::BeginDisabled();
 
     if (ImGui::BeginTabBar("ViewTabs")) {
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 10.0f, 3.0f });
+
         if (ImGui::BeginTabItem("Pack##ViewTab")) {
             m_view_pack.render();
             ImGui::EndTabItem();
@@ -34,6 +36,8 @@ void comp_view::render() {
             m_view_decrypt.render();
             ImGui::EndTabItem();
         }
+
+        ImGui::PopStyleVar();
 
         ImGui::EndTabBar();
     }
