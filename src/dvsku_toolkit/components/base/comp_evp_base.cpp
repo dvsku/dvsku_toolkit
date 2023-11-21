@@ -7,6 +7,8 @@ comp_evp_base::comp_evp_base(components_bundle& components)
     : m_components(components) {}
 
 void comp_evp_base::handle_on_start() {
+    m_components.view.is_working = true;
+
     //GUI.set_disabled(true);
     //GUI.set_taskbar_status(TBPF_NORMAL);
     //GUI.set_taskbar_progress(0.0f);
@@ -23,6 +25,9 @@ void comp_evp_base::handle_on_finish(bool success) {
     else {
         m_progress = 0.0f;
     }
+
+    m_cancel                     = false;
+    m_components.view.is_working = false;
 
     //GUI.set_disabled(false);
     //GUI.set_taskbar_status(TBPF_NOPROGRESS);
