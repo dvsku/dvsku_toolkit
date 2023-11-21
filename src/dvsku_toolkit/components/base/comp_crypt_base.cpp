@@ -4,4 +4,4 @@
 using namespace dvsku_toolkit;
 
 comp_crypt_base::comp_crypt_base(components_bundle& components)
-    : m_components(components) {}
+    : comp_evp_base(components) {}
