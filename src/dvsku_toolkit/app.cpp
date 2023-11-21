@@ -98,7 +98,7 @@ void app::run() {
     while (!glfwWindowShouldClose(m_window)) {
         glfwPollEvents();
 
-        //handle_window_move();
+        on_window_move();
 
         ImGui_ImplOpenGL2_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -154,6 +154,8 @@ void app::render() {
     // BEGIN TITLEBAR
 
     ImGui::BeginChild("TitleBar", { 0.0f, 25.0f });
+
+    m_can_move = ImGui::IsWindowHovered();
 
     ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5.0f);
     ImGui::Text("dvsku toolkit");
@@ -225,4 +227,16 @@ void app::render() {
 
     ImGui::PopStyleColor(12);
     ImGui::PopStyleVar();
+}
+
+void app::on_window_move() {
+    if (!m_can_move) return;
+
+    ImGuiIO& io = ImGui::GetIO();
+    if (!io.MouseDown[0]) return;
+
+    tagPOINT point;
+    GetCursorPos(&point);
+
+    glfwSetWindowPos(m_window, point.x - (int)ceil(io.MouseClickedPos->x), point.y - (int)ceil(io.MouseClickedPos->y));
 }

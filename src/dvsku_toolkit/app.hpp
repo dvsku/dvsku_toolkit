@@ -29,7 +29,10 @@ namespace dvsku_toolkit {
         bool m_active_minimize  = false;
         bool m_active_close     = false;
 
+        bool m_can_move = false;
+
     private:
         void render();
+        void on_window_move();
     };
 }
