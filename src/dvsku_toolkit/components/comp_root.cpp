@@ -68,9 +68,9 @@ void comp_root::render() {
 
     ImGui::PopFont();
 
-    //ImGui::PushFont(ImGui::GetFont());
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 10.0f, 0.0f });
 
-    ImGui::BeginChild("View");
+    ImGui::BeginChild("View", { 0.0f , 0.0f}, false, ImGuiWindowFlags_AlwaysUseWindowPadding);
 
     if (is_working)
         ImGui::BeginDisabled();
@@ -99,8 +99,7 @@ void comp_root::render() {
         ImGui::EndTabBar();
     }
 
-   /* ImGui::GetFont()->Scale = old_scaling;
-    ImGui::PopFont();*/
+    ImGui::PopStyleVar();
 
     if (is_working)
         ImGui::EndDisabled();
