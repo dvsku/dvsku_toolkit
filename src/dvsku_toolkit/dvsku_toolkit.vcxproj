@@ -184,6 +184,7 @@
     <ClInclude Include="resources\resource.h" />
     <ClInclude Include="systems\systems_bundle.hpp" />
     <ClInclude Include="systems\sys_evp.hpp" />
+    <ClInclude Include="systems\sys_crypt.hpp" />
     <ClInclude Include="utilities\utilities_file_dialog.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +206,7 @@
     <ClCompile Include="dvsku_toolkit_gui.cpp" />
     <ClCompile Include="systems\systems_bundle.cpp" />
     <ClCompile Include="systems\sys_evp.cpp" />
+    <ClCompile Include="systems\sys_crypt.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\lib_glfw\lib_glfw.vcxproj">
