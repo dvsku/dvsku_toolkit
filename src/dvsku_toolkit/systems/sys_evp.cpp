@@ -95,6 +95,10 @@ void sys_evp::unpack(const FILE_PATH& input, const FOLDER_PATH& output,
     );
 }
 
+std::vector<sys_evp::FILE_PATH> sys_evp::get_filtered_files(const FOLDER_PATH& input, int filter) {
+    return libevp::evp::get_filtered_files(input, static_cast<libevp::file_filter>(filter));
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // PRIVATE
 

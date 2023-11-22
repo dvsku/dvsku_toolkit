@@ -1,7 +1,7 @@
 #pragma once
 
 #include <functional>
-#include <string>
+#include <filesystem>
 
 namespace dvsku_toolkit {
     class systems_bundle;
@@ -15,8 +15,8 @@ namespace dvsku_toolkit {
 
         typedef bool* cancel_token;
 
-        typedef std::string FILE_PATH;
-        typedef std::string FOLDER_PATH;
+        typedef std::filesystem::path FILE_PATH;
+        typedef std::filesystem::path FOLDER_PATH;
     
     public:
         sys_evp() = delete;
@@ -34,6 +34,8 @@ namespace dvsku_toolkit {
 
         void unpack(const FILE_PATH& input, const FOLDER_PATH& output,
             bool decrypt = false, const std::string& key = "", uint8_t iv = 0);
+
+        std::vector<FILE_PATH> get_filtered_files(const FOLDER_PATH& input, int filter);
 
     private:
         systems_bundle& m_systems;
