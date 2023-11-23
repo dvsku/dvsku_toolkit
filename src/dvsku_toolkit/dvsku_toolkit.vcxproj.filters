@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resources\dvsku_toolkit_gui.rc">
+    <ResourceCompile Include="resources\dvsku_toolkit.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
@@ -81,7 +81,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="resources\dvsku_toolkit_gui.aps" />
+    <None Include="resources\dvsku_toolkit.aps" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dvsku_toolkit.cpp">

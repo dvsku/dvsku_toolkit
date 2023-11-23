@@ -167,7 +167,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ResourceCompile Include="resources\dvsku_toolkit_gui.rc" />
+    <ResourceCompile Include="resources\dvsku_toolkit.rc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app.hpp" />
@@ -193,7 +193,7 @@
     <Image Include="resources\appicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="resources\dvsku_toolkit_gui.aps" />
+    <None Include="resources\dvsku_toolkit.aps" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="app.cpp" />
