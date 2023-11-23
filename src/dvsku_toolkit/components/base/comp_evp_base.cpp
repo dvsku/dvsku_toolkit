@@ -38,7 +38,7 @@ void comp_evp_base::handle_on_finish(bool success) {
     m_components.systems.taskbar.set_status(TBPF_NOPROGRESS);
     m_components.systems.taskbar.set_progress(0.0f);
 
-    //PlaySound((LPCTSTR)SND_ALIAS_SYSTEMASTERISK, NULL, SND_ALIAS_ID | SND_SYSTEM | SND_ASYNC);
+    m_components.systems.sound.play_success_sound();
 }
 
 void comp_evp_base::handle_on_update(float progress) {
@@ -54,5 +54,5 @@ void comp_evp_base::handle_on_error(const std::string& msg) {
     m_components.systems.taskbar.set_status(TBPF_ERROR);
     m_components.systems.taskbar.set_progress(0.0f);
 
-    //PlaySound((LPCTSTR)SND_ALIAS_SYSTEMHAND, NULL, SND_ALIAS_ID | SND_SYSTEM | SND_ASYNC);
+    m_components.systems.sound.play_error_sound();
 }
