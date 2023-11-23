@@ -31,8 +31,11 @@ void sys_evp::set_cancel_token(cancel_token token) {
 void sys_evp::pack(const FOLDER_PATH& input, const FILE_PATH& output, int filter, 
     bool encrypt, const std::string& key, uint8_t iv) 
 {
-    //if (encrypt)
-        // set encrypt func
+    if (encrypt)
+        libevp::evp::do_buffer_processing([this, &key, iv](const std::filesystem::path& file, std::vector<uint8_t>& buffer) {
+            if (!m_systems.crypt.should_be_encrypted(file)) return;
+            m_systems.crypt.encrypt(buffer, key, iv);
+        });
 
     libevp::evp::pack_async(
         input,
@@ -65,8 +68,10 @@ void sys_evp::pack(const FOLDER_PATH& input, const FILE_PATH& output, int filter
 void sys_evp::unpack(const FILE_PATH& input, const FOLDER_PATH& output, 
     bool decrypt, const std::string& key, uint8_t iv) 
 {
-    //if (decrypt)
-        // set decrypt func
+    if (decrypt)
+        libevp::evp::do_buffer_processing([this, &key, iv](const std::filesystem::path& file, std::vector<uint8_t>& buffer) {
+            m_systems.crypt.decrypt(buffer, key, iv);
+        });
 
     libevp::evp::unpack_async(
         input,
