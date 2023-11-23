@@ -13,6 +13,8 @@ comp_view_evp_pack::comp_view_evp_pack(components_bundle& components)
     : comp_evp_base(components) {}
 
 void comp_view_evp_pack::render() {
+    ImGui::PushID("Pack");
+
     ImGui::Indent(20.0f);
 
     ImGui::Dummy({ 0.0f, 5.0f });
@@ -22,10 +24,10 @@ void comp_view_evp_pack::render() {
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-150.0f);
-    ImGui::InputText("##InputPack", &m_input, ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputText("##Input", &m_input, ImGuiInputTextFlags_ReadOnly);
 
     ImGui::SameLine(0.0f, 5.0f);
-    if (ImGui::Button("Select##InputPack", { 125, 20 })) {
+    if (ImGui::Button("Select##Input", { 125, 20 })) {
         file_dialog::select_folder(m_input);
     }
 
@@ -34,18 +36,16 @@ void comp_view_evp_pack::render() {
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-150.0f);
-    ImGui::InputText("##OutputPack", &m_output, ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputText("##Output", &m_output, ImGuiInputTextFlags_ReadOnly);
 
     ImGui::SameLine(0.0f, 5.0f);
-    if (ImGui::Button("Select##OutputPack", { 125, 20 })) {
+    if (ImGui::Button("Select##Output", { 125, 20 })) {
         file_dialog::save_file(m_output);
     }
 
     ImGui::Dummy({ 0.0f, 3.0f });
 
-    ImGui::Checkbox("##PackEncrypt", &m_encrypt);
-    ImGui::SameLine(0.0f, 8.0f);
-    ImGui::Text("Encrypt");
+    ImGui::Checkbox("Encrypt##EncryptCb", &m_encrypt);
 
     ImGui::Dummy({ 0.0f, 3.0f });
 
@@ -57,14 +57,14 @@ void comp_view_evp_pack::render() {
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-20.0f);
-    ImGui::InputText("##PackKey", &m_key);
+    ImGui::InputText("##Key", &m_key);
 
     ImGui::Indent(3.0f);
     ImGui::Text("IV");
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(120.0f);
-    ImGui::InputScalar("##PackIv", ImGuiDataType_U8, &m_iv);
+    ImGui::InputScalar("##Iv", ImGuiDataType_U8, &m_iv);
 
     ImGui::SameLine(0.0f, 8.0f);
     ImGui::Text("(0 - 255)");
@@ -80,17 +80,17 @@ void comp_view_evp_pack::render() {
 
     ImGui::Dummy({ 0.0f, 3.0f });
 
-    ImGui::RadioButton("any##PackFilter", &m_filter, 0);
+    ImGui::RadioButton("any##Filter", &m_filter, 0);
     if (ImGui::IsItemHovered())
         ImGui::SetTooltip("Pack all files from input");
 
     ImGui::SameLine(0.0f, 8.0f);
-    ImGui::RadioButton("client##PackFilter", &m_filter, 1);
+    ImGui::RadioButton("client##Filter", &m_filter, 1);
     if (ImGui::IsItemHovered())
         ImGui::SetTooltip("Pack only client files");
 
     ImGui::SameLine(0.0f, 8.0f);
-    ImGui::RadioButton("server##PackFilter", &m_filter, 2);
+    ImGui::RadioButton("server##Filter", &m_filter, 2);
     if (ImGui::IsItemHovered())
         ImGui::SetTooltip("Pack only server files");
 
@@ -113,7 +113,7 @@ void comp_view_evp_pack::render() {
         ImGui::BeginDisabled();
 
     if (!m_components.view.is_working) {
-        if (ImGui::Button("Pack##Pack", { 125, 20 })) {
+        if (ImGui::Button("Pack##Btn", { 125, 20 })) {
             m_components.systems.evp.set_start_callback([&]() { handle_on_start(); });
             m_components.systems.evp.set_finish_callback([&](bool success) { handle_on_finish(success); });
             m_components.systems.evp.set_update_callback([&](float value) { handle_on_update(value); });
@@ -125,7 +125,7 @@ void comp_view_evp_pack::render() {
         }
     }
     else {
-        if (ImGui::Button("Cancel##Pack", { 125, 20 })) {
+        if (ImGui::Button("Cancel##Btn", { 125, 20 })) {
             m_cancel = true;
         }
     }
@@ -137,6 +137,8 @@ void comp_view_evp_pack::render() {
         ImGui::BeginDisabled();
 
     ImGui::Unindent(20.0f);
+
+    ImGui::PopID();
 }
 
 bool comp_view_evp_pack::can_start() {

@@ -13,6 +13,8 @@ comp_view_evp_unpack::comp_view_evp_unpack(components_bundle& components)
     : comp_evp_base(components) {}
 
 void comp_view_evp_unpack::render() {
+    ImGui::PushID("Unpack");
+
     ImGui::Indent(20.0f);
 
     ImGui::Dummy({ 0.0f, 5.0f });
@@ -22,10 +24,10 @@ void comp_view_evp_unpack::render() {
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-150.0f);
-    ImGui::InputText("##InputUnpack", &m_input, ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputText("##Input", &m_input, ImGuiInputTextFlags_ReadOnly);
 
     ImGui::SameLine(0.0f, 5.0f);
-    if (ImGui::Button("Select##InputUnpack", { 125, 20 })) {
+    if (ImGui::Button("Select##Input", { 125, 20 })) {
         file_dialog::open_file(m_input);
     }
 
@@ -34,18 +36,16 @@ void comp_view_evp_unpack::render() {
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-150.0f);
-    ImGui::InputText("##OutputUnpack", &m_output, ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputText("##Output", &m_output, ImGuiInputTextFlags_ReadOnly);
 
     ImGui::SameLine(0.0f, 5.0f);
-    if (ImGui::Button("Select##OutputUnpack", { 125, 20 })) {
+    if (ImGui::Button("Select##Output", { 125, 20 })) {
         file_dialog::select_folder(m_output);
     }
 
     ImGui::Dummy({ 0.0f, 3.0f });
 
-    ImGui::Checkbox("##UnpackDecrypt", &m_decrypt);
-    ImGui::SameLine(0.0f, 8.0f);
-    ImGui::Text("Decrypt");
+    ImGui::Checkbox("Decrypt##DecryptCb", &m_decrypt);
 
     ImGui::Dummy({ 0.0f, 3.0f });
 
@@ -57,14 +57,14 @@ void comp_view_evp_unpack::render() {
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-20.0f);
-    ImGui::InputText("##UnpackKey", &m_key);
+    ImGui::InputText("##Key", &m_key);
 
     ImGui::Indent(3.0f);
     ImGui::Text("IV");
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(120.0f);
-    ImGui::InputScalar("##UnpackIv", ImGuiDataType_U8, &m_iv);
+    ImGui::InputScalar("##Iv", ImGuiDataType_U8, &m_iv);
 
     ImGui::SameLine(0.0f, 8.0f);
     ImGui::Text("(0 - 255)");
@@ -91,7 +91,7 @@ void comp_view_evp_unpack::render() {
         ImGui::BeginDisabled();
 
     if (!m_components.view.is_working) {
-        if (ImGui::Button("Unpack##Unpack", { 125, 20 })) {
+        if (ImGui::Button("Unpack##Btn", { 125, 20 })) {
             m_components.systems.evp.set_start_callback([&]() { handle_on_start(); });
             m_components.systems.evp.set_finish_callback([&](bool success) { handle_on_finish(success); });
             m_components.systems.evp.set_update_callback([&](float value) { handle_on_update(value); });
@@ -101,7 +101,7 @@ void comp_view_evp_unpack::render() {
         }
     }
     else {
-        if (ImGui::Button("Cancel##Unpack", { 125, 20 })) {
+        if (ImGui::Button("Cancel##Btn", { 125, 20 })) {
             m_cancel = true;
         }
     }
@@ -113,6 +113,8 @@ void comp_view_evp_unpack::render() {
         ImGui::BeginDisabled();
 
     ImGui::Unindent(20.0f);
+
+    ImGui::PopID();
 }
 
 bool comp_view_evp_unpack::can_start() {

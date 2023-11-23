@@ -13,6 +13,8 @@ comp_view_decrypt::comp_view_decrypt(components_bundle& components)
     : comp_crypt_base(components) {}
 
 void comp_view_decrypt::render() {
+    ImGui::PushID("Decrypt");
+
     ImGui::Indent(20.0f);
 
     ImGui::Dummy({ 0.0f, 5.0f });
@@ -22,18 +24,16 @@ void comp_view_decrypt::render() {
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-150.0f);
-    ImGui::InputText("##InputDecrypt", &m_input, ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputText("##Input", &m_input, ImGuiInputTextFlags_ReadOnly);
 
     ImGui::SameLine(0.0f, 5.0f);
-    if (ImGui::Button("Select##InputDecrypt", { 125, 20 })) {
+    if (ImGui::Button("Select##Input", { 125, 20 })) {
         file_dialog::select_folder(m_input);
     }
 
     ImGui::Dummy({ 0.0f, 3.0f });
 
-    ImGui::Checkbox("##DecryptToDir", &m_decrypt_to_dir);
-    ImGui::SameLine(0.0f, 8.0f);
-    ImGui::Text("Decrypt to folder");
+    ImGui::Checkbox("Decrypt to folder##ToDir", &m_decrypt_to_dir);
 
     ImGui::Dummy({ 0.0f, 3.0f });
 
@@ -45,10 +45,10 @@ void comp_view_decrypt::render() {
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-150.0f);
-    ImGui::InputText("##OutputDecrypt", &m_output, ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputText("##Output", &m_output, ImGuiInputTextFlags_ReadOnly);
 
     ImGui::SameLine(0.0f, 5.0f);
-    if (ImGui::Button("Select##OutputDecrypt", { 125, 20 })) {
+    if (ImGui::Button("Select##Output", { 125, 20 })) {
         file_dialog::select_folder(m_output);
     }
 
@@ -60,14 +60,14 @@ void comp_view_decrypt::render() {
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-20.0f);
-    ImGui::InputText("##DecryptKey", &m_key);
+    ImGui::InputText("##Key", &m_key);
 
     ImGui::Indent(3.0f);
     ImGui::Text("IV");
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(120.0f);
-    ImGui::InputScalar("##DecryptIv", ImGuiDataType_U8, &m_iv);
+    ImGui::InputScalar("##Iv", ImGuiDataType_U8, &m_iv);
 
     ImGui::SameLine(0.0f, 8.0f);
     ImGui::Text("(0 - 255)");
@@ -91,7 +91,7 @@ void comp_view_decrypt::render() {
         ImGui::BeginDisabled();
 
     if (!m_components.view.is_working) {
-        if (ImGui::Button("Decrypt##Decrypt", { 125, 20 })) {
+        if (ImGui::Button("Decrypt##Btn", { 125, 20 })) {
             m_components.systems.crypt.set_start_callback([&]() { handle_on_start(); });
             m_components.systems.crypt.set_finish_callback([&](bool success) { handle_on_finish(success); });
             m_components.systems.crypt.set_update_callback([&](float value) { handle_on_update(value); });
@@ -103,7 +103,7 @@ void comp_view_decrypt::render() {
         }
     }
     else {
-        if (ImGui::Button("Cancel##Decrypt", { 125, 20 })) {
+        if (ImGui::Button("Cancel##Btn", { 125, 20 })) {
             m_cancel = true;
         }
     }
@@ -115,6 +115,8 @@ void comp_view_decrypt::render() {
         ImGui::BeginDisabled();
 
     ImGui::Unindent(20.0f);
+
+    ImGui::PopID();
 }
 
 bool comp_view_decrypt::can_start() {

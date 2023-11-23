@@ -13,6 +13,8 @@ comp_view_encrypt::comp_view_encrypt(components_bundle& components)
     : comp_crypt_base(components) {}
 
 void comp_view_encrypt::render() {
+    ImGui::PushID("Encrypt");
+
     ImGui::Indent(20.0f);
 
     ImGui::Dummy({ 0.0f, 5.0f });
@@ -22,18 +24,16 @@ void comp_view_encrypt::render() {
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-150.0f);
-    ImGui::InputText("##InputEncrypt", &m_input, ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputText("##Input", &m_input, ImGuiInputTextFlags_ReadOnly);
 
     ImGui::SameLine(0.0f, 5.0f);
-    if (ImGui::Button("Select##InputEncrypt", { 125, 20 })) {
+    if (ImGui::Button("Select##Input", { 125, 20 })) {
         file_dialog::select_folder(m_input);
     }
 
     ImGui::Dummy({ 0.0f, 3.0f });
 
-    ImGui::Checkbox("##EncryptToDir", &m_encrypt_to_dir);
-    ImGui::SameLine(0.0f, 8.0f);
-    ImGui::Text("Encrypt to folder");
+    ImGui::Checkbox("Encrypt to folder##ToDir", &m_encrypt_to_dir);
 
     ImGui::Dummy({ 0.0f, 3.0f });
 
@@ -45,10 +45,10 @@ void comp_view_encrypt::render() {
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-150.0f);
-    ImGui::InputText("##OutputEncrypt", &m_output, ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputText("##Output", &m_output, ImGuiInputTextFlags_ReadOnly);
 
     ImGui::SameLine(0.0f, 5.0f);
-    if (ImGui::Button("Select##OutputEncrypt", { 125, 20 })) {
+    if (ImGui::Button("Select##Output", { 125, 20 })) {
         file_dialog::select_folder(m_output);
     }
 
@@ -60,14 +60,14 @@ void comp_view_encrypt::render() {
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-20.0f);
-    ImGui::InputText("##EncryptKey", &m_key);
+    ImGui::InputText("##Key", &m_key);
 
     ImGui::Indent(3.0f);
     ImGui::Text("IV");
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(120.0f);
-    ImGui::InputScalar("##EncryptIv", ImGuiDataType_U8, &m_iv);
+    ImGui::InputScalar("##Iv", ImGuiDataType_U8, &m_iv);
 
     ImGui::SameLine(0.0f, 8.0f);
     ImGui::Text("(0 - 255)");
@@ -80,17 +80,17 @@ void comp_view_encrypt::render() {
 
     ImGui::Dummy({ 0.0f, 3.0f });
 
-    ImGui::RadioButton("any##EncryptFilter", &m_filter, 0);
+    ImGui::RadioButton("any##Filter", &m_filter, 0);
     if (ImGui::IsItemHovered())
         ImGui::SetTooltip("Encrypt all files from input");
 
     ImGui::SameLine(0.0f, 8.0f);
-    ImGui::RadioButton("client##EncryptFilter", &m_filter, 1);
+    ImGui::RadioButton("client##Filter", &m_filter, 1);
     if (ImGui::IsItemHovered())
         ImGui::SetTooltip("Encrypt only client files");
 
     ImGui::SameLine(0.0f, 8.0f);
-    ImGui::RadioButton("server##EncryptFilter", &m_filter, 2);
+    ImGui::RadioButton("server##Filter", &m_filter, 2);
     if (ImGui::IsItemHovered())
         ImGui::SetTooltip("Encrypt only server files");
 
@@ -113,7 +113,7 @@ void comp_view_encrypt::render() {
         ImGui::BeginDisabled();
 
     if (!m_components.view.is_working) {
-        if (ImGui::Button("Encrypt##Encrypt", { 125, 20 })) {
+        if (ImGui::Button("Encrypt##Btn", { 125, 20 })) {
             m_components.systems.crypt.set_start_callback([&]() { handle_on_start(); });
             m_components.systems.crypt.set_finish_callback([&](bool success) { handle_on_finish(success); });
             m_components.systems.crypt.set_update_callback([&](float value) { handle_on_update(value); });
@@ -125,7 +125,7 @@ void comp_view_encrypt::render() {
         }
     }
     else {
-        if (ImGui::Button("Cancel##Encrypt", { 125, 20 })) {
+        if (ImGui::Button("Cancel##Btn", { 125, 20 })) {
             m_cancel = true;
         }
     }
@@ -137,6 +137,8 @@ void comp_view_encrypt::render() {
         ImGui::BeginDisabled();
 
     ImGui::Unindent(20.0f);
+
+    ImGui::PopID();
 }
 
 bool comp_view_encrypt::can_start() {
