@@ -101,7 +101,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\lib\libevp;$(SolutionDir)..\lib\libdvsku_crypt;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevp_smtd.lib;libdvsku_crypt_mtd.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libevp_smtd.lib;libdvsku_crypt_mtd.lib;opengl32.lib;%(AdditionalDependencies);winmm.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -123,7 +123,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\lib\libevp;$(SolutionDir)..\lib\libdvsku_crypt;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevp_smt.lib;libdvsku_crypt_mt.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libevp_smt.lib;libdvsku_crypt_mt.lib;opengl32.lib;%(AdditionalDependencies);winmm.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -141,7 +141,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\lib\libevp;$(SolutionDir)..\lib\libdvsku_crypt;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevp_smtd.lib;libdvsku_crypt_mtd.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libevp_smtd.lib;libdvsku_crypt_mtd.lib;opengl32.lib;%(AdditionalDependencies);winmm.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -163,7 +163,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\lib\libevp;$(SolutionDir)..\lib\libdvsku_crypt;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevp_smt.lib;libdvsku_crypt_mt.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libevp_smt.lib;libdvsku_crypt_mt.lib;opengl32.lib;%(AdditionalDependencies);winmm.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -186,6 +186,7 @@
     <ClInclude Include="systems\sys_evp.hpp" />
     <ClInclude Include="systems\sys_crypt.hpp" />
     <ClInclude Include="systems\sys_taskbar.hpp" />
+    <ClInclude Include="systems\sys_sound.hpp" />
     <ClInclude Include="utilities\utilities_file_dialog.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +210,7 @@
     <ClCompile Include="systems\sys_evp.cpp" />
     <ClCompile Include="systems\sys_crypt.cpp" />
     <ClCompile Include="systems\sys_taskbar.cpp" />
+    <ClCompile Include="systems\sys_sound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\lib_glfw\lib_glfw.vcxproj">
