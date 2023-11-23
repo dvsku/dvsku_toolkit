@@ -57,7 +57,7 @@ void sys_crypt::encrypt(const FOLDER_PATH& input, const FOLDER_PATH& output, int
             }
 
             // Only check when there is no filter
-            if (!filter && !should_be_encrypted(file) )
+            if (filter != 0 && !should_be_encrypted(file))
                 continue;
 
             std::filesystem::path output_path = output.empty() ? "" : construct_output_path(file, input, output);
