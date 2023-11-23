@@ -205,7 +205,7 @@
     <ClCompile Include="components\comp_view_evp_unpack.cpp" />
     <ClCompile Include="components\comp_view_encrypt.cpp" />
     <ClCompile Include="components\comp_view_decrypt.cpp" />
-    <ClCompile Include="dvsku_toolkit_gui.cpp" />
+    <ClCompile Include="dvsku_toolkit.cpp" />
     <ClCompile Include="systems\systems_bundle.cpp" />
     <ClCompile Include="systems\sys_evp.cpp" />
     <ClCompile Include="systems\sys_crypt.cpp" />

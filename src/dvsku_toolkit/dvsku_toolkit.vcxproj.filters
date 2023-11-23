@@ -84,7 +84,7 @@
     <None Include="resources\dvsku_toolkit_gui.aps" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dvsku_toolkit_gui.cpp">
+    <ClCompile Include="dvsku_toolkit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="components\base\comp_evp_base.cpp">
