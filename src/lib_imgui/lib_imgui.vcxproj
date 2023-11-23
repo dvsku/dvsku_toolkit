@@ -160,14 +160,6 @@
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="misc\cpp\imgui_stdlib.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <Font Include="misc\fonts\Cousine-Regular.ttf" />
-    <Font Include="misc\fonts\DroidSans.ttf" />
-    <Font Include="misc\fonts\Karla-Regular.ttf" />
-    <Font Include="misc\fonts\ProggyClean.ttf" />
-    <Font Include="misc\fonts\ProggyTiny.ttf" />
-    <Font Include="misc\fonts\Roboto-Medium.ttf" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
