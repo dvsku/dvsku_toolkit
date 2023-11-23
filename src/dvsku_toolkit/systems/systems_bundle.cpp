@@ -3,4 +3,4 @@
 using namespace dvsku_toolkit;
 
 systems_bundle::systems_bundle() 
-    : evp(*this), crypt(*this) {}
+    : evp(*this), crypt(*this), taskbar(*this) {}
