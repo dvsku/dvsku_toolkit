@@ -42,7 +42,8 @@ void sys_crypt::encrypt(const FOLDER_PATH& input, const FOLDER_PATH& output, int
         if (m_start_callback)
             m_start_callback();
 
-        libdvsku::crypt::libdvsku_crypt crypt(key.c_str(), iv);
+        libdvsku::crypt::libdvsku_crypt::set_key(key.c_str());
+        libdvsku::crypt::libdvsku_crypt::set_iv(iv);
 
         auto  files       = m_systems.evp.get_filtered_files(input, filter);
         float prog_change = 100.0f / files.size();
@@ -61,7 +62,7 @@ void sys_crypt::encrypt(const FOLDER_PATH& input, const FOLDER_PATH& output, int
 
             std::filesystem::path output_path = output.empty() ? "" : construct_output_path(file, input, output);
 
-            crypt.encrypt_file(file, output_path);
+            libdvsku::crypt::libdvsku_crypt::encrypt_file(file, output_path);
 
             if (m_update_callback)
                 m_update_callback(prog_change);
@@ -76,8 +77,9 @@ void sys_crypt::encrypt(const FOLDER_PATH& input, const FOLDER_PATH& output, int
 }
 
 void sys_crypt::encrypt(BUFFER& buffer, const std::string& key, uint8_t iv) {
-    libdvsku::crypt::libdvsku_crypt crypt(key.c_str(), iv);
-    crypt.encrypt_buffer(buffer);
+    libdvsku::crypt::libdvsku_crypt::set_key(key.c_str());
+    libdvsku::crypt::libdvsku_crypt::set_iv(iv);
+    libdvsku::crypt::libdvsku_crypt::encrypt_buffer(buffer);
 }
 
 void sys_crypt::decrypt(const FOLDER_PATH& input, const FOLDER_PATH& output, const std::string& key, uint8_t iv) {
@@ -85,7 +87,8 @@ void sys_crypt::decrypt(const FOLDER_PATH& input, const FOLDER_PATH& output, con
         if (m_start_callback)
             m_start_callback();
 
-        libdvsku::crypt::libdvsku_crypt crypt(key.c_str(), iv);
+        libdvsku::crypt::libdvsku_crypt::set_key(key.c_str());
+        libdvsku::crypt::libdvsku_crypt::set_iv(iv);
 
         auto  files       = m_systems.evp.get_filtered_files(input, 0);
         float prog_change = 100.0f / files.size();
@@ -100,7 +103,7 @@ void sys_crypt::decrypt(const FOLDER_PATH& input, const FOLDER_PATH& output, con
 
             std::filesystem::path output_path = output.empty() ? "" : construct_output_path(file, input, output);
 
-            crypt.decrypt_file(file, output_path);
+            libdvsku::crypt::libdvsku_crypt::decrypt_file(file, output_path);
 
             if (m_update_callback)
                 m_update_callback(prog_change);
@@ -115,8 +118,9 @@ void sys_crypt::decrypt(const FOLDER_PATH& input, const FOLDER_PATH& output, con
 }
 
 void sys_crypt::decrypt(BUFFER& buffer, const std::string& key, uint8_t iv) {
-    libdvsku::crypt::libdvsku_crypt crypt(key.c_str(), iv);
-    crypt.decrypt_buffer(buffer);
+    libdvsku::crypt::libdvsku_crypt::set_key(key.c_str());
+    libdvsku::crypt::libdvsku_crypt::set_iv(iv);
+    libdvsku::crypt::libdvsku_crypt::decrypt_buffer(buffer);
 }
 
 bool sys_crypt::should_be_encrypted(const FILE_PATH& file) {
