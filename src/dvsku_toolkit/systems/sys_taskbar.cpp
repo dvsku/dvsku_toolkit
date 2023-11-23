@@ -12,6 +12,10 @@ sys_taskbar::sys_taskbar(systems_bundle& systems)
     : m_systems(systems) {}
 
 void sys_taskbar::prepare() {
+    if ((*m_systems.window))
+        SetClassLongPtr(glfwGetWin32Window(*m_systems.window), GCLP_HICON, 
+            (LONG_PTR)LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(101)));
+
     if (!IsWindows7OrGreater()) return;
 
     HRESULT result = CoInitialize(NULL);

@@ -22,12 +22,10 @@ app::app(uint32_t width, uint32_t height) : m_components(m_systems) {
     // create window
     m_window = glfwCreateWindow(width, height, "dvsku toolkit", NULL, NULL);
 
-    if (m_window == NULL) return;
+    if (m_window == NULL) 
+        return;
 
     m_systems.window = &m_window;
-
-    // set taskbar icon
-    SetClassLongPtr(glfwGetWin32Window(m_window), GCLP_HICON, (LONG_PTR)LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(101)));
 
     glfwMakeContextCurrent(m_window);
     glfwSwapInterval(1);				// enable vsync
