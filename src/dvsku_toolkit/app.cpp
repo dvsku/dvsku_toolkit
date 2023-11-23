@@ -24,6 +24,8 @@ app::app(uint32_t width, uint32_t height) : m_components(m_systems) {
 
     if (m_window == NULL) return;
 
+    m_systems.window = &m_window;
+
     // set taskbar icon
     SetClassLongPtr(glfwGetWin32Window(m_window), GCLP_HICON, (LONG_PTR)LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(101)));
 
@@ -62,6 +64,8 @@ app::app(uint32_t width, uint32_t height) : m_components(m_systems) {
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     ImGui_ImplOpenGL2_Init();
 
+    m_systems.taskbar.prepare();
+
     //if (!IsWindows7OrGreater()) return;
 
     //HRESULT result = CoInitialize(NULL);
@@ -81,16 +85,12 @@ app::app(uint32_t width, uint32_t height) : m_components(m_systems) {
 }
 
 app::~app() {
+    m_systems.taskbar.release();
+
     ImGui_ImplOpenGL2_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
-    /*if (m_taskbar == nullptr) return;
-
-    m_taskbar->Release();
-    m_taskbar = nullptr;*/
-
-    
     glfwTerminate();
 }
 

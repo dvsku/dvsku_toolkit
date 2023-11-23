@@ -2,8 +2,6 @@
 
 #include <windows.h>
 
-#define GLFW_EXPOSE_NATIVE_WIN32
-
 #include "imgui.h"
 #include "glfw/glfw3.h"
 
