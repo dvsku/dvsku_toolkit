@@ -13,8 +13,6 @@ comp_view_encrypt::comp_view_encrypt(components_bundle& components)
     : comp_crypt_base(components) {}
 
 void comp_view_encrypt::render() {
-    ImGui::PushStyleColor(ImGuiCol_FrameBg, 0xFF2E2E2E);
-
     ImGui::Indent(20.0f);
 
     ImGui::Dummy({ 0.0f, 5.0f });
@@ -127,7 +125,7 @@ void comp_view_encrypt::render() {
         }
     }
     else {
-        if (ImGui::Button("Cancel##Pack", { 125, 20 })) {
+        if (ImGui::Button("Cancel##Encrypt", { 125, 20 })) {
             m_cancel = true;
         }
     }
@@ -139,8 +137,6 @@ void comp_view_encrypt::render() {
         ImGui::BeginDisabled();
 
     ImGui::Unindent(20.0f);
-
-    ImGui::PopStyleColor();
 }
 
 bool comp_view_encrypt::can_start() {

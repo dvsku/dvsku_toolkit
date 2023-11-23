@@ -13,8 +13,6 @@ comp_view_decrypt::comp_view_decrypt(components_bundle& components)
     : comp_crypt_base(components) {}
 
 void comp_view_decrypt::render() {
-    ImGui::PushStyleColor(ImGuiCol_FrameBg, 0xFF2E2E2E);
-
     ImGui::Indent(20.0f);
 
     ImGui::Dummy({ 0.0f, 5.0f });
@@ -116,7 +114,7 @@ void comp_view_decrypt::render() {
     if (m_components.view.is_working)
         ImGui::BeginDisabled();
 
-    ImGui::PopStyleColor();
+    ImGui::Unindent(20.0f);
 }
 
 bool comp_view_decrypt::can_start() {

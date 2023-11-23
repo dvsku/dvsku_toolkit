@@ -99,11 +99,6 @@ void comp_view_evp_pack::render() {
     if (m_components.view.is_working)
         ImGui::EndDisabled();
 
-    /*if (m_cancel)
-        sprintf(m_progress_text, "Cancelled");
-    else
-        sprintf(m_progress_text, "%.2f%c", m_progress, '%');*/
-
     ImGui::SetNextItemWidth(-20.0f);
     ImGui::ProgressBar(m_progress / 100, ImVec2(0.0f, 0.0f), m_progress_text);
 

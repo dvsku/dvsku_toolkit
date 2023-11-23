@@ -13,8 +13,6 @@ comp_view_evp_unpack::comp_view_evp_unpack(components_bundle& components)
     : comp_evp_base(components) {}
 
 void comp_view_evp_unpack::render() {
-    ImGui::PushStyleColor(ImGuiCol_FrameBg, 0xFF2E2E2E);
-
     ImGui::Indent(20.0f);
 
     ImGui::Dummy({ 0.0f, 5.0f });
@@ -115,8 +113,6 @@ void comp_view_evp_unpack::render() {
         ImGui::BeginDisabled();
 
     ImGui::Unindent(20.0f);
-
-    ImGui::PopStyleColor();
 }
 
 bool comp_view_evp_unpack::can_start() {
