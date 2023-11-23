@@ -1,4 +1,6 @@
 #include "components/comp_view_decrypt.hpp"
+#include "components/components_bundle.hpp"
+#include "systems/systems_bundle.hpp"
 
 #include "imgui.h"
 #include "misc/cpp/imgui_stdlib.h"
@@ -74,25 +76,45 @@ void comp_view_decrypt::render() {
 
     ImGui::Dummy({ 0.0f, 68.0f });
 
+    if (m_components.view.is_working)
+        ImGui::EndDisabled();
+
     ImGui::SetNextItemWidth(-20.0f);
-    ImGui::ProgressBar(m_progress + 0.5f, ImVec2(0.0f, 0.0f), m_progress_text);
+    ImGui::ProgressBar(m_progress / 100, ImVec2(0.0f, 0.0f), m_progress_text);
 
     ImGui::Dummy({ 0.0f, 5.0f });
 
     ImVec2 avail = ImGui::GetContentRegionMax();
     ImGui::SetCursorPosX((avail.x) / 2 - (125 / 2.0f));
 
-    if (!can_start())
+    bool cannot_start = !can_start();
+
+    if (!cannot_start)
         ImGui::BeginDisabled();
 
-    if (ImGui::Button("Decrypt##Decrypt", { 125, 20 })) {
+    if (!m_components.view.is_working) {
+        if (ImGui::Button("Decrypt##Decrypt", { 125, 20 })) {
+            m_components.systems.crypt.set_start_callback([&]() { handle_on_start(); });
+            m_components.systems.crypt.set_finish_callback([&](bool success) { handle_on_finish(success); });
+            m_components.systems.crypt.set_update_callback([&](float value) { handle_on_update(value); });
+            m_components.systems.crypt.set_error_callback([&](const std::string& msg) { handle_on_error(msg); });
 
+            m_components.systems.crypt.set_cancel_token(&m_cancel);
+
+            m_components.systems.crypt.decrypt(m_input, m_output, m_key, m_iv);
+        }
+    }
+    else {
+        if (ImGui::Button("Cancel##Decrypt", { 125, 20 })) {
+            m_cancel = true;
+        }
     }
 
-    if (!can_start())
+    if (!cannot_start)
         ImGui::EndDisabled();
 
-    ImGui::Unindent(20.0f);
+    if (m_components.view.is_working)
+        ImGui::BeginDisabled();
 
     ImGui::PopStyleColor();
 }
