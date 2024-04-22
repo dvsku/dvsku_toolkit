@@ -1,0 +1,27 @@
+﻿{
+  "configurations": [
+    {
+      "name": "Windows x86 Debug",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\build\\${name}",
+      "installRoot": "${projectDir}\\install\\${name}",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "intelliSenseMode": "windows-msvc-x86",
+      "inheritEnvironments": [ "msvc_x86_x64" ]
+    },
+    {
+      "name": "Windows x86 Release",
+      "generator": "Ninja",
+      "configurationType": "Release",
+      "buildRoot": "${projectDir}\\build\\${name}",
+      "installRoot": "${projectDir}\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x86_x64" ],
+      "intelliSenseMode": "windows-msvc-x86"
+    }
+  ]
+}
