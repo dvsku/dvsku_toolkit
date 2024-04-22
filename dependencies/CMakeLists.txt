@@ -11,3 +11,14 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(dv_gui_opengl)
 
 SET(DV_GUI_INCLUDES "${dv_gui_opengl_SOURCE_DIR}/include" PARENT_SCOPE)
+
+SET(EVP_TEST OFF)
+
+FetchContent_Declare(
+    libevp
+    URL https://github.com/dvsku/libevp/archive/refs/heads/main.zip
+)
+
+FetchContent_MakeAvailable(libevp)
+
+SET(LIBEVP_INCLUDES "${libevp_SOURCE_DIR}/include" PARENT_SCOPE)
