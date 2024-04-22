@@ -2,6 +2,8 @@
 
 #include "systems/dt_system_base.hpp"
 
+#include <libevp.hpp>
+
 namespace dvsku_toolkit {
     class dt_app;
 
@@ -16,5 +18,12 @@ namespace dvsku_toolkit {
 
         dt_sys_evp(dt_app& app)
             : dt_system_base(app) {};
+
+    public:
+        void pack(const std::string& input, const std::string& output, int filter, libevp::evp_context* context = nullptr);
+        void unpack(const std::string& input, const std::string& output, libevp::evp_context* context = nullptr);
+
+    private:
+        libevp::evp m_evp;
     };
 }

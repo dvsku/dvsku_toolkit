@@ -29,7 +29,8 @@ namespace dvsku_toolkit {
         dt_gui_mngr    m_gui;
 
         friend dt_comp_root;
-        //friend amo_sys_core;
+        friend dt_comp_pack;
+        friend dt_comp_unpack;
 
     private:
         bool prepare() override final;

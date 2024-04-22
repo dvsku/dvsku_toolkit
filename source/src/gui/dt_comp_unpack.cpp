@@ -1,15 +1,51 @@
 #include "gui/dt_comp_unpack.hpp"
 #include "dt_app.hpp"
 
+#include <dv_gui_opengl/utilities/dv_util_dialog.hpp>
+
 using namespace dvsku_toolkit;
 
 ///////////////////////////////////////////////////////////////////////////////
 // PUBLIC
 
 dt_comp_unpack::dt_comp_unpack(dt_app& app)
-    : dt_gui_base(app) {}
+    : dt_gui_base(app)
+{
+    m_context.start_callback = [this]() {
+        std::lock_guard<std::mutex> guard(m_mutex);
+
+        m_progress                          = 0.0f;
+        m_app.get_systems().core.is_working = true;
+        
+        m_app.set_taskbar_status(dvsku::dv_taskbar_status::normal);
+        m_app.set_taskbar_progress(0U);
+    };
+    m_context.finish_callback = [this](libevp::evp_result result) {
+        std::lock_guard<std::mutex> guard(m_mutex);
+
+        m_progress                          = 100.0f;
+        m_app.get_systems().core.is_working = false;
+
+        m_app.set_taskbar_status(dvsku::dv_taskbar_status::no_progress);
+        m_app.set_taskbar_progress(0U);
+
+        if (result.status == libevp::evp_result_status::ok)
+            m_app.play_sound(dvsku::dv_sound_type::success);
+        else if (result.status == libevp::evp_result_status::error)
+            m_app.play_sound(dvsku::dv_sound_type::warning);
+    };
+    m_context.update_callback = [this](float progress) {
+        std::lock_guard<std::mutex> guard(m_mutex);
+
+        m_progress += progress;
+        m_app.set_taskbar_progress((uint64_t)m_progress);
+    };
+    m_context.cancel = &m_cancel;
+}
 
 void dt_comp_unpack::render() {
+    std::lock_guard<std::mutex> guard(m_mutex);
+
     ImGui::PushID("Unpack");
     ImGui::Indent(20.0f);
 
@@ -24,7 +60,10 @@ void dt_comp_unpack::render() {
 
     ImGui::SameLine(0.0f, 5.0f);
     if (ImGui::Button("Select##Input", { 125.0f, 21.0f })) {
-        //file_dialog::open_file(m_input);
+        auto result = dvsku::dv_util_dialog::open_file("Input evp", m_input, { "EVP (*.evp)", "*.evp" });
+
+        if (!result.empty())
+            m_input = result[0];
     }
 
     ImGui::Indent(3.0f);
@@ -36,7 +75,10 @@ void dt_comp_unpack::render() {
 
     ImGui::SameLine(0.0f, 5.0f);
     if (ImGui::Button("Select##Output", { 125.0f, 21.0f })) {
-        //file_dialog::select_folder(m_output);
+        auto result = dvsku::dv_util_dialog::select_dir("Output dir", m_output);
+
+        if (!result.empty())
+            m_output = result;
     }
 
     ImGui::Dummy({ 0.0f, 10.0f });
@@ -54,23 +96,18 @@ void dt_comp_unpack::render() {
     ImVec2 avail = ImGui::GetContentRegionMax();
     ImGui::SetCursorPosX((avail.x) / 2 - (125 / 2.0f));
 
-    bool cannot_start = m_input.empty() || m_output.empty() || !m_cancel;
+    bool cannot_start = m_input.empty() || m_output.empty() || m_cancel;
 
     if (cannot_start)
         ImGui::BeginDisabled();
 
     if (!is_working) {
-        if (ImGui::Button("Unpack##Unpack", { 125, 20 })) {
-            //m_components.systems.evp.set_start_callback([&]() { handle_on_start(); });
-            //m_components.systems.evp.set_finish_callback([&](bool success) { handle_on_finish(success); });
-            //m_components.systems.evp.set_update_callback([&](float value) { handle_on_update(value); });
-            //m_components.systems.evp.set_error_callback([&](const std::string& msg) { handle_on_error(msg); });
-
-            //m_components.systems.evp.unpack(m_input, m_output, m_decrypt, m_key, m_iv);
+        if (ImGui::Button("Unpack##Unpack", { 125.0f, 21.0f })) {
+            m_app.get_systems().evp.unpack(m_input, m_output, &m_context);
         }
     }
     else {
-        if (ImGui::Button("Cancel##Cancel", { 125, 20 })) {
+        if (ImGui::Button("Cancel##Cancel", { 125.0f, 21.0f })) {
             m_cancel = true;
         }
     }

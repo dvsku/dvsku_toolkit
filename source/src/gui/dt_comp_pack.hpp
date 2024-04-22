@@ -3,6 +3,8 @@
 #include "gui/dt_gui_base.hpp"
 
 #include <string>
+#include <mutex>
+#include <libevp.hpp>
 
 namespace dvsku_toolkit {
     class dt_comp_pack : public dt_gui_base {
@@ -25,5 +27,8 @@ namespace dvsku_toolkit {
         int         m_filter   = 0U;
         float       m_progress = 0.0f;
         bool        m_cancel   = false;
+
+        std::mutex          m_mutex;
+        libevp::evp_context m_context;
     };
 }
