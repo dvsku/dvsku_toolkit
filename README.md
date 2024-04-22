@@ -12,7 +12,7 @@
     </a>
   </p>
   <p>
-    Toolkit for packing/unpacking .evp files and encrypting/decrypting files.</br>
+    Toolkit for packing/unpacking .evp files.</br>
     Primarily used for Talisman Online development.
   </p>
 </div></br></br>
