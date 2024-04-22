@@ -1,28 +1,41 @@
-name: MSBuild
+name: Build dvsku_toolkit
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
-env:
-  SOLUTION_FILE_PATH: src/
-  BUILD_CONFIGURATION: Release
-
-permissions:
-  contents: read
+    push:
+        branches: [ "master" ]
+    pull_request:
+        branches: [ "master" ]
 
 jobs:
-  build:
-    runs-on: windows-2022
+    build:
+        runs-on: windows-latest
 
-    steps:
-    - uses: actions/checkout@v3
+        strategy:
+            matrix:
+                architecture: [x86, x64]
+                build_type: [Release]
+                
+        steps:
+        - name: Checkout repo
+          uses: actions/checkout@v3
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+        - name: Set up VS toolchain
+          uses: ilammy/msvc-dev-cmd@v1
+          with:
+                arch: ${{ matrix.architecture }}
 
-    - name: Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+        - name: Setup Ninja
+          uses: ashutoshvarma/setup-ninja@master
+          with:
+                version: 1.10.0
+
+        - name: Build
+          uses: ashutoshvarma/action-cmake-build@master
+          with:
+                build-dir: ${{ runner.workspace }}/build
+                configure-options: -G Ninja -DCMAKE_CXX_COMPILER=cl -DCMAKE_C_COMPILER=cl
+                build-type: ${{ matrix.build_type }}
+
+        - name: Test
+          working-directory: ${{ runner.workspace }}/build
+          run: ctest -C ${{ matrix.build-type }}
