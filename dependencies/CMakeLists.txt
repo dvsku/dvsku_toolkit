@@ -5,8 +5,7 @@ SET(FETCHCONTENT_UPDATES_DISCONNECTED ON)
 
 FetchContent_Declare(
     dv_gui_opengl
-    GIT_REPOSITORY https://github.com/dvsku/dv_gui_opengl.git
-    GIT_TAG master
+    URL https://github.com/dvsku/dv_gui_opengl/archive/refs/heads/master.zip
 )
 
 FetchContent_MakeAvailable(dv_gui_opengl)
