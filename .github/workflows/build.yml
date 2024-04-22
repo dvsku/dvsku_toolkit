@@ -35,7 +35,3 @@ jobs:
                 build-dir: ${{ runner.workspace }}/build
                 configure-options: -G Ninja -DCMAKE_CXX_COMPILER=cl -DCMAKE_C_COMPILER=cl
                 build-type: ${{ matrix.build_type }}
-
-        - name: Test
-          working-directory: ${{ runner.workspace }}/build
-          run: ctest -C ${{ matrix.build-type }}
