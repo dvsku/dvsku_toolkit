@@ -11,8 +11,8 @@ using namespace dvsku;
 ///////////////////////////////////////////////////////////////////////////////
 // PUBLIC
 
-dt_app::dt_app(uint32_t width, uint32_t height, const std::string& title)
-    : dv_window(width, height, title), m_systems(*this), m_gui(*this)
+dt_app::dt_app(const dvsku::dv_window_settings& settings)
+    : dv_window(settings), m_systems(*this), m_gui(*this)
 {
     set_resizable(false);
 }

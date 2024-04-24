@@ -13,7 +13,7 @@ namespace dvsku_toolkit {
         dt_app(const dt_app&) = delete;
         dt_app(dt_app&&)      = delete;
 
-        dt_app(uint32_t width, uint32_t height, const std::string& title);
+        dt_app(const dvsku::dv_window_settings& settings);
 
         dt_app& operator=(const dt_app&) = delete;
         dt_app& operator=(dt_app&&)      = delete;
