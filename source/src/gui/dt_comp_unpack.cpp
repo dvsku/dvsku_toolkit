@@ -25,14 +25,23 @@ dt_comp_unpack::dt_comp_unpack(dt_app& app)
 
         m_progress                          = 100.0f;
         m_app.get_systems().core.is_working = false;
+        m_app.get_systems().core.has_errors = false;
+        m_app.get_systems().core.errors     = "";
 
         m_app.set_taskbar_status(dvsku::dv_taskbar_status::no_progress);
         m_app.set_taskbar_progress(0U);
 
-        if (result.status == libevp::evp_result_status::ok)
+        if (result.status == libevp::evp_result_status::ok) {
             m_app.play_sound(dvsku::dv_sound_type::success);
-        else if (result.status == libevp::evp_result_status::error)
+        }
+        else if (result.status == libevp::evp_result_status::error) {
             m_app.play_sound(dvsku::dv_sound_type::warning);
+
+            if (!result.message.empty()) {
+                m_app.get_systems().core.has_errors = true;
+                m_app.get_systems().core.errors     = result.message;
+            }
+        }
     };
     m_context.update_callback = [this](float progress) {
         std::lock_guard<std::mutex> guard(m_app.get_systems().core.mutex);
