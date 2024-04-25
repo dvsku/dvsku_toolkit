@@ -81,6 +81,8 @@ bool dt_app::prepare() {
     colors[ImGuiCol_TabActive]          = ImVec4(0.29020f, 0.24314f, 0.61176f, 1.00f);
     colors[ImGuiCol_TabUnfocusedActive] = ImLerp(colors[ImGuiCol_TabActive], ImVec4(0.0f, 0.0f, 0.0f, 1.00f), 0.2f);
 
+    m_systems.command.prepare();
+
     return true;
 }
 
