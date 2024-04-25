@@ -12,7 +12,7 @@ dt_comp_pack::dt_comp_pack(dt_app& app)
     : dt_gui_base(app)
 {
     m_context.start_callback  = [this]() {
-        std::lock_guard<std::mutex> guard(m_mutex);
+        std::lock_guard<std::mutex> guard(m_app.get_systems().core.mutex);
 
         m_progress                          = 0.0f;
         m_app.get_systems().core.is_working = true;
@@ -21,7 +21,7 @@ dt_comp_pack::dt_comp_pack(dt_app& app)
         m_app.set_taskbar_progress(0U);
     };
     m_context.finish_callback = [this](libevp::evp_result result) {
-        std::lock_guard<std::mutex> guard(m_mutex);
+        std::lock_guard<std::mutex> guard(m_app.get_systems().core.mutex);
 
         m_progress                          = 100.0f;
         m_app.get_systems().core.is_working = false;
@@ -35,7 +35,7 @@ dt_comp_pack::dt_comp_pack(dt_app& app)
             m_app.play_sound(dvsku::dv_sound_type::warning);
     };
     m_context.update_callback = [this](float progress) {
-        std::lock_guard<std::mutex> guard(m_mutex);
+        std::lock_guard<std::mutex> guard(m_app.get_systems().core.mutex);
 
         m_progress += progress;
         m_app.set_taskbar_progress((uint64_t)m_progress);
@@ -44,8 +44,6 @@ dt_comp_pack::dt_comp_pack(dt_app& app)
 }
 
 void dt_comp_pack::render() {
-    std::lock_guard<std::mutex> guard(m_mutex);
-
     ImGui::PushID("Pack");
     ImGui::Indent(20.0f);
 

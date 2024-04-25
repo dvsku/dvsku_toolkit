@@ -28,7 +28,6 @@ namespace dvsku_toolkit {
         float       m_progress = 0.0f;
         bool        m_cancel   = false;
 
-        std::mutex          m_mutex;
         libevp::evp_context m_context;
     };
 }

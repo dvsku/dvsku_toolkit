@@ -3,6 +3,7 @@
 #include "systems/dt_system_base.hpp"
 
 #include <dv_gui_opengl/models/dv_version.hpp>
+#include <mutex>
 
 namespace dvsku_toolkit {
     class dt_app;
@@ -13,6 +14,8 @@ namespace dvsku_toolkit {
         bool              is_working = false;
         bool              has_errors = false;
         std::string       errors     = "";
+
+        std::mutex mutex;
 
     public:
         dt_sys_core()                   = delete;

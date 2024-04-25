@@ -13,6 +13,8 @@ dt_comp_root::dt_comp_root(dt_app& app)
     : dt_gui_base(app) {}
 
 void dt_comp_root::render() {
+    std::lock_guard<std::mutex> guard(m_app.get_systems().core.mutex);
+
     ImGuiViewport* viewport = ImGui::GetMainViewport();
 
     ImGuiWindowFlags flags = 0;
