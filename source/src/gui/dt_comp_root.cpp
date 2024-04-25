@@ -99,11 +99,9 @@ void dt_comp_root::render() {
         ///////////////////////////////////////////////////////////////////////////
         // CONTENT
 
-        
-
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 4.0f);
 
-        if (ImGui::BeginChild("##Content", { -15.0f, 0.0f }, false, cflags)) {
+        if (ImGui::BeginChild("##Content", { -15.0f, -25.0f }, false, cflags)) {
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 6.0f, 4.0f });
             ImGui::Indent(15.0f);
 
@@ -133,6 +131,42 @@ void dt_comp_root::render() {
             ImGui::Unindent(10.0f);
             ImGui::PopStyleVar(1);
         }
+        ImGui::EndChild();
+
+        ///////////////////////////////////////////////////////////////////////////
+        // FOOTER
+
+        ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 4.0f);
+
+        ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12157f, 0.12157f, 0.12157f, 1.00f));
+        if (ImGui::BeginChild("##Footer", { 0.0f, 25.0f }, false)) {
+            ImGui::Indent(8.0f);
+            
+            bool show_errors = m_app.get_systems().core.has_errors;
+
+            if (show_errors) {
+                ImGui::PushStyleColor(ImGuiCol_Button,        0x00000000);
+                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, 0x00000000);
+                ImGui::PushStyleColor(ImGuiCol_ButtonActive,  0x00000000);
+                ImGui::PushStyleColor(ImGuiCol_Text,          IM_COL32(224, 29, 33, 255));
+
+                ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 3.0f);
+                if (ImGui::Button(ICON_FA_TRIANGLE_EXCLAMATION"##ErrorButton", { 19.0f, 19.0f })) {
+                    m_app.get_systems().command.set_to_execute(dt_commands::flag_show_error_window);
+                }
+
+                ImGui::PopStyleColor(4);
+
+                ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 6.0f, 6.0f });
+                ImGui::PushStyleColor(ImGuiCol_Text, 0xFFC5C5C5);
+                ImGui::SetItemTooltip("Click to see errors");
+                ImGui::PopStyleColor(1);
+                ImGui::PopStyleVar(1);
+            }
+
+            ImGui::Unindent(8.0f);
+        }
+        ImGui::PopStyleColor(1);
         ImGui::EndChild();
 
     }
