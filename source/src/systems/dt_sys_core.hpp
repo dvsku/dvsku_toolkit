@@ -11,6 +11,8 @@ namespace dvsku_toolkit {
     public:
         dvsku::dv_version app_version;
         bool              is_working = false;
+        bool              has_errors = false;
+        std::string       errors     = "";
 
     public:
         dt_sys_core()                   = delete;
