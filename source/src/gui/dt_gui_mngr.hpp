@@ -3,6 +3,7 @@
 #include "gui/dt_comp_root.hpp"
 #include "gui/dt_comp_pack.hpp"
 #include "gui/dt_comp_unpack.hpp"
+#include "gui/dt_comp_errors.hpp"
 
 namespace dvsku_toolkit {
     class dt_app;
@@ -12,6 +13,7 @@ namespace dvsku_toolkit {
         dt_comp_root   root;
         dt_comp_pack   pack;
         dt_comp_unpack unpack;
+        dt_comp_errors errors;
 
     public:
         dt_gui_mngr()                   = delete;
