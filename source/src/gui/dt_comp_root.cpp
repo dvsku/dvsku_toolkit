@@ -138,4 +138,6 @@ void dt_comp_root::render() {
     }
     ImGui::PopStyleVar(1);
     ImGui::End();
+
+    m_app.get_systems().command.execute_all();
 }
