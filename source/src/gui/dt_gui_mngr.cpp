@@ -6,4 +6,4 @@ using namespace dvsku_toolkit;
 // PUBLIC
 
 dt_gui_mngr::dt_gui_mngr(dt_app& app)
-    : root(app), pack(app), unpack(app), errors(app) {}
+    : root(app), pack(app), unpack(app), modal_errors(app) {}

@@ -9,7 +9,7 @@ using namespace dvsku;
 
 void dt_sys_command::prepare() {
     set_command(dt_commands::flag_show_error_window, dv_command([this]() {
-        return m_app.get_gui().errors.render();
+        return m_app.get_gui().modal_errors.render();
     }));
 }
 
