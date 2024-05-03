@@ -5,7 +5,7 @@ SET(FETCHCONTENT_UPDATES_DISCONNECTED ON)
 
 FetchContent_Declare(
     dv_gui_opengl
-    URL https://github.com/dvsku/dv_gui_opengl/archive/refs/heads/master.zip
+    URL https://github.com/dvsku/dv_gui_opengl/archive/95da8ed04189ce94223b4d87f9531a851c48992c.zip
 )
 
 FetchContent_MakeAvailable(dv_gui_opengl)
