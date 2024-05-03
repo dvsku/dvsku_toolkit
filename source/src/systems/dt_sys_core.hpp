@@ -2,7 +2,7 @@
 
 #include "systems/dt_system_base.hpp"
 
-#include <dv_gui_opengl/models/dv_version.hpp>
+#include <dv_gui_opengl/dv_gui_opengl.hpp>
 #include <mutex>
 
 namespace dvsku_toolkit {

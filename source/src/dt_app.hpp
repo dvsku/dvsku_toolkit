@@ -1,10 +1,9 @@
 #pragma once
 
-#include "systems\dt_system_mngr.hpp"
-#include "gui\dt_gui_mngr.hpp"
+#include "systems/dt_system_mngr.hpp"
+#include "gui/dt_gui_mngr.hpp"
 
-#include <dv_gui_opengl/dv_window.hpp>
-#include <dv_gui_opengl/models/dv_texture.hpp>
+#include <dv_gui_opengl/dv_gui_opengl.hpp>
 
 namespace dvsku_toolkit {
     class dt_app : public dvsku::dv_window {
@@ -20,17 +19,11 @@ namespace dvsku_toolkit {
 
     public:
         dt_system_mngr& get_systems();
-        dt_gui_mngr& get_gui();
-
-        void close();
+        dt_gui_mngr&    get_gui();
 
     private:
         dt_system_mngr m_systems;
         dt_gui_mngr    m_gui;
-
-        friend dt_comp_root;
-        friend dt_comp_pack;
-        friend dt_comp_unpack;
 
     private:
         bool prepare() override final;

@@ -2,7 +2,7 @@
 
 #include "gui/dt_gui_base.hpp"
 
-#include <dv_gui_opengl/models/dv_command.hpp>
+#include <dv_gui_opengl/dv_gui_opengl.hpp>
 
 namespace dvsku_toolkit {
     class dt_modal_errors : public dt_gui_base {

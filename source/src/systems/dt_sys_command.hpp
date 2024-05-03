@@ -2,7 +2,7 @@
 
 #include "systems/dt_system_base.hpp"
 
-#include <dv_gui_opengl/systems/dv_sys_command.hpp>
+#include <dv_gui_opengl/dv_gui_opengl.hpp>
 
 namespace dvsku_toolkit {
     class dt_app;

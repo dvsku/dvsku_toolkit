@@ -1,8 +1,6 @@
 #include "gui/dt_comp_pack.hpp"
 #include "dt_app.hpp"
 
-#include <dv_gui_opengl/utilities/dv_util_dialog.hpp>
-
 using namespace dvsku_toolkit;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -32,17 +30,16 @@ dt_comp_pack::dt_comp_pack(dt_app& app)
         m_app.set_taskbar_progress(0U);
 
         if (result.status == libevp::evp_result_status::ok) {
-            m_app.play_sound(dvsku::dv_sound_type::success);
+            dvsku::dv_util_sound::success();
         }
         else if (result.status == libevp::evp_result_status::error) {
-            m_app.play_sound(dvsku::dv_sound_type::warning);
+            dvsku::dv_util_sound::warning();
 
             if (!result.message.empty()) {
                 m_app.get_systems().core.has_errors = true;
                 m_app.get_systems().core.errors     = result.message;
             }
-        }
-            
+        }    
     };
     m_context.update_callback = [this](float progress) {
         std::lock_guard<std::mutex> guard(m_app.get_systems().core.mutex);
@@ -68,10 +65,7 @@ void dt_comp_pack::render() {
 
     ImGui::SameLine(0.0f, 5.0f);
     if (ImGui::Button("Select##Input", { 125.0f, 21.0f })) {
-        auto result = dvsku::dv_util_dialog::select_dir("Input dir", m_input);
-
-        if (!result.empty())
-            m_input = result;
+        m_input = dvsku::dv_util_dialog::select_dir("Input dir", m_input);
     }
 
     ImGui::Indent(3.0f);
@@ -83,10 +77,7 @@ void dt_comp_pack::render() {
 
     ImGui::SameLine(0.0f, 5.0f);
     if (ImGui::Button("Select##Output", { 125.0f, 21.0f })) {
-        auto result = dvsku::dv_util_dialog::save_file("Output evp", m_output, true, { "EVP (*.evp)", "*.evp" });
-
-        if (!result.empty())
-            m_output = result;
+        m_output = dvsku::dv_util_dialog::save_file("Output evp", m_output, true, { "EVP (*.evp)", "*.evp" });
     }
 
     ImGui::Dummy({ 0.0f, 3.0f });

@@ -1,8 +1,6 @@
 #include "gui/dt_modal_errors.hpp"
 #include "dt_app.hpp"
 
-#include <dv_gui_opengl\fonts\dv_font_fontawesome_solid.hpp>
-
 using namespace dvsku_toolkit;
 using namespace dvsku;
 

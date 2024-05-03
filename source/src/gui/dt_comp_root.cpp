@@ -2,8 +2,6 @@
 #include "dvsku_toolkit.hpp"
 #include "dt_app.hpp"
 
-#include <dv_gui_opengl\fonts\dv_font_fontawesome_solid.hpp>
-
 using namespace dvsku_toolkit;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -65,7 +63,7 @@ void dt_comp_root::render() {
             ImGui::SetCursorPosY(min.y);
 
             if (ImGui::Button(ICON_FA_MINUS"##Minimize", { 30.0f, 25.0f })) {
-                m_app.minimize();
+                m_app.iconify();
             }
 
             ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 6.0f, 6.0f });
@@ -94,7 +92,7 @@ void dt_comp_root::render() {
         }
         ImGui::EndChild();
 
-        m_app.m_is_title_bar = ImGui::IsMouseHoveringRect(rectangle.Min, rectangle.Max);
+        m_app.get_title_bar().mouseover_title_bar = ImGui::IsMouseHoveringRect(rectangle.Min, rectangle.Max);
 
         ///////////////////////////////////////////////////////////////////////////
         // CONTENT

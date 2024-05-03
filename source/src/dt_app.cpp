@@ -1,9 +1,7 @@
 #include "dt_app.hpp"
 
-#include <imgui\imgui.h>
-#include <imgui\imgui_internal.h>
-#include <dv_gui_opengl\fonts\dv_font_average_mono.hpp>
-#include <dv_gui_opengl\fonts\dv_font_fontawesome_solid.hpp>
+#include <imgui/imgui.h>
+#include <imgui/imgui_internal.h>
 
 using namespace dvsku_toolkit;
 using namespace dvsku;
@@ -23,10 +21,6 @@ dt_system_mngr& dt_app::get_systems() {
 
 dt_gui_mngr& dt_app::get_gui() {
     return m_gui;
-}
-
-void dt_app::close() {
-    dv_window::close();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

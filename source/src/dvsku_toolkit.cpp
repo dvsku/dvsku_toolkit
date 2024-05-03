@@ -14,7 +14,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
         settings.enable_multi_viewport = true;
 
         dt_app app(settings);
-        app.run();
+        app.show();
     }
     catch (...) {
         return -1;
