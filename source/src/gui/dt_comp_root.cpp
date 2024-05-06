@@ -49,7 +49,7 @@ void dt_comp_root::render() {
             ImGui::Indent(10.0f);
 
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.77255f, 0.77255f, 0.77255f, 1.00f));
-            ImGui::Text("%s v%s", DT_APP_NAME, m_app.get_systems().core.app_version.to_string().c_str());
+            ImGui::Text("%s v%s %s", DT_APP_NAME, m_app.get_systems().core.app_version.to_string().c_str(), DT_ENV_STR);
             ImGui::PopStyleColor();
 
             ImGui::PushStyleColor(ImGuiCol_Button, 0x00FFFFFF);
