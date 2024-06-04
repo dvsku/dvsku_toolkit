@@ -10,8 +10,8 @@ using namespace dvsku;
 dt_modal_errors::dt_modal_errors(dt_app& app)
     : dt_gui_base(app) {}
 
-dv_command_state dt_modal_errors::render() {
-    dv_command_state state = dv_command_state::repeat;
+gui_command_state dt_modal_errors::render() {
+    gui_command_state state = gui_command_state::repeat;
 
     ImGui::OpenPopup("Errors##Modal");
 

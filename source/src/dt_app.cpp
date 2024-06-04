@@ -9,8 +9,8 @@ using namespace dvsku;
 ///////////////////////////////////////////////////////////////////////////////
 // PUBLIC
 
-dt_app::dt_app(const dvsku::dv_window_settings& settings)
-    : dv_window(settings), m_systems(*this), m_gui(*this)
+dt_app::dt_app(const dvsku::gui_window_settings& settings)
+    : gui_window(settings), m_systems(*this), m_gui(*this)
 {
     set_resizable(false);
 }

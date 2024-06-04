@@ -8,7 +8,7 @@ using namespace dvsku;
 // PUBLIC
 
 void dt_sys_command::prepare() {
-    set_command(dt_commands::flag_show_error_window, dv_command([this]() {
+    set_command(dt_commands::flag_show_error_window, gui_command([this]() {
         return m_app.get_gui().modal_errors.render();
     }));
 }

@@ -2,7 +2,7 @@
 
 #include "gui/dt_gui_base.hpp"
 
-#include <dv_gui_opengl/dv_gui_opengl.hpp>
+#include <libgui.hpp>
 
 namespace dvsku_toolkit {
     class dt_modal_errors : public dt_gui_base {
@@ -17,6 +17,6 @@ namespace dvsku_toolkit {
         dt_modal_errors& operator=(dt_modal_errors&&)      = delete;
 
     public:
-        dvsku::dv_command_state render();
+        dvsku::gui_command_state render();
     };
 }

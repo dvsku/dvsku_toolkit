@@ -3,16 +3,16 @@
 #include "systems/dt_system_mngr.hpp"
 #include "gui/dt_gui_mngr.hpp"
 
-#include <dv_gui_opengl/dv_gui_opengl.hpp>
+#include <libgui.hpp>
 
 namespace dvsku_toolkit {
-    class dt_app : public dvsku::dv_window {
+    class dt_app : public dvsku::gui_window {
     public:
         dt_app()              = delete;
         dt_app(const dt_app&) = delete;
         dt_app(dt_app&&)      = delete;
 
-        dt_app(const dvsku::dv_window_settings& settings);
+        dt_app(const dvsku::gui_window_settings& settings);
 
         dt_app& operator=(const dt_app&) = delete;
         dt_app& operator=(dt_app&&)      = delete;

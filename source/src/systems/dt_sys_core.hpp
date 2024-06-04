@@ -2,7 +2,7 @@
 
 #include "systems/dt_system_base.hpp"
 
-#include <dv_gui_opengl/dv_gui_opengl.hpp>
+#include <libgui.hpp>
 #include <mutex>
 
 namespace dvsku_toolkit {
@@ -10,10 +10,10 @@ namespace dvsku_toolkit {
 
     class dt_sys_core : public dt_system_base {
     public:
-        dvsku::dv_version app_version;
-        bool              is_working = false;
-        bool              has_errors = false;
-        std::string       errors     = "";
+        dvsku::version app_version;
+        bool           is_working = false;
+        bool           has_errors = false;
+        std::string    errors     = "";
 
         std::mutex mutex;
 
