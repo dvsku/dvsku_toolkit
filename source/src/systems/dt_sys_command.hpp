@@ -2,7 +2,7 @@
 
 #include "systems/dt_system_base.hpp"
 
-#include <libgui/systems/gui_sys_command.hpp>
+#include <libgui/systems/sys_command.hpp>
 
 namespace dvsku_toolkit {
     class dt_app;
@@ -11,7 +11,7 @@ namespace dvsku_toolkit {
         flag_show_error_window
     };
 
-    class dt_sys_command : public dt_system_base, public dvsku::gui_sys_command<dt_commands> {
+    class dt_sys_command : public dt_system_base, public libgui::sys_command<dt_commands> {
     public:
         dt_sys_command()                      = delete;
         dt_sys_command(const dt_sys_command&) = delete;
@@ -21,7 +21,7 @@ namespace dvsku_toolkit {
         dt_sys_command& operator=(dt_sys_command&&)      = delete;
 
         dt_sys_command(dt_app& app)
-            : dt_system_base(app), gui_sys_command<dt_commands>() {};
+            : dt_system_base(app), libgui::sys_command<dt_commands>() {};
 
     public:
         void prepare();

@@ -2,7 +2,7 @@
 #include "dt_app.hpp"
 
 using namespace dvsku_toolkit;
-using namespace dvsku;
+using namespace libgui;
 
 ///////////////////////////////////////////////////////////////////////////////
 // PUBLIC
@@ -10,8 +10,8 @@ using namespace dvsku;
 dt_modal_errors::dt_modal_errors(dt_app& app)
     : dt_gui_base(app) {}
 
-gui_command_state dt_modal_errors::render() {
-    gui_command_state state = gui_command_state::repeat;
+command::state dt_modal_errors::render() {
+    command::state state = command::state::repeat;
 
     ImGui::OpenPopup("Errors##Modal");
 

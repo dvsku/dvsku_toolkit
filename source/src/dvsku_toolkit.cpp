@@ -7,7 +7,7 @@ using namespace dvsku_toolkit;
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, INT nCmdShow) {
     try {
-        dvsku::gui_window_settings settings;
+        libgui::window_settings settings;
         settings.width                 = 600U;
         settings.height                = 275U;
         settings.title                 = DT_APP_NAME;

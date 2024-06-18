@@ -15,7 +15,7 @@ dt_comp_pack::dt_comp_pack(dt_app& app)
         m_progress                          = 0.0f;
         m_app.get_systems().core.is_working = true;
 
-        m_app.set_taskbar_status(dvsku::gui_taskbar_status::normal);
+        m_app.set_taskbar_status(libgui::taskbar_status::normal);
         m_app.set_taskbar_progress(0U);
     };
     m_context.finish_callback = [this](libevp::evp_result result) {
@@ -26,14 +26,14 @@ dt_comp_pack::dt_comp_pack(dt_app& app)
         m_app.get_systems().core.has_errors = false;
         m_app.get_systems().core.errors     = "";
 
-        m_app.set_taskbar_status(dvsku::gui_taskbar_status::no_progress);
+        m_app.set_taskbar_status(libgui::taskbar_status::no_progress);
         m_app.set_taskbar_progress(0U);
 
         if (result.status == libevp::evp_result_status::ok) {
-            dvsku::util_sound::success();
+            libgui::sound::success();
         }
         else if (result.status == libevp::evp_result_status::error) {
-            dvsku::util_sound::warning();
+            libgui::sound::warning();
 
             if (!result.message.empty()) {
                 m_app.get_systems().core.has_errors = true;
@@ -65,7 +65,7 @@ void dt_comp_pack::render() {
 
     ImGui::SameLine(0.0f, 5.0f);
     if (ImGui::Button("Select##Input", { 125.0f, 21.0f })) {
-        m_input = dvsku::util_dialog::select_dir("Input dir", m_input);
+        m_input = libgui::dialog::select_dir("Input dir", m_input);
     }
 
     ImGui::Indent(3.0f);
@@ -77,7 +77,7 @@ void dt_comp_pack::render() {
 
     ImGui::SameLine(0.0f, 5.0f);
     if (ImGui::Button("Select##Output", { 125.0f, 21.0f })) {
-        m_output = dvsku::util_dialog::save_file("Output evp", m_output, true, { "EVP (*.evp)", "*.evp" });
+        m_output = libgui::dialog::save_file("Output evp", m_output, true, { "EVP (*.evp)", "*.evp" });
     }
 
     ImGui::Dummy({ 0.0f, 3.0f });

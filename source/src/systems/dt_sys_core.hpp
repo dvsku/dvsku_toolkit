@@ -10,10 +10,10 @@ namespace dvsku_toolkit {
 
     class dt_sys_core : public dt_system_base {
     public:
-        dvsku::version app_version;
-        bool           is_working = false;
-        bool           has_errors = false;
-        std::string    errors     = "";
+        libgui::version app_version;
+        bool            is_working = false;
+        bool            has_errors = false;
+        std::string     errors     = "";
 
         std::mutex mutex;
 

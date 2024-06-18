@@ -6,13 +6,13 @@
 #include <libgui.hpp>
 
 namespace dvsku_toolkit {
-    class dt_app : public dvsku::gui_window {
+    class dt_app : public libgui::window {
     public:
         dt_app()              = delete;
         dt_app(const dt_app&) = delete;
         dt_app(dt_app&&)      = delete;
 
-        dt_app(const dvsku::gui_window_settings& settings);
+        dt_app(const libgui::window_settings& settings);
 
         dt_app& operator=(const dt_app&) = delete;
         dt_app& operator=(dt_app&&)      = delete;

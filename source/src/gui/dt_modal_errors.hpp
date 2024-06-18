@@ -17,6 +17,6 @@ namespace dvsku_toolkit {
         dt_modal_errors& operator=(dt_modal_errors&&)      = delete;
 
     public:
-        dvsku::gui_command_state render();
+        libgui::command::state render();
     };
 }
