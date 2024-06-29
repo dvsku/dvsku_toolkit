@@ -1,12 +1,16 @@
 #include "gui/dt_comp_pack.hpp"
 #include "dt_app.hpp"
 
+#include <libgui.hpp>
+
 using namespace dvsku_toolkit;
 
 ///////////////////////////////////////////////////////////////////////////////
 // PUBLIC
 
 void dt_comp_pack::render() {
+    auto max = ImGui::GetContentRegionMax();
+
     ImGui::PushID("Pack");
     ImGui::Indent(20.0f);
 
@@ -16,24 +20,24 @@ void dt_comp_pack::render() {
     ImGui::Text("Input");
     ImGui::Unindent(3.0f);
 
-    ImGui::SetNextItemWidth(-150.0f);
+    ImGui::SetNextItemWidth(-50.0f);
     ImGui::InputText("##Input", &m_input, ImGuiInputTextFlags_ReadOnly);
 
     ImGui::SameLine(0.0f, 5.0f);
-    if (ImGui::Button("Select##Input", { 125.0f, 21.0f })) {
-        m_input = libgui::dialog::select_dir("Input dir", m_input);
+    if (libgui::imgui::icon_button(ICON_FA_FOLDER"##InputSelect", { 25.0f, 21.0f })) {
+        m_input = libgui::dialog::select_dir("Select input directory", m_input);
     }
 
     ImGui::Indent(3.0f);
     ImGui::Text("Output");
     ImGui::Unindent(3.0f);
 
-    ImGui::SetNextItemWidth(-150.0f);
+    ImGui::SetNextItemWidth(-50.0f);
     ImGui::InputText("##Output", &m_output, ImGuiInputTextFlags_ReadOnly);
 
     ImGui::SameLine(0.0f, 5.0f);
-    if (ImGui::Button("Select##Output", { 125.0f, 21.0f })) {
-        m_output = libgui::dialog::save_file("Output evp", m_output, true, { "EVP (*.evp)", "*.evp" });
+    if (libgui::imgui::icon_button(ICON_FA_FILE"##OutputSelect", { 25.0f, 21.0f })) {
+        m_output = libgui::dialog::save_file("Select output file", m_output, true, { "EVP (*.evp)", "*.evp" });
     }
 
     ImGui::Dummy({ 0.0f, 3.0f });
@@ -73,22 +77,21 @@ void dt_comp_pack::render() {
         ImGui::PopStyleVar(1);
     }   
 
-    ImGui::Dummy({ 0.0f, 10.0f });
-
     bool is_working = m_app.systems.core.work_context.is_working();
 
     if (is_working)
         ImGui::EndDisabled();
 
+    ImGui::SetCursorPosY(max.y - 58.0f);
+
     ImGui::SetNextItemWidth(-20.0f);
     ImGui::ProgressBar(m_app.systems.core.work_context.get_progress() / 100, ImVec2(0.0f, 0.0f));
 
-    ImGui::Dummy({ 0.0f, 5.0f });
-
-    auto avail = ImGui::GetContentRegionMax();
-    ImGui::SetCursorPosX((avail.x) / 2 - (125 / 2.0f));
-
+    auto avail        = ImGui::GetContentRegionMax();
     bool cannot_start = m_input.empty() || m_output.empty();
+    
+    ImGui::SetCursorPosX((avail.x) / 2 - (125 / 2.0f));
+    ImGui::SetCursorPosY(max.y - 29.0f);
 
     if (cannot_start)
         ImGui::BeginDisabled();
