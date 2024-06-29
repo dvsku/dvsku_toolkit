@@ -17,13 +17,6 @@ namespace dvsku_toolkit {
         dt_modal_errors modal_errors;
 
     public:
-        dt_gui_mngr()                   = delete;
-        dt_gui_mngr(const dt_gui_mngr&) = delete;
-        dt_gui_mngr(dt_gui_mngr&&)      = delete;
-
         dt_gui_mngr(dt_app& app);
-
-        dt_gui_mngr& operator=(const dt_gui_mngr&) = delete;
-        dt_gui_mngr& operator=(dt_gui_mngr&&)      = delete;
     };
 }

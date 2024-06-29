@@ -7,9 +7,6 @@ using namespace dvsku_toolkit;
 ///////////////////////////////////////////////////////////////////////////////
 // PUBLIC
 
-dt_comp_root::dt_comp_root(dt_app& app)
-    : dt_gui_base(app) {}
-
 void dt_comp_root::render() {
     ImGuiViewport* viewport = ImGui::GetMainViewport();
 
@@ -47,7 +44,7 @@ void dt_comp_root::render() {
             ImGui::Indent(10.0f);
 
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.77255f, 0.77255f, 0.77255f, 1.00f));
-            ImGui::Text("%s v%s %s", DT_APP_NAME, m_app.get_systems().core.app_version.to_string().c_str(), DT_ENV_STR);
+            ImGui::Text("%s v%s %s", DT_APP_NAME, m_app.systems.core.app_version.to_string().c_str(), DT_ENV_STR);
             ImGui::PopStyleColor();
 
             ImGui::PushStyleColor(ImGuiCol_Button, 0x00FFFFFF);
@@ -101,7 +98,7 @@ void dt_comp_root::render() {
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 6.0f, 4.0f });
             ImGui::Indent(15.0f);
 
-            bool is_working = m_app.get_systems().core.is_working;
+            bool is_working = m_app.systems.core.work_context.is_working();
 
             if (is_working)
                 ImGui::BeginDisabled();
@@ -109,12 +106,12 @@ void dt_comp_root::render() {
             ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 10.0f);
             if (ImGui::BeginTabBar("TabViews")) {
                 if (ImGui::BeginTabItem("Pack##TabView")) {
-                    m_app.get_gui().pack.render();
+                    m_app.gui.pack.render();
                     ImGui::EndTabItem();
                 }
 
                 if (ImGui::BeginTabItem("Unpack##TabView")) {
-                    m_app.get_gui().unpack.render();
+                    m_app.gui.unpack.render();
                     ImGui::EndTabItem();
                 }
 
@@ -138,9 +135,7 @@ void dt_comp_root::render() {
         if (ImGui::BeginChild("##Footer", { 0.0f, 25.0f }, false)) {
             ImGui::Indent(8.0f);
             
-            bool show_errors = m_app.get_systems().core.has_errors;
-
-            if (show_errors) {
+            if (m_app.systems.core.errors != "") {
                 ImGui::PushStyleColor(ImGuiCol_Button,        0x00000000);
                 ImGui::PushStyleColor(ImGuiCol_ButtonHovered, 0x00000000);
                 ImGui::PushStyleColor(ImGuiCol_ButtonActive,  0x00000000);
@@ -148,7 +143,7 @@ void dt_comp_root::render() {
 
                 ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 3.0f);
                 if (ImGui::Button(ICON_FA_TRIANGLE_EXCLAMATION"##ErrorButton", { 19.0f, 19.0f })) {
-                    m_app.get_systems().command.set_to_execute(dt_commands::flag_show_error_window);
+                    m_app.systems.command.set_to_execute(dt_commands::flag_show_error_window);
                 }
 
                 ImGui::PopStyleColor(4);
@@ -169,5 +164,5 @@ void dt_comp_root::render() {
     ImGui::PopStyleVar(1);
     ImGui::End();
 
-    m_app.get_systems().command.execute_all();
+    m_app.systems.command.execute_all();
 }

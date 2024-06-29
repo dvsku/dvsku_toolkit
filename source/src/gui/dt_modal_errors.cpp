@@ -7,9 +7,6 @@ using namespace libgui;
 ///////////////////////////////////////////////////////////////////////////////
 // PUBLIC
 
-dt_modal_errors::dt_modal_errors(dt_app& app)
-    : dt_gui_base(app) {}
-
 command::state dt_modal_errors::render() {
     command::state state = command::state::repeat;
 
@@ -32,7 +29,7 @@ command::state dt_modal_errors::render() {
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 6.0f, 4.0f });
 
-    bool* visible = &m_app.get_systems().command.is_set_to_execute(dt_commands::flag_show_error_window);
+    bool* visible = &m_app.systems.command.is_set_to_execute(dt_commands::flag_show_error_window);
     if (ImGui::BeginPopupModal("Errors##Modal", visible, flags)) {
         ImGui::PushStyleColor(ImGuiCol_Button,        0x00FFFFFF);
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, 0xFF3D3D3D);
@@ -40,7 +37,7 @@ command::state dt_modal_errors::render() {
         ImGui::PushStyleColor(ImGuiCol_Text,          0xFFC5C5C5);
 
         if (ImGui::Button(ICON_FA_COPY"##CopyToClipboard", { 30.0f, 25.0f })) {
-            ImGui::SetClipboardText(m_app.get_systems().core.errors.c_str());
+            ImGui::SetClipboardText(m_app.systems.core.errors.c_str());
         }
 
         ImGui::PopStyleColor(4);
@@ -57,7 +54,7 @@ command::state dt_modal_errors::render() {
         if (ImGui::BeginChild("##Message", { avail.x, avail.y - 25.0f })) {
             auto avail = ImGui::GetContentRegionAvail();
 
-            ImGui::TextWrapped(m_app.get_systems().core.errors.c_str());
+            ImGui::TextWrapped(m_app.systems.core.errors.c_str());
         }
         ImGui::EndChild();
 

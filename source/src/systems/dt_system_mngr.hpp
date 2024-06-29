@@ -14,13 +14,6 @@ namespace dvsku_toolkit {
         dt_sys_command command;
 
     public:
-        dt_system_mngr()                      = delete;
-        dt_system_mngr(const dt_system_mngr&) = delete;
-        dt_system_mngr(dt_system_mngr&&)      = delete;
-
         dt_system_mngr(dt_app& app);
-
-        dt_system_mngr& operator=(const dt_system_mngr&) = delete;
-        dt_system_mngr& operator=(dt_system_mngr&&)      = delete;
     };
 }
