@@ -8,29 +8,16 @@
 namespace dvsku_toolkit {
     class dt_app : public libgui::window {
     public:
-        dt_app()              = delete;
-        dt_app(const dt_app&) = delete;
-        dt_app(dt_app&&)      = delete;
-
-        dt_app(const libgui::window_settings& settings);
-
-        dt_app& operator=(const dt_app&) = delete;
-        dt_app& operator=(dt_app&&)      = delete;
+        dt_system_mngr systems;
+        dt_gui_mngr    gui;
 
     public:
-        dt_system_mngr& get_systems();
-        dt_gui_mngr&    get_gui();
-
-    private:
-        dt_system_mngr m_systems;
-        dt_gui_mngr    m_gui;
+        dt_app(const libgui::window_settings& settings);
 
     private:
         bool prepare() override final;
-        void release() override final;
 
         void on_gui_before_update()	override final;
         void on_gui_update()		override final;
-        void on_gui_after_update()	override final;
     };
 }

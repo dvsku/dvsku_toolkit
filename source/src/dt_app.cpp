@@ -10,17 +10,9 @@ using namespace libgui;
 // PUBLIC
 
 dt_app::dt_app(const libgui::window_settings& settings)
-    : window(settings), m_systems(*this), m_gui(*this)
+    : window(settings), systems(*this), gui(*this)
 {
     set_resizable(false);
-}
-
-dt_system_mngr& dt_app::get_systems() {
-    return m_systems;
-}
-
-dt_gui_mngr& dt_app::get_gui() {
-    return m_gui;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -34,13 +26,9 @@ bool dt_app::prepare() {
         font_fontawesome_solid
     });
 
-    m_systems.command.prepare();
+    systems.command.prepare();
 
     return true;
-}
-
-void dt_app::release() {
-
 }
 
 void dt_app::on_gui_before_update() {
@@ -48,9 +36,5 @@ void dt_app::on_gui_before_update() {
 }
 
 void dt_app::on_gui_update() {
-    m_gui.root.render();
-}
-
-void dt_app::on_gui_after_update() {
-
+    gui.root.render();
 }
