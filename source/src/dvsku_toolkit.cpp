@@ -7,6 +7,11 @@ using namespace dvsku_toolkit;
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, INT nCmdShow) {
     try {
+        libutil::log::settings log_settings;
+        log_settings.level = libutil::log::level::none;
+        
+        libutil::log::init(log_settings);
+
         libgui::window_settings settings;
         settings.width                 = 600U;
         settings.height                = 275U;
