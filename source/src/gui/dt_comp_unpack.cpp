@@ -6,50 +6,6 @@ using namespace dvsku_toolkit;
 ///////////////////////////////////////////////////////////////////////////////
 // PUBLIC
 
-dt_comp_unpack::dt_comp_unpack(dt_app& app)
-    : dt_gui_base(app)
-{
-    m_context.start_callback = [this]() {
-        std::lock_guard<std::mutex> guard(m_app.get_systems().core.mutex);
-
-        m_progress                          = 0.0f;
-        m_app.get_systems().core.is_working = true;
-        
-        m_app.set_taskbar_status(libgui::taskbar_status::normal);
-        m_app.set_taskbar_progress(0U);
-    };
-    m_context.finish_callback = [this](libevp::evp_result result) {
-        std::lock_guard<std::mutex> guard(m_app.get_systems().core.mutex);
-
-        m_progress                          = 100.0f;
-        m_app.get_systems().core.is_working = false;
-        m_app.get_systems().core.has_errors = false;
-        m_app.get_systems().core.errors     = "";
-
-        m_app.set_taskbar_status(libgui::taskbar_status::no_progress);
-        m_app.set_taskbar_progress(0U);
-
-        if (result.status == libevp::evp_result_status::ok) {
-            libgui::sound::success();
-        }
-        else if (result.status == libevp::evp_result_status::error) {
-            libgui::sound::warning();
-
-            if (!result.message.empty()) {
-                m_app.get_systems().core.has_errors = true;
-                m_app.get_systems().core.errors     = result.message;
-            }
-        }
-    };
-    m_context.update_callback = [this](float progress) {
-        std::lock_guard<std::mutex> guard(m_app.get_systems().core.mutex);
-
-        m_progress += progress;
-        m_app.set_taskbar_progress((uint64_t)m_progress);
-    };
-    m_context.cancel = &m_cancel;
-}
-
 void dt_comp_unpack::render() {
     ImGui::PushID("Unpack");
     ImGui::Indent(20.0f);
@@ -82,32 +38,32 @@ void dt_comp_unpack::render() {
 
     ImGui::Dummy({ 0.0f, 10.0f });
 
-    bool is_working = m_app.get_systems().core.is_working;
+    bool is_working = m_app.systems.core.work_context.is_working();
 
     if (is_working)
         ImGui::EndDisabled();
 
     ImGui::SetNextItemWidth(-20.0f);
-    ImGui::ProgressBar(m_progress / 100, ImVec2(0.0f, 0.0f));
+    ImGui::ProgressBar(m_app.systems.core.work_context.get_progress() / 100, ImVec2(0.0f, 0.0f));
 
     ImGui::Dummy({ 0.0f, 5.0f });
 
     ImVec2 avail = ImGui::GetContentRegionMax();
     ImGui::SetCursorPosX((avail.x) / 2 - (125 / 2.0f));
 
-    bool cannot_start = m_input.empty() || m_output.empty() || m_cancel;
+    bool cannot_start = m_input.empty() || m_output.empty();
 
     if (cannot_start)
         ImGui::BeginDisabled();
 
     if (!is_working) {
         if (ImGui::Button("Unpack##Unpack", { 125.0f, 21.0f })) {
-            m_app.get_systems().evp.unpack(m_input, m_output, &m_context);
+            m_app.systems.evp.unpack(m_input, m_output);
         }
     }
     else {
         if (ImGui::Button("Cancel##Cancel", { 125.0f, 21.0f })) {
-            m_cancel = true;
+            m_app.systems.core.work_context.cancel = true;
         }
     }
 
