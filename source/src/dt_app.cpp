@@ -36,5 +36,7 @@ void dt_app::on_gui_before_update() {
 }
 
 void dt_app::on_gui_update() {
+    std::lock_guard guard(systems.core.mutex);
+
     gui.root.render();
 }
