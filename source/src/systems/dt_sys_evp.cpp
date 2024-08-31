@@ -26,10 +26,10 @@ dt_sys_evp::dt_sys_evp(dt_app& app)
     };
 
     m_evp_context.finish_callback = [this](libevp::evp_result result) {
-        bool success = result.status == libevp::evp_result_status::ok ||
-            result.status == libevp::evp_result_status::cancelled;
+        bool success = result.status == libevp::evp_result::status::ok ||
+            result.status == libevp::evp_result::status::cancelled;
 
-        if (result.status == libevp::evp_result_status::error && result.message != "") {
+        if (result.status == libevp::evp_result::status::failure && result.message != "") {
             std::lock_guard guard(m_app.systems.core.mutex);
             m_app.systems.core.errors = result.message;
         }
@@ -39,24 +39,49 @@ dt_sys_evp::dt_sys_evp(dt_app& app)
     };
 };
 
-void dt_sys_evp::pack(const std::string& input, const std::string& output, int filter) {
+void dt_sys_evp::pack() {
     if (m_app.systems.core.work_context.is_working())
         return;
     
+    libevp::evp::pack_input inputs;
+    inputs.base = packing_inputs.input;
+
+    packing_inputs.tree.traverse([&](visual_tree::element_ptr_t element) {
+        if (element->type == visual_tree_element::element_type::leaf) {
+            auto leaf = std::static_pointer_cast<pack_tree_leaf>(element);
+
+            if (leaf->is_checked())
+                inputs.files.push_back(leaf->file);
+        }
+    });
+
     m_app.systems.core.errors = "";
 
     m_app.systems.core.work_context.start_working();
-    m_evp.pack_async(input, output, (libevp::evp_filter)filter, &m_evp_context);
+    m_evp.pack_async(inputs, packing_inputs.output, &m_evp_context);
 }
 
-void dt_sys_evp::unpack(const std::string& input, const std::string& output) {
+void dt_sys_evp::unpack() {
     if (m_app.systems.core.work_context.is_working())
         return;
 
+    libevp::evp::unpack_input inputs;
+    inputs.archive = unpacking_inputs.input;
+
+    unpacking_inputs.tree.traverse([&](visual_tree::element_ptr_t element) {
+        if (element->type == visual_tree_element::element_type::leaf) {
+            auto leaf = std::static_pointer_cast<unpack_tree_leaf>(element);
+
+            if (leaf->is_checked())
+                inputs.files.push_back(leaf->file);
+        }
+    });
+
     m_app.systems.core.errors = "";
 
     m_app.systems.core.work_context.start_working();
-    m_evp.unpack_async(input, output, &m_evp_context);
+    m_evp.unpack_async(inputs, unpacking_inputs.output, &m_evp_context);
+}
 
 void dt_sys_evp::set_pack_files() {
     packing_inputs.tree        = visual_tree(std::make_shared<visual_tree_branch>(""));

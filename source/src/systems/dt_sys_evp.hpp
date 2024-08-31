@@ -20,8 +20,9 @@ namespace dvsku_toolkit {
         dt_sys_evp(dt_app& app);
 
     public:
-        void pack(const std::string& input, const std::string& output, int filter);
-        void unpack(const std::string& input, const std::string& output);
+        void pack();
+        void unpack();
+
         void set_pack_files();
         void set_unpack_files();
 
