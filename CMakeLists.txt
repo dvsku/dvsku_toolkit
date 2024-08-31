@@ -22,11 +22,11 @@ IF(WIN32 AND "${CMAKE_SIZEOF_VOID_P}" STREQUAL "4")
         ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS)
         ADD_DEFINITIONS(-D_WINDOWS)
 
-        SET(CMAKE_C_FLAGS           "/W3 /utf-8")
+        SET(CMAKE_C_FLAGS           "/W3")
         SET(CMAKE_C_FLAGS_DEBUG     "/MTd /Od /Ob0 /RTC1 /Zi")
         SET(CMAKE_C_FLAGS_RELEASE   "/MT /O2 /Ob2 /GL /DNDEBUG")
 
-        SET(CMAKE_CXX_FLAGS         "/std:c++20 /W3 /EHsc /utf-8")
+        SET(CMAKE_CXX_FLAGS         "/std:c++20 /W3 /EHsc")
         SET(CMAKE_CXX_FLAGS_DEBUG   "/MTd /Od /Ob0 /RTC1 /Zi")
         SET(CMAKE_CXX_FLAGS_RELEASE "/MT /O2 /Ob2 /GL /DNDEBUG")
 
