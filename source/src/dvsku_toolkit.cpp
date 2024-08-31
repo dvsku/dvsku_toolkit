@@ -14,7 +14,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
 
         libgui::window_settings settings;
         settings.width                 = 600U;
-        settings.height                = 275U;
+        settings.height                = 700U;
         settings.title                 = DT_APP_NAME;
         settings.enable_multi_viewport = true;
 
