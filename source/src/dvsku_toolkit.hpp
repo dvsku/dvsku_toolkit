@@ -17,7 +17,7 @@
 #define DT_WEBSITE  "https://github.com/dvsku/dvsku_toolkit"
 
 #define DT_VERSION_MAJOR 1
-#define DT_VERSION_MINOR 2
+#define DT_VERSION_MINOR 3
 #define DT_VERSION_REV   0
 
 #define DT_VERSION_PACKED ((uint64_t)DT_VERSION_MAJOR << 48) | (((uint64_t)DT_VERSION_MINOR << 32)) | (((uint64_t)DT_VERSION_REV << 16))
