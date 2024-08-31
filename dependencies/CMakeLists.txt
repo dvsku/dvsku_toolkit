@@ -18,7 +18,7 @@ FetchContent_MakeAvailable(libgui)
 
 FetchContent_Declare(
     libevp
-    URL https://github.com/dvsku/libevp/archive/c878b33eb3f9ebaf20638eece85c867322b73310.zip
+    URL https://github.com/dvsku/libevp/archive/refs/tags/v1.1.1.zip
 )
 
 FetchContent_MakeAvailable(libevp)
