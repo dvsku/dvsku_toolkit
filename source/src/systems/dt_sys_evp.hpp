@@ -27,8 +27,16 @@ namespace dvsku_toolkit {
         void set_unpack_files();
 
     private:
+        enum class work_type : uint8_t {
+            none,
+            packing,
+            unpacking
+        };
+
+    private:
         libevp::evp         m_evp;
         libevp::evp_context m_evp_context;
+        work_type           m_current_work = work_type::none;
 
     private:
         std::vector<std::filesystem::path> get_pack_files();

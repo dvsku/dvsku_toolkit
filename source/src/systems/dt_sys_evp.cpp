@@ -34,6 +34,17 @@ dt_sys_evp::dt_sys_evp(dt_app& app)
             m_app.systems.core.errors = result.message;
         }
 
+        if (result.status == libevp::evp_result::status::ok) {
+            switch (m_current_work) {
+                case work_type::packing:   packing_inputs.reset();   break;
+                case work_type::unpacking: unpacking_inputs.reset(); break;
+                
+                default: break;
+            }
+        }
+
+        m_current_work = work_type::none;
+
         m_app.systems.core.work_context.stop_working(success);
         m_app.systems.core.work_context.set_progress(0.0f);
     };
@@ -58,6 +69,7 @@ void dt_sys_evp::pack() {
     m_app.systems.core.errors = "";
 
     m_app.systems.core.work_context.start_working();
+    m_current_work = work_type::packing;
     m_evp.pack_async(inputs, packing_inputs.output, &m_evp_context);
 }
 
@@ -80,6 +92,7 @@ void dt_sys_evp::unpack() {
     m_app.systems.core.errors = "";
 
     m_app.systems.core.work_context.start_working();
+    m_current_work = work_type::unpacking;
     m_evp.unpack_async(inputs, unpacking_inputs.output, &m_evp_context);
 }
 
