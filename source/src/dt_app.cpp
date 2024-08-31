@@ -12,7 +12,7 @@ using namespace libgui;
 dt_app::dt_app(const libgui::window_settings& settings)
     : window(settings), systems(*this), gui(*this)
 {
-    set_resizable(false);
+    set_resizable(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
