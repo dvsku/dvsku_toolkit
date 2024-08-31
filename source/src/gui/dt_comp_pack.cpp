@@ -1,7 +1,10 @@
 #include "gui/dt_comp_pack.hpp"
 #include "dt_app.hpp"
 
+#include "models/visual_tree/visual_tree.hpp"
+
 #include <libgui.hpp>
+#include <stack>
 
 using namespace dvsku_toolkit;
 
@@ -21,11 +24,14 @@ void dt_comp_pack::render() {
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-50.0f);
-    ImGui::InputText("##Input", &m_input, ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputText("##Input", &m_app.systems.evp.packing_inputs.input, ImGuiInputTextFlags_ReadOnly);
 
     ImGui::SameLine(0.0f, 5.0f);
     if (libgui::imgui::icon_button(ICON_FA_FOLDER"##InputSelect", { 25.0f, 21.0f })) {
-        m_input = libgui::dialog::select_dir("Select input directory", m_input);
+        m_app.systems.evp.packing_inputs.input = 
+            libgui::dialog::select_dir("Select input directory", m_app.systems.evp.packing_inputs.input);
+        
+        m_app.systems.evp.set_pack_files();
     }
 
     ImGui::Indent(3.0f);
@@ -33,49 +39,44 @@ void dt_comp_pack::render() {
     ImGui::Unindent(3.0f);
 
     ImGui::SetNextItemWidth(-50.0f);
-    ImGui::InputText("##Output", &m_output, ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputText("##Output", &m_app.systems.evp.packing_inputs.output, ImGuiInputTextFlags_ReadOnly);
 
     ImGui::SameLine(0.0f, 5.0f);
     if (libgui::imgui::icon_button(ICON_FA_FILE"##OutputSelect", { 25.0f, 21.0f })) {
-        m_output = libgui::dialog::save_file("Select output file", m_output, true, { "EVP (*.evp)", "*.evp" });
+        m_app.systems.evp.packing_inputs.output =
+            libgui::dialog::save_file("Select output file", m_app.systems.evp.packing_inputs.output, true, { "EVP (*.evp)", "*.evp" });
     }
 
     ImGui::Dummy({ 0.0f, 3.0f });
 
-    ImGui::Indent(3.0f);
-    ImGui::Text("Pack type");
-    ImGui::Unindent(3.0f);
+    libgui::theme::push_col(ImGuiCol_ChildBg,     libgui::fRGBA_to_RGBA(0.12157f, 0.12157f, 0.12157f, 1.00f));
+    libgui::theme::push_col(ImGuiCol_ScrollbarBg, libgui::fRGBA_to_RGBA(0.12157f, 0.12157f, 0.12157f, 1.00f));
+    if (ImGui::BeginChild("##Files", { -20.0f, -68.0f })) {
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 5.0f, 5.0f });
+        libgui::theme::push_col(ImGuiCol_ChildBg, libgui::fRGBA_to_RGBA(0.10f, 0.10f, 0.10f, 1.00f));
+        if (ImGui::BeginChild("##Search", { 0.0f, 31.0f }, false, ImGuiWindowFlags_AlwaysUseWindowPadding)) {
+            ImGuiInputTextFlags search_flags = 0;
+            search_flags |= ImGuiInputTextFlags_EnterReturnsTrue;
+            search_flags |= ImGuiInputTextFlags_AutoSelectAll;
 
-    ImGui::Dummy({ 0.0f, 3.0f });
+            ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+            if (ImGui::InputText("##SearchInput", &m_app.systems.evp.packing_inputs.search_query, search_flags)) {
+                m_app.systems.evp.packing_inputs.tree.search(m_app.systems.evp.packing_inputs.search_query);
+            }
+        }
+        ImGui::EndChild();
+        libgui::theme::pop_col(1);
+        ImGui::PopStyleVar();
 
-    ImGui::RadioButton("any##Filter", &m_filter, 0);
-    if (ImGui::IsItemHovered()) {
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 6.0f, 6.0f });
-        ImGui::PushStyleColor(ImGuiCol_Text, 0xFFC5C5C5);
-        ImGui::SetTooltip("Pack all files from input");
-        ImGui::PopStyleColor(1);
-        ImGui::PopStyleVar(1);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 10.0f, 5.0f });
+        if (ImGui::BeginChild("##Tree", { 0.0f, 0.0f }, false, ImGuiWindowFlags_AlwaysUseWindowPadding)) {
+            render_tree();
+        }
+        ImGui::EndChild();
+        ImGui::PopStyleVar();
     }
-
-    ImGui::SameLine(0.0f, 8.0f);
-    ImGui::RadioButton("client##Filter", &m_filter, 1);
-    if (ImGui::IsItemHovered()) {
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 6.0f, 6.0f });
-        ImGui::PushStyleColor(ImGuiCol_Text, 0xFFC5C5C5);
-        ImGui::SetTooltip("Pack only client files");
-        ImGui::PopStyleColor(1);
-        ImGui::PopStyleVar(1);
-    }   
-
-    ImGui::SameLine(0.0f, 8.0f);
-    ImGui::RadioButton("server##Filter", &m_filter, 2);
-    if (ImGui::IsItemHovered()) {
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 6.0f, 6.0f });
-        ImGui::PushStyleColor(ImGuiCol_Text, 0xFFC5C5C5);
-        ImGui::SetTooltip("Pack only server files");
-        ImGui::PopStyleColor(1);
-        ImGui::PopStyleVar(1);
-    }   
+    ImGui::EndChild();
+    libgui::theme::pop_col(2);
 
     bool is_working = m_app.systems.core.work_context.is_working();
 
@@ -88,7 +89,9 @@ void dt_comp_pack::render() {
     ImGui::ProgressBar(m_app.systems.core.work_context.get_progress() / 100, ImVec2(0.0f, 0.0f));
 
     auto avail        = ImGui::GetContentRegionMax();
-    bool cannot_start = m_input.empty() || m_output.empty();
+    bool cannot_start = m_app.systems.evp.packing_inputs.input.empty()  ||
+                        m_app.systems.evp.packing_inputs.output.empty() ||
+                        m_app.systems.evp.packing_inputs.tree.root->get_check_state() == visual_tree_branch::check_state::unchecked;
     
     ImGui::SetCursorPosX((avail.x) / 2 - (125 / 2.0f));
     ImGui::SetCursorPosY(max.y - 29.0f);
@@ -98,7 +101,7 @@ void dt_comp_pack::render() {
 
     if (!is_working) {
         if (ImGui::Button("Pack##Pack", { 125.0f, 21.0f })) {
-            m_app.systems.evp.pack(m_input, m_output, m_filter);
+            m_app.systems.evp.pack();
         }
     }
     else {
@@ -115,4 +118,108 @@ void dt_comp_pack::render() {
 
     ImGui::Unindent(20.0f);
     ImGui::PopID();
+}
+
+void dt_comp_pack::render_tree() {
+    struct stack_element {
+        std::shared_ptr<visual_tree_element> ptr   = nullptr;
+        int                                  level = 0;
+    };
+
+    std::stack<stack_element> stack;
+
+    for (auto it = m_app.systems.evp.packing_inputs.tree.root->leaves.rbegin(); it != m_app.systems.evp.packing_inputs.tree.root->leaves.rend(); it++) {
+        stack.push({ *it, 0 });
+    }
+
+    for (auto it = m_app.systems.evp.packing_inputs.tree.root->branches.rbegin(); it != m_app.systems.evp.packing_inputs.tree.root->branches.rend(); it++) {
+        stack.push({ *it, 0 });
+    }
+
+    while (stack.size() != 0) {
+        stack_element element = stack.top();
+        stack.pop();
+
+        if (!element.ptr)
+            continue;
+
+        if (element.ptr->type == visual_tree_element::element_type::branch) {
+            visual_tree::branch_ptr_t branch = std::static_pointer_cast<visual_tree_branch>(element.ptr);
+
+            if (m_app.systems.evp.packing_inputs.tree.is_hidden_by_search(branch))
+                continue;
+
+            ImGui::Indent(1.0f + element.level * 15.0f);
+
+            ImGui::PushID("Branch");
+            ImGui::PushID(branch.get());
+            
+            libgui::theme::push_col(ImGuiCol_FrameBg, libgui::fRGBA_to_RGBA(0.10f, 0.10f, 0.10f, 1.00f));
+
+            bool checkbox_pressed = false;
+            bool is_checked       = false;
+
+            visual_tree_branch::check_state check_state = branch->get_check_state();
+            if (check_state == visual_tree_branch::check_state::intermediate) {
+                ImGui::PushItemFlag(ImGuiItemFlags_MixedValue, true);
+                checkbox_pressed = ImGui::Checkbox("##Checkbox", &is_checked);
+                ImGui::PopItemFlag();
+            }
+            else {
+                is_checked = check_state == visual_tree_branch::check_state::checked;
+                checkbox_pressed = ImGui::Checkbox("##Checkbox", &is_checked);
+            }
+
+            if (checkbox_pressed) {
+                branch->check();
+            }
+
+            libgui::theme::pop_col();
+
+            ImGui::SameLine(0.0f, 21.0f);
+
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 1.0f, 4.0f });
+            bool expanded = ImGui::CollapsingHeader(DV_FORMAT(ICON_FA_FOLDER_CLOSED " {}###Dir", branch->name.c_str()).c_str());
+            ImGui::PopStyleVar();
+            if (expanded) {
+                for (auto it = branch->leaves.rbegin(); it != branch->leaves.rend(); it++) {
+                    stack.push({ *it, element.level + 1 });
+                }
+
+                for (auto it = branch->branches.rbegin(); it != branch->branches.rend(); it++) {
+                    stack.push({ *it, element.level + 1 });
+                }
+            }
+
+            ImGui::PopID();
+            ImGui::PopID();
+
+            ImGui::Unindent(1.0f + element.level * 15.0f);
+        }
+        else {
+            visual_tree::leaf_ptr_t leaf = std::static_pointer_cast<visual_tree_leaf>(element.ptr);
+
+            if (m_app.systems.evp.packing_inputs.tree.is_hidden_by_search(leaf))
+                continue;
+
+            ImGui::Indent(1.0f + element.level * 15.0f);
+            
+            ImGui::PushID("Leaf");
+            ImGui::PushID(leaf.get());
+
+            libgui::theme::push_col(ImGuiCol_FrameBg, libgui::fRGBA_to_RGBA(0.10f, 0.10f, 0.10f, 1.00f));
+            
+            bool is_checked = leaf->is_checked();
+            if (ImGui::Checkbox(DV_FORMAT(" " ICON_FA_FILE " {}##Checkbox", leaf->name).c_str(), &is_checked)) {
+                leaf->check();
+            }
+
+            libgui::theme::pop_col();
+
+            ImGui::PopID();
+            ImGui::PopID();
+        
+            ImGui::Unindent(1.0f + element.level * 15.0f);
+        }
+    }
 }

@@ -14,8 +14,6 @@ namespace dvsku_toolkit {
         void render();
 
     private:
-        std::string m_input  = "";
-        std::string m_output = "";
-        int         m_filter = 0U;
+        void render_tree();
     };
 }
