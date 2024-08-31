@@ -2,6 +2,8 @@
 #include "dvsku_toolkit.hpp"
 #include "dt_app.hpp"
 
+#include <windows.h>
+
 using namespace dvsku_toolkit;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -53,6 +55,19 @@ void dt_comp_root::render() {
             ImGui::PushStyleColor(ImGuiCol_Text, 0xFFC5C5C5);
 
             ImGui::SameLine(0.0f, 0.0f);
+
+            ImGui::SetCursorPosX(max.x - 120.0f);
+            ImGui::SetCursorPosY(min.y);
+
+            if (ImGui::Button(ICON_FA_LINK"##About", { 30.0f, 25.0f })) {
+                ShellExecuteA(NULL, "open", DT_WEBSITE, NULL, NULL, SW_SHOWDEFAULT);
+            }
+
+            ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 6.0f, 6.0f });
+            ImGui::PushStyleColor(ImGuiCol_Text, 0xFFC5C5C5);
+            ImGui::SetItemTooltip("About");
+            ImGui::PopStyleColor(1);
+            ImGui::PopStyleVar(1);
 
             ImGui::SetCursorPosX(max.x - 60.0f);
             ImGui::SetCursorPosY(min.y);

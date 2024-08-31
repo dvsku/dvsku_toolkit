@@ -14,6 +14,7 @@
 #endif
 
 #define DT_APP_NAME "dvsku toolkit"
+#define DT_WEBSITE  "https://github.com/dvsku/dvsku_toolkit"
 
 #define DT_VERSION_MAJOR 1
 #define DT_VERSION_MINOR 2
